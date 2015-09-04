@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  YYCustomizeRepeatViewController.h
 //  Reusable List
 //
 //  Created by Molay on 15/9/4.
@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
-
+@interface YYCustomizeRepeatViewController : UITableViewController
 
 @end
-

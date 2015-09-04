@@ -6,7 +6,7 @@
 //  Copyright (c) 2015年 yuying. All rights reserved.
 //
 
-#import "AppDelegate.h"
+#import "YYAppDelegate.h"
 
 @interface AppDelegate ()
 

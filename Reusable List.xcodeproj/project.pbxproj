@@ -8,12 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		603002EA1B992C9400DB2C4C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 603002E91B992C9400DB2C4C /* main.m */; };
-		603002ED1B992C9400DB2C4C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 603002EC1B992C9400DB2C4C /* AppDelegate.m */; };
-		603002F01B992C9400DB2C4C /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 603002EF1B992C9400DB2C4C /* ViewController.m */; };
-		603002F31B992C9400DB2C4C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 603002F11B992C9400DB2C4C /* Main.storyboard */; };
+		603002ED1B992C9400DB2C4C /* YYAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 603002EC1B992C9400DB2C4C /* YYAppDelegate.m */; };
 		603002F51B992C9400DB2C4C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 603002F41B992C9400DB2C4C /* Images.xcassets */; };
 		603002F81B992C9400DB2C4C /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 603002F61B992C9400DB2C4C /* LaunchScreen.xib */; };
 		603003041B992C9400DB2C4C /* Reusable_ListTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 603003031B992C9400DB2C4C /* Reusable_ListTests.m */; };
+		603003181B99C1C100DB2C4C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 603003161B99C1C100DB2C4C /* Main.storyboard */; };
+		603003271B99D04F00DB2C4C /* YYCustomizeRepeatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 603003261B99D04F00DB2C4C /* YYCustomizeRepeatViewController.m */; };
+		6030032A1B99D07100DB2C4C /* YYAllListsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 603003291B99D07100DB2C4C /* YYAllListsViewController.m */; };
+		6030032D1B99D08200DB2C4C /* YYListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6030032C1B99D08200DB2C4C /* YYListViewController.m */; };
+		603003301B99D09100DB2C4C /* YYSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6030032F1B99D09100DB2C4C /* YYSettingViewController.m */; };
+		603003331B99D0A000DB2C4C /* YYRepeatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 603003321B99D0A000DB2C4C /* YYRepeatViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -30,16 +34,24 @@
 		603002E41B992C9400DB2C4C /* Reusable List.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Reusable List.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		603002E81B992C9400DB2C4C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		603002E91B992C9400DB2C4C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		603002EB1B992C9400DB2C4C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		603002EC1B992C9400DB2C4C /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		603002EE1B992C9400DB2C4C /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		603002EF1B992C9400DB2C4C /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		603002F21B992C9400DB2C4C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		603002EB1B992C9400DB2C4C /* YYAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYAppDelegate.h; sourceTree = "<group>"; };
+		603002EC1B992C9400DB2C4C /* YYAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYAppDelegate.m; sourceTree = "<group>"; };
 		603002F41B992C9400DB2C4C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		603002F71B992C9400DB2C4C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		603002FD1B992C9400DB2C4C /* Reusable ListTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Reusable ListTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		603003021B992C9400DB2C4C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		603003031B992C9400DB2C4C /* Reusable_ListTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Reusable_ListTests.m; sourceTree = "<group>"; };
+		603003171B99C1C100DB2C4C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "Reusable List/Base.lproj/Main.storyboard"; sourceTree = "<group>"; };
+		603003251B99D04F00DB2C4C /* YYCustomizeRepeatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYCustomizeRepeatViewController.h; sourceTree = "<group>"; };
+		603003261B99D04F00DB2C4C /* YYCustomizeRepeatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYCustomizeRepeatViewController.m; sourceTree = "<group>"; };
+		603003281B99D07100DB2C4C /* YYAllListsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YYAllListsViewController.h; path = ../YYAllListsViewController.h; sourceTree = "<group>"; };
+		603003291B99D07100DB2C4C /* YYAllListsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YYAllListsViewController.m; path = ../YYAllListsViewController.m; sourceTree = "<group>"; };
+		6030032B1B99D08200DB2C4C /* YYListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYListViewController.h; sourceTree = "<group>"; };
+		6030032C1B99D08200DB2C4C /* YYListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYListViewController.m; sourceTree = "<group>"; };
+		6030032E1B99D09100DB2C4C /* YYSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYSettingViewController.h; sourceTree = "<group>"; };
+		6030032F1B99D09100DB2C4C /* YYSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYSettingViewController.m; sourceTree = "<group>"; };
+		603003311B99D0A000DB2C4C /* YYRepeatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYRepeatViewController.h; sourceTree = "<group>"; };
+		603003321B99D0A000DB2C4C /* YYRepeatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYRepeatViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,13 +93,16 @@
 		603002E61B992C9400DB2C4C /* Reusable List */ = {
 			isa = PBXGroup;
 			children = (
-				603002EB1B992C9400DB2C4C /* AppDelegate.h */,
-				603002EC1B992C9400DB2C4C /* AppDelegate.m */,
-				603002EE1B992C9400DB2C4C /* ViewController.h */,
-				603002EF1B992C9400DB2C4C /* ViewController.m */,
-				603002F11B992C9400DB2C4C /* Main.storyboard */,
-				603002F41B992C9400DB2C4C /* Images.xcassets */,
+				603002EB1B992C9400DB2C4C /* YYAppDelegate.h */,
+				603002EC1B992C9400DB2C4C /* YYAppDelegate.m */,
+				603003161B99C1C100DB2C4C /* Main.storyboard */,
 				603002F61B992C9400DB2C4C /* LaunchScreen.xib */,
+				603002F41B992C9400DB2C4C /* Images.xcassets */,
+				603003341B99D0A600DB2C4C /* AllLists */,
+				603003351B99D0BC00DB2C4C /* List */,
+				603003371B99D0C800DB2C4C /* Repeat */,
+				603003381B99D0D100DB2C4C /* CustomizeRepeat */,
+				603003361B99D0C100DB2C4C /* Setting */,
 				603002E71B992C9400DB2C4C /* Supporting Files */,
 			);
 			path = "Reusable List";
@@ -117,6 +132,51 @@
 				603003021B992C9400DB2C4C /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		603003341B99D0A600DB2C4C /* AllLists */ = {
+			isa = PBXGroup;
+			children = (
+				603003281B99D07100DB2C4C /* YYAllListsViewController.h */,
+				603003291B99D07100DB2C4C /* YYAllListsViewController.m */,
+			);
+			name = AllLists;
+			sourceTree = "<group>";
+		};
+		603003351B99D0BC00DB2C4C /* List */ = {
+			isa = PBXGroup;
+			children = (
+				6030032B1B99D08200DB2C4C /* YYListViewController.h */,
+				6030032C1B99D08200DB2C4C /* YYListViewController.m */,
+			);
+			name = List;
+			sourceTree = "<group>";
+		};
+		603003361B99D0C100DB2C4C /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				6030032E1B99D09100DB2C4C /* YYSettingViewController.h */,
+				6030032F1B99D09100DB2C4C /* YYSettingViewController.m */,
+			);
+			name = Setting;
+			sourceTree = "<group>";
+		};
+		603003371B99D0C800DB2C4C /* Repeat */ = {
+			isa = PBXGroup;
+			children = (
+				603003311B99D0A000DB2C4C /* YYRepeatViewController.h */,
+				603003321B99D0A000DB2C4C /* YYRepeatViewController.m */,
+			);
+			name = Repeat;
+			sourceTree = "<group>";
+		};
+		603003381B99D0D100DB2C4C /* CustomizeRepeat */ = {
+			isa = PBXGroup;
+			children = (
+				603003251B99D04F00DB2C4C /* YYCustomizeRepeatViewController.h */,
+				603003261B99D04F00DB2C4C /* YYCustomizeRepeatViewController.m */,
+			);
+			name = CustomizeRepeat;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -163,6 +223,7 @@
 		603002DC1B992C9400DB2C4C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = YY;
 				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = yuying;
 				TargetAttributes = {
@@ -199,7 +260,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				603002F31B992C9400DB2C4C /* Main.storyboard in Resources */,
+				603003181B99C1C100DB2C4C /* Main.storyboard in Resources */,
 				603002F81B992C9400DB2C4C /* LaunchScreen.xib in Resources */,
 				603002F51B992C9400DB2C4C /* Images.xcassets in Resources */,
 			);
@@ -219,9 +280,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				603002F01B992C9400DB2C4C /* ViewController.m in Sources */,
-				603002ED1B992C9400DB2C4C /* AppDelegate.m in Sources */,
+				603002ED1B992C9400DB2C4C /* YYAppDelegate.m in Sources */,
+				603003301B99D09100DB2C4C /* YYSettingViewController.m in Sources */,
 				603002EA1B992C9400DB2C4C /* main.m in Sources */,
+				6030032A1B99D07100DB2C4C /* YYAllListsViewController.m in Sources */,
+				603003331B99D0A000DB2C4C /* YYRepeatViewController.m in Sources */,
+				6030032D1B99D08200DB2C4C /* YYListViewController.m in Sources */,
+				603003271B99D04F00DB2C4C /* YYCustomizeRepeatViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -244,20 +309,21 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		603002F11B992C9400DB2C4C /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				603002F21B992C9400DB2C4C /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		603002F61B992C9400DB2C4C /* LaunchScreen.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
 				603002F71B992C9400DB2C4C /* Base */,
 			);
 			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+		603003161B99C1C100DB2C4C /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				603003171B99C1C100DB2C4C /* Base */,
+			);
+			name = Main.storyboard;
+			path = ..;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -416,6 +482,7 @@
 				603003091B992C9400DB2C4C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		6030030A1B992C9400DB2C4C /* Build configuration list for PBXNativeTarget "Reusable ListTests" */ = {
 			isa = XCConfigurationList;
@@ -424,6 +491,7 @@
 				6030030C1B992C9400DB2C4C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

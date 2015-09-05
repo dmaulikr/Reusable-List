@@ -13,11 +13,9 @@
 		603002F81B992C9400DB2C4C /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 603002F61B992C9400DB2C4C /* LaunchScreen.xib */; };
 		603003041B992C9400DB2C4C /* Reusable_ListTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 603003031B992C9400DB2C4C /* Reusable_ListTests.m */; };
 		603003181B99C1C100DB2C4C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 603003161B99C1C100DB2C4C /* Main.storyboard */; };
-		603003271B99D04F00DB2C4C /* YYCustomizeRepeatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 603003261B99D04F00DB2C4C /* YYCustomizeRepeatViewController.m */; };
 		6030032A1B99D07100DB2C4C /* YYAllListsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 603003291B99D07100DB2C4C /* YYAllListsViewController.m */; };
 		6030032D1B99D08200DB2C4C /* YYListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6030032C1B99D08200DB2C4C /* YYListViewController.m */; };
 		603003301B99D09100DB2C4C /* YYSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6030032F1B99D09100DB2C4C /* YYSettingViewController.m */; };
-		603003331B99D0A000DB2C4C /* YYRepeatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 603003321B99D0A000DB2C4C /* YYRepeatViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,16 +40,12 @@
 		603003021B992C9400DB2C4C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		603003031B992C9400DB2C4C /* Reusable_ListTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Reusable_ListTests.m; sourceTree = "<group>"; };
 		603003171B99C1C100DB2C4C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "Reusable List/Base.lproj/Main.storyboard"; sourceTree = "<group>"; };
-		603003251B99D04F00DB2C4C /* YYCustomizeRepeatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYCustomizeRepeatViewController.h; sourceTree = "<group>"; };
-		603003261B99D04F00DB2C4C /* YYCustomizeRepeatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYCustomizeRepeatViewController.m; sourceTree = "<group>"; };
 		603003281B99D07100DB2C4C /* YYAllListsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YYAllListsViewController.h; path = ../YYAllListsViewController.h; sourceTree = "<group>"; };
 		603003291B99D07100DB2C4C /* YYAllListsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YYAllListsViewController.m; path = ../YYAllListsViewController.m; sourceTree = "<group>"; };
 		6030032B1B99D08200DB2C4C /* YYListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYListViewController.h; sourceTree = "<group>"; };
 		6030032C1B99D08200DB2C4C /* YYListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYListViewController.m; sourceTree = "<group>"; };
 		6030032E1B99D09100DB2C4C /* YYSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYSettingViewController.h; sourceTree = "<group>"; };
 		6030032F1B99D09100DB2C4C /* YYSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYSettingViewController.m; sourceTree = "<group>"; };
-		603003311B99D0A000DB2C4C /* YYRepeatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYRepeatViewController.h; sourceTree = "<group>"; };
-		603003321B99D0A000DB2C4C /* YYRepeatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYRepeatViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,8 +94,6 @@
 				603002F41B992C9400DB2C4C /* Images.xcassets */,
 				603003341B99D0A600DB2C4C /* AllLists */,
 				603003351B99D0BC00DB2C4C /* List */,
-				603003371B99D0C800DB2C4C /* Repeat */,
-				603003381B99D0D100DB2C4C /* CustomizeRepeat */,
 				603003361B99D0C100DB2C4C /* Setting */,
 				603002E71B992C9400DB2C4C /* Supporting Files */,
 			);
@@ -159,24 +151,6 @@
 				6030032F1B99D09100DB2C4C /* YYSettingViewController.m */,
 			);
 			name = Setting;
-			sourceTree = "<group>";
-		};
-		603003371B99D0C800DB2C4C /* Repeat */ = {
-			isa = PBXGroup;
-			children = (
-				603003311B99D0A000DB2C4C /* YYRepeatViewController.h */,
-				603003321B99D0A000DB2C4C /* YYRepeatViewController.m */,
-			);
-			name = Repeat;
-			sourceTree = "<group>";
-		};
-		603003381B99D0D100DB2C4C /* CustomizeRepeat */ = {
-			isa = PBXGroup;
-			children = (
-				603003251B99D04F00DB2C4C /* YYCustomizeRepeatViewController.h */,
-				603003261B99D04F00DB2C4C /* YYCustomizeRepeatViewController.m */,
-			);
-			name = CustomizeRepeat;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -284,9 +258,7 @@
 				603003301B99D09100DB2C4C /* YYSettingViewController.m in Sources */,
 				603002EA1B992C9400DB2C4C /* main.m in Sources */,
 				6030032A1B99D07100DB2C4C /* YYAllListsViewController.m in Sources */,
-				603003331B99D0A000DB2C4C /* YYRepeatViewController.m in Sources */,
 				6030032D1B99D08200DB2C4C /* YYListViewController.m in Sources */,
-				603003271B99D04F00DB2C4C /* YYCustomizeRepeatViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

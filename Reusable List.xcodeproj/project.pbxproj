@@ -16,6 +16,9 @@
 		6030032A1B99D07100DB2C4C /* YYAllListsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 603003291B99D07100DB2C4C /* YYAllListsViewController.m */; };
 		6030032D1B99D08200DB2C4C /* YYListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6030032C1B99D08200DB2C4C /* YYListViewController.m */; };
 		603003301B99D09100DB2C4C /* YYSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6030032F1B99D09100DB2C4C /* YYSettingViewController.m */; };
+		603003451B9E849900DB2C4C /* Reusable List.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 603003431B9E849900DB2C4C /* Reusable List.xcdatamodeld */; };
+		603003481B9EA58B00DB2C4C /* YYList.m in Sources */ = {isa = PBXBuildFile; fileRef = 603003471B9EA58B00DB2C4C /* YYList.m */; };
+		6030034B1B9EA7CF00DB2C4C /* YYListStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 6030034A1B9EA7CF00DB2C4C /* YYListStore.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +49,11 @@
 		6030032C1B99D08200DB2C4C /* YYListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYListViewController.m; sourceTree = "<group>"; };
 		6030032E1B99D09100DB2C4C /* YYSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYSettingViewController.h; sourceTree = "<group>"; };
 		6030032F1B99D09100DB2C4C /* YYSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYSettingViewController.m; sourceTree = "<group>"; };
+		603003441B9E849900DB2C4C /* Reusable List.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Reusable List.xcdatamodel"; sourceTree = "<group>"; };
+		603003461B9EA58B00DB2C4C /* YYList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYList.h; sourceTree = "<group>"; };
+		603003471B9EA58B00DB2C4C /* YYList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYList.m; sourceTree = "<group>"; };
+		603003491B9EA7CF00DB2C4C /* YYListStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYListStore.h; sourceTree = "<group>"; };
+		6030034A1B9EA7CF00DB2C4C /* YYListStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYListStore.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,14 +95,10 @@
 		603002E61B992C9400DB2C4C /* Reusable List */ = {
 			isa = PBXGroup;
 			children = (
-				603002EB1B992C9400DB2C4C /* YYAppDelegate.h */,
-				603002EC1B992C9400DB2C4C /* YYAppDelegate.m */,
-				603003161B99C1C100DB2C4C /* Main.storyboard */,
-				603002F61B992C9400DB2C4C /* LaunchScreen.xib */,
-				603002F41B992C9400DB2C4C /* Images.xcassets */,
-				603003341B99D0A600DB2C4C /* AllLists */,
-				603003351B99D0BC00DB2C4C /* List */,
-				603003361B99D0C100DB2C4C /* Setting */,
+				6030033F1B9C801800DB2C4C /* Model */,
+				603003401B9C816A00DB2C4C /* ViewController */,
+				603003411B9C81F300DB2C4C /* View */,
+				603003421B9C820A00DB2C4C /* Other */,
 				603002E71B992C9400DB2C4C /* Supporting Files */,
 			);
 			path = "Reusable List";
@@ -151,6 +155,47 @@
 				6030032F1B99D09100DB2C4C /* YYSettingViewController.m */,
 			);
 			name = Setting;
+			sourceTree = "<group>";
+		};
+		6030033F1B9C801800DB2C4C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				603003431B9E849900DB2C4C /* Reusable List.xcdatamodeld */,
+				603003461B9EA58B00DB2C4C /* YYList.h */,
+				603003471B9EA58B00DB2C4C /* YYList.m */,
+				603003491B9EA7CF00DB2C4C /* YYListStore.h */,
+				6030034A1B9EA7CF00DB2C4C /* YYListStore.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		603003401B9C816A00DB2C4C /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				603003341B99D0A600DB2C4C /* AllLists */,
+				603003351B99D0BC00DB2C4C /* List */,
+				603003361B99D0C100DB2C4C /* Setting */,
+			);
+			name = ViewController;
+			sourceTree = "<group>";
+		};
+		603003411B9C81F300DB2C4C /* View */ = {
+			isa = PBXGroup;
+			children = (
+				603003161B99C1C100DB2C4C /* Main.storyboard */,
+				603002F61B992C9400DB2C4C /* LaunchScreen.xib */,
+				603002F41B992C9400DB2C4C /* Images.xcassets */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		603003421B9C820A00DB2C4C /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				603002EB1B992C9400DB2C4C /* YYAppDelegate.h */,
+				603002EC1B992C9400DB2C4C /* YYAppDelegate.m */,
+			);
+			name = Other;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -255,9 +300,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				603002ED1B992C9400DB2C4C /* YYAppDelegate.m in Sources */,
+				603003451B9E849900DB2C4C /* Reusable List.xcdatamodeld in Sources */,
 				603003301B99D09100DB2C4C /* YYSettingViewController.m in Sources */,
+				6030034B1B9EA7CF00DB2C4C /* YYListStore.m in Sources */,
 				603002EA1B992C9400DB2C4C /* main.m in Sources */,
 				6030032A1B99D07100DB2C4C /* YYAllListsViewController.m in Sources */,
+				603003481B9EA58B00DB2C4C /* YYList.m in Sources */,
 				6030032D1B99D08200DB2C4C /* YYListViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -466,6 +514,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		603003431B9E849900DB2C4C /* Reusable List.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				603003441B9E849900DB2C4C /* Reusable List.xcdatamodel */,
+			);
+			currentVersion = 603003441B9E849900DB2C4C /* Reusable List.xcdatamodel */;
+			path = "Reusable List.xcdatamodeld";
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 603002DC1B992C9400DB2C4C /* Project object */;
 }

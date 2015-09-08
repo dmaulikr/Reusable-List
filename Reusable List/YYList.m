@@ -1,0 +1,20 @@
+//
+//  YYList.m
+//  Reusable List
+//
+//  Created by Molay on 15/9/8.
+//  Copyright (c) 2015年 yuying. All rights reserved.
+//
+
+#import "YYList.h"
+
+
+@implementation YYList
+
+@dynamic content;
+@dynamic remindTime;
+@dynamic repeatType;
+@dynamic endDate;
+@dynamic orderingValue;
+
+@end

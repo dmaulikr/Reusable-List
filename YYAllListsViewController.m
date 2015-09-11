@@ -7,8 +7,14 @@
 //
 
 #import "YYAllListsViewController.h"
+#import "YYList.h"
+
+@import CoreData;
 
 @interface YYAllListsViewController ()
+
+@property(nonatomic, strong) NSMutableArray *listsWithDate;
+@property(nonatomic, strong) NSMutableArray *listsWithoutDate;
 
 @end
 

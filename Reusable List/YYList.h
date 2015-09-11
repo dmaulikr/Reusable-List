@@ -12,10 +12,11 @@
 
 @interface YYList : NSManagedObject
 
+@property (nonatomic, retain) NSString * itemKey;
 @property (nonatomic, retain) NSString * content;
 @property (nonatomic, retain) NSDate * remindTime;
 @property (nonatomic, retain) NSString * repeatType;
 @property (nonatomic, retain) NSDate * endDate;
-@property (nonatomic) double orderingValue;
+@property (nonatomic, retain) NSDate * dateCreated;
 
 @end

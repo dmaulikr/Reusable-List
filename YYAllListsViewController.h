@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+@class YYList;
+
 @interface YYAllListsViewController : UITableViewController
 
 @end

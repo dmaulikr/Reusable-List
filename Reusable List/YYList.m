@@ -11,10 +11,19 @@
 
 @implementation YYList
 
+@dynamic itemKey;
 @dynamic content;
 @dynamic remindTime;
 @dynamic repeatType;
 @dynamic endDate;
-@dynamic orderingValue;
+@dynamic dateCreated;
+
+- (void)awakeFromInsert {
+    [super awakeFromInsert];
+    self.dateCreated = [NSDate date];
+    NSUUID *uuid = [[NSUUID alloc]init];
+    NSString *key = [uuid UUIDString];
+    self.itemKey = key;
+}
 
 @end

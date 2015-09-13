@@ -18,44 +18,129 @@
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8Ry-2M-Wum" id="Nqq-x8-IW1">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" tag="100" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IJ5-Bc-hcr">
-                                            <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                            <nil key="highlightedColor"/>
-                                            <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
-                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                                                <rect key="frame" x="59" y="8" width="333" height="21"/>
-                                            </variation>
-                                        </label>
                                         <label opaque="NO" userInteractionEnabled="NO" tag="200" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x2v-Cp-Umo">
                                             <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="20" id="NjE-uo-R8L"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
-                                            <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
-                                                <rect key="frame" x="59" y="37" width="333" height="21"/>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="NjE-uo-R8L"/>
+                                                </mask>
+                                            </variation>
+                                            <variation key="heightClass=regular-widthClass=compact">
+                                                <mask key="constraints">
+                                                    <include reference="NjE-uo-R8L"/>
+                                                </mask>
                                             </variation>
                                         </label>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Qs8-S0-gnR">
                                             <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
-                                            <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
-                                                <rect key="frame" x="8" y="11" width="43" height="43"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="43" id="9Hl-d6-cqi"/>
+                                                <constraint firstAttribute="height" constant="43" id="KYB-Mq-Haw"/>
+                                            </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="9Hl-d6-cqi"/>
+                                                    <exclude reference="KYB-Mq-Haw"/>
+                                                </mask>
+                                            </variation>
+                                            <variation key="heightClass=regular-widthClass=compact">
+                                                <mask key="constraints">
+                                                    <include reference="9Hl-d6-cqi"/>
+                                                    <include reference="KYB-Mq-Haw"/>
+                                                </mask>
                                             </variation>
                                         </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" tag="100" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IJ5-Bc-hcr">
+                                            <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="21" id="rNB-zS-0ZV">
+                                                    <variation key="heightClass=regular-widthClass=compact" constant="45"/>
+                                                </constraint>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="rNB-zS-0ZV"/>
+                                                </mask>
+                                            </variation>
+                                            <variation key="heightClass=regular-widthClass=compact">
+                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                                                <mask key="constraints">
+                                                    <include reference="rNB-zS-0ZV"/>
+                                                </mask>
+                                            </variation>
+                                        </label>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstItem="x2v-Cp-Umo" firstAttribute="leading" secondItem="Qs8-S0-gnR" secondAttribute="trailing" constant="8" id="8Aq-G3-wz5"/>
+                                        <constraint firstItem="IJ5-Bc-hcr" firstAttribute="width" secondItem="x2v-Cp-Umo" secondAttribute="width" id="BUu-ur-Dzj"/>
+                                        <constraint firstItem="Qs8-S0-gnR" firstAttribute="top" secondItem="Nqq-x8-IW1" secondAttribute="top" constant="11" id="Hnd-Kb-uyr"/>
+                                        <constraint firstItem="Qs8-S0-gnR" firstAttribute="leading" secondItem="Nqq-x8-IW1" secondAttribute="leading" constant="8" id="UxX-vq-VYr"/>
+                                        <constraint firstAttribute="bottom" secondItem="Qs8-S0-gnR" secondAttribute="bottom" constant="11" id="VuP-rW-cuV"/>
+                                        <constraint firstItem="x2v-Cp-Umo" firstAttribute="top" secondItem="IJ5-Bc-hcr" secondAttribute="bottom" constant="8" id="WCx-DA-dmM">
+                                            <variation key="heightClass=regular-widthClass=compact" constant="0.0"/>
+                                        </constraint>
+                                        <constraint firstAttribute="trailing" secondItem="IJ5-Bc-hcr" secondAttribute="trailing" constant="8" id="ZRZ-ia-0N1"/>
+                                        <constraint firstItem="IJ5-Bc-hcr" firstAttribute="top" secondItem="Nqq-x8-IW1" secondAttribute="top" constant="8" id="aRk-n9-SXH">
+                                            <variation key="heightClass=regular-widthClass=compact" constant="0.0"/>
+                                        </constraint>
+                                        <constraint firstItem="IJ5-Bc-hcr" firstAttribute="leading" secondItem="Qs8-S0-gnR" secondAttribute="trailing" constant="8" id="dBA-wm-Mt0"/>
+                                        <constraint firstItem="x2v-Cp-Umo" firstAttribute="top" secondItem="IJ5-Bc-hcr" secondAttribute="bottom" constant="8" id="o8f-jQ-rca">
+                                            <variation key="heightClass=regular-widthClass=compact" constant="0.0"/>
+                                        </constraint>
+                                        <constraint firstAttribute="bottom" secondItem="x2v-Cp-Umo" secondAttribute="bottom" constant="8" id="oH9-re-7U9">
+                                            <variation key="heightClass=regular-widthClass=compact" constant="0.0"/>
+                                        </constraint>
+                                        <constraint firstAttribute="trailing" secondItem="x2v-Cp-Umo" secondAttribute="trailing" constant="8" id="t2E-Ib-ACU"/>
+                                    </constraints>
                                     <variation key="default">
                                         <mask key="subviews">
-                                            <exclude reference="IJ5-Bc-hcr"/>
                                             <exclude reference="x2v-Cp-Umo"/>
                                             <exclude reference="Qs8-S0-gnR"/>
+                                            <exclude reference="IJ5-Bc-hcr"/>
+                                        </mask>
+                                        <mask key="constraints">
+                                            <exclude reference="Hnd-Kb-uyr"/>
+                                            <exclude reference="UxX-vq-VYr"/>
+                                            <exclude reference="VuP-rW-cuV"/>
+                                            <exclude reference="BUu-ur-Dzj"/>
+                                            <exclude reference="ZRZ-ia-0N1"/>
+                                            <exclude reference="aRk-n9-SXH"/>
+                                            <exclude reference="dBA-wm-Mt0"/>
+                                            <exclude reference="8Aq-G3-wz5"/>
+                                            <exclude reference="WCx-DA-dmM"/>
+                                            <exclude reference="o8f-jQ-rca"/>
+                                            <exclude reference="oH9-re-7U9"/>
+                                            <exclude reference="t2E-Ib-ACU"/>
                                         </mask>
                                     </variation>
                                     <variation key="heightClass=regular-widthClass=compact">
                                         <mask key="subviews">
-                                            <include reference="IJ5-Bc-hcr"/>
                                             <include reference="x2v-Cp-Umo"/>
                                             <include reference="Qs8-S0-gnR"/>
+                                            <include reference="IJ5-Bc-hcr"/>
+                                        </mask>
+                                        <mask key="constraints">
+                                            <include reference="Hnd-Kb-uyr"/>
+                                            <include reference="UxX-vq-VYr"/>
+                                            <include reference="VuP-rW-cuV"/>
+                                            <include reference="BUu-ur-Dzj"/>
+                                            <include reference="ZRZ-ia-0N1"/>
+                                            <include reference="aRk-n9-SXH"/>
+                                            <include reference="dBA-wm-Mt0"/>
+                                            <include reference="8Aq-G3-wz5"/>
+                                            <include reference="WCx-DA-dmM"/>
+                                            <include reference="o8f-jQ-rca"/>
+                                            <include reference="oH9-re-7U9"/>
+                                            <include reference="t2E-Ib-ACU"/>
                                         </mask>
                                     </variation>
                                 </tableViewCellContentView>

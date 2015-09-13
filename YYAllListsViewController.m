@@ -56,10 +56,21 @@
 - (NSString *)tableView:(UITableView *)tableView
 titleForHeaderInSection:(NSInteger)section {
   if (section == 1) {
-    return @"可用事项";
+    if ([_listsWithoutDate count] == 0) {
+      return nil;
+    } else {
+      return @"可用事项";
+    }
   } else {
     return nil;
   }
+}
+
+- (void)tableView:(UITableView *)tableView
+    willDisplayHeaderView:(UIView *)view
+               forSection:(NSInteger)section {
+  UITableViewHeaderFooterView *header = (UITableViewHeaderFooterView *)view;
+  header.textLabel.font = [UIFont boldSystemFontOfSize:13];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
@@ -67,8 +78,10 @@ titleForHeaderInSection:(NSInteger)section {
   UITableViewCell *cell =
       [tableView dequeueReusableCellWithIdentifier:@"listCell"
                                       forIndexPath:indexPath];
+
   UILabel *contentLabel = (UILabel *)[cell viewWithTag:100];
   UILabel *remindLabel = (UILabel *)[cell viewWithTag:200];
+
   if (indexPath.section == 0) {
     YYList *list = _listsWithDate[indexPath.row];
     contentLabel.text = list.content;
@@ -81,8 +94,9 @@ titleForHeaderInSection:(NSInteger)section {
   } else {
     YYList *list = _listsWithoutDate[indexPath.row];
     contentLabel.text = list.content;
-      remindLabel.hidden = YES;
+    remindLabel.hidden = YES;
   }
+
   return cell;
 }
 

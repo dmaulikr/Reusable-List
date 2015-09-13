@@ -8,7 +8,9 @@
 
 #import "YYAppDelegate.h"
 #import <MagicalRecord/MagicalRecord.h>
-#import "YYListStore.h"
+#import "YYList.h"
+
+@import CoreData;
 
 @interface AppDelegate ()
 
@@ -19,7 +21,22 @@
 - (BOOL)application:(UIApplication *)application
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   [MagicalRecord setupCoreDataStackWithStoreNamed:@"Reusabl List"];
-    
+//    [YYList MR_truncateAll];
+  NSArray *lists = [YYList MR_findAll];
+  if ([lists count] == 0) {
+    YYList *list1 = [YYList MR_createEntity];
+    list1.content = @"超市";
+    YYList *list2 = [YYList MR_createEntity];
+    list2.content = @"取钱";
+    YYList *list3 = [YYList MR_createEntity];
+    list3.content = @"粥";
+    list3.remindTime = [NSDate dateWithTimeIntervalSinceNow:60 * 60];
+      YYList *list4 = [YYList MR_createEntity];
+      list4.content = @"剪指甲";
+      list4.remindTime = [NSDate dateWithTimeIntervalSinceNow:120 * 60];
+  }
+  [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreWithCompletion:nil];
+//    NSLog(@"%lu",[lists count]);
   return YES;
 }
 

@@ -392,8 +392,16 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="wBk-8l-r2o">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="l5p-7D-C66"/>
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="qhm-aK-8wz"/>
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="l5p-7D-C66">
+                            <connections>
+                                <action selector="cancel:" destination="GKS-VF-QHe" id="84D-hg-SCb"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="qhm-aK-8wz">
+                            <connections>
+                                <action selector="done:" destination="GKS-VF-QHe" id="bjA-DE-35x"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mlJ-J1-yop" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -439,6 +447,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="DCl-RF-N7M"/>
+        <segue reference="Uc2-3f-Szl"/>
     </inferredMetricsTieBreakers>
 </document>

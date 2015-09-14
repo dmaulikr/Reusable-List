@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "YYListViewController.h"
 
 @class YYList;
 
-@interface YYAllListsViewController : UITableViewController
+@interface YYAllListsViewController : UITableViewController <YYListViewControllerDelegate>
 
 @end

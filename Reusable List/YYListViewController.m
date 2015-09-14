@@ -7,6 +7,7 @@
 //
 
 #import "YYListViewController.h"
+#import "YYList.h"
 
 @interface YYListViewController ()
 
@@ -33,9 +34,7 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Potentially incomplete method implementation.
-  // Return the number of sections.
-  return 0;
+  return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView
@@ -110,4 +109,10 @@ preparation before navigation
 }
 */
 
+- (IBAction)cancel:(id)sender {
+    [self.delegate YYListViewControllerDidCancel:self];
+}
+
+- (IBAction)done:(id)sender {
+}
 @end

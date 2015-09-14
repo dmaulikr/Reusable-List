@@ -24,12 +24,6 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-  // Uncomment the following line to preserve selection between presentations.
-  // self.clearsSelectionOnViewWillAppear = NO;
-
-  // Uncomment the following line to display an Edit button in the navigation
-  // bar for this view controller.
-  // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -78,7 +72,6 @@ titleForHeaderInSection:(NSInteger)section {
   UITableViewCell *cell =
       [tableView dequeueReusableCellWithIdentifier:@"listCell"
                                       forIndexPath:indexPath];
-
   UILabel *contentLabel = (UILabel *)[cell viewWithTag:100];
   UILabel *remindLabel = (UILabel *)[cell viewWithTag:200];
 
@@ -94,7 +87,7 @@ titleForHeaderInSection:(NSInteger)section {
   } else {
     YYList *list = _listsWithoutDate[indexPath.row];
     contentLabel.text = list.content;
-    remindLabel.hidden = YES;
+    remindLabel.text = @"";
   }
 
   return cell;
@@ -141,16 +134,13 @@ array, and add a new row to the table view
 }
 */
 
-/*
 #pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little
-preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+  UINavigationController *navController = segue.destinationViewController;
+  YYListViewController *controller =
+      (YYListViewController *)navController.topViewController;
+  controller.delegate = self;
 }
-*/
 
 // init the mutablearray, add list item into them and sort by date
 - (void)classifyLists {
@@ -167,6 +157,19 @@ preparation before navigation
   _listsWithDate = [[YYList MR_findAllSortedBy:@"remindTime"
                                      ascending:NO
                                  withPredicate:noRemindFilter] mutableCopy];
+}
+
+#pragma mark - YYListViewControllerDelegate
+- (void)YYListViewControllerDidCancel:(YYListViewController *)controller {
+  [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)YYListViewController:(YYListViewController *)controller
+         didFinishAddingList:(YYList *)list {
+}
+
+- (void)YYListViewController:(YYListViewController *)controller
+        didFinishEditingList:(YYList *)list {
 }
 
 @end

@@ -9,6 +9,7 @@
 #import "YYAllListsViewController.h"
 #import "YYList.h"
 #import <MagicalRecord/MagicalRecord.h>
+#import "YYSettingViewController.h"
 
 @import CoreData;
 
@@ -23,7 +24,6 @@
 
 - (void)viewDidLoad {
   [super viewDidLoad];
-  self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -47,24 +47,20 @@
   }
 }
 
-- (NSString *)tableView:(UITableView *)tableView
-titleForHeaderInSection:(NSInteger)section {
-  if (section == 1) {
-    if ([_listsWithoutDate count] == 0) {
-      return nil;
-    } else {
-      return @"可用事项";
-    }
-  } else {
-    return nil;
-  }
+- (UIView *)tableView:(UITableView *)tableView
+    viewForHeaderInSection:(NSInteger)section {
+  UITableViewCell *headerView =
+      [tableView dequeueReusableCellWithIdentifier:@"headerCell"];
+  return headerView;
 }
 
-- (void)tableView:(UITableView *)tableView
-    willDisplayHeaderView:(UIView *)view
-               forSection:(NSInteger)section {
-  UITableViewHeaderFooterView *header = (UITableViewHeaderFooterView *)view;
-  header.textLabel.font = [UIFont boldSystemFontOfSize:13];
+- (CGFloat)tableView:(UITableView *)tableView
+    heightForHeaderInSection:(NSInteger)section {
+  if (section == 0) {
+    return 0;
+  } else {
+    return 22;
+  }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
@@ -72,67 +68,47 @@ titleForHeaderInSection:(NSInteger)section {
   UITableViewCell *cell =
       [tableView dequeueReusableCellWithIdentifier:@"listCell"
                                       forIndexPath:indexPath];
-  UILabel *contentLabel = (UILabel *)[cell viewWithTag:100];
-  UILabel *remindLabel = (UILabel *)[cell viewWithTag:200];
-
   if (indexPath.section == 0) {
     YYList *list = _listsWithDate[indexPath.row];
-    contentLabel.text = list.content;
+    cell.textLabel.text = list.content;
     if (list.repeatType) {
-      remindLabel.text = [NSString
+      cell.detailTextLabel.text = [NSString
           stringWithFormat:@"%@ %@", list.remindTime, list.repeatType];
     } else {
-      remindLabel.text = [NSString stringWithFormat:@"%@", list.remindTime];
+      cell.detailTextLabel.text =
+          [NSString stringWithFormat:@"%@", list.remindTime];
     }
   } else {
     YYList *list = _listsWithoutDate[indexPath.row];
-    contentLabel.text = list.content;
-    remindLabel.text = @"";
+    cell.textLabel.text = list.content;
+    cell.detailTextLabel.text = @" ";
   }
 
   return cell;
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath
-*)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+- (BOOL)tableView:(UITableView *)tableView
+    canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+  return YES;
 }
-*/
 
-/*
-// Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView
-commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
-forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath]
-withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the
-array, and add a new row to the table view
+    commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
+     forRowAtIndexPath:(NSIndexPath *)indexPath {
+  if (editingStyle == UITableViewCellEditingStyleDelete) {
+    if (indexPath.section == 0) {
+      YYList *list = _listsWithDate[indexPath.row];
+      [list MR_deleteEntity];
+    } else {
+      YYList *list = _listsWithoutDate[indexPath.row];
+      [list MR_deleteEntity];
     }
+    [[NSManagedObjectContext MR_defaultContext]
+        MR_saveToPersistentStoreWithCompletion:nil];
+    [tableView deleteRowsAtIndexPaths:@[ indexPath ]
+                     withRowAnimation:UITableViewRowAnimationFade];
+  }
 }
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath
-*)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath
-*)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 
 #pragma mark - Navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {

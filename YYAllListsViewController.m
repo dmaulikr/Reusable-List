@@ -31,6 +31,23 @@
   // Dispose of any resources that can be recreated.
 }
 
+// init the mutablearray, add list item into them and sort by date
+- (void)classifyLists {
+    NSPredicate *hasRemindFilter =
+    [NSPredicate predicateWithFormat:@"remindTime == nil"];
+    [self.listsWithoutDate removeAllObjects];
+    self.listsWithoutDate = [[YYList MR_findAllSortedBy:@"dateCreated"
+                                          ascending:NO
+                                      withPredicate:hasRemindFilter] mutableCopy];
+    
+    NSPredicate *noRemindFilter =
+    [NSPredicate predicateWithFormat:@"remindTime != nil"];
+    [self.listsWithDate removeAllObjects];
+    self.listsWithDate = [[YYList MR_findAllSortedBy:@"remindTime"
+                                       ascending:NO
+                                   withPredicate:noRemindFilter] mutableCopy];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -41,26 +58,33 @@
  numberOfRowsInSection:(NSInteger)section {
   [self classifyLists];
   if (section == 0) {
-    return [_listsWithDate count];
+    return [self.listsWithDate count];
   } else {
-    return [_listsWithoutDate count];
+    return [self.listsWithoutDate count];
   }
 }
 
-- (UIView *)tableView:(UITableView *)tableView
-    viewForHeaderInSection:(NSInteger)section {
-  UITableViewCell *headerView =
-      [tableView dequeueReusableCellWithIdentifier:@"headerCell"];
-  return headerView;
-}
+//TODO:implement headerview programatically
+//- (UIView *)tableView:(UITableView *)tableView
+//    viewForHeaderInSection:(NSInteger)section {
+//    return nil;
+//}
+//
+//- (CGFloat)tableView:(UITableView *)tableView
+//    heightForHeaderInSection:(NSInteger)section {
+//  if (section == 0) {
+//    return 0;
+//  } else {
+//    return 22;
+//  }
+//}
 
-- (CGFloat)tableView:(UITableView *)tableView
-    heightForHeaderInSection:(NSInteger)section {
-  if (section == 0) {
-    return 0;
-  } else {
-    return 22;
-  }
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    if (section == 0) {
+        return nil;
+    }else {
+        return @"可用事项";
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
@@ -69,7 +93,7 @@
       [tableView dequeueReusableCellWithIdentifier:@"listCell"
                                       forIndexPath:indexPath];
   if (indexPath.section == 0) {
-    YYList *list = _listsWithDate[indexPath.row];
+    YYList *list = self.listsWithDate[indexPath.row];
     cell.textLabel.text = list.content;
     if (list.repeatType) {
       cell.detailTextLabel.text = [NSString
@@ -79,7 +103,7 @@
           [NSString stringWithFormat:@"%@", list.remindTime];
     }
   } else {
-    YYList *list = _listsWithoutDate[indexPath.row];
+    YYList *list = self.listsWithoutDate[indexPath.row];
     cell.textLabel.text = list.content;
     cell.detailTextLabel.text = @" ";
   }
@@ -97,10 +121,10 @@
      forRowAtIndexPath:(NSIndexPath *)indexPath {
   if (editingStyle == UITableViewCellEditingStyleDelete) {
     if (indexPath.section == 0) {
-      YYList *list = _listsWithDate[indexPath.row];
+      YYList *list = self.listsWithDate[indexPath.row];
       [list MR_deleteEntity];
     } else {
-      YYList *list = _listsWithoutDate[indexPath.row];
+      YYList *list = self.listsWithoutDate[indexPath.row];
       [list MR_deleteEntity];
     }
     [[NSManagedObjectContext MR_defaultContext]
@@ -116,23 +140,6 @@
   YYListViewController *controller =
       (YYListViewController *)navController.topViewController;
   controller.delegate = self;
-}
-
-// init the mutablearray, add list item into them and sort by date
-- (void)classifyLists {
-  NSPredicate *hasRemindFilter =
-      [NSPredicate predicateWithFormat:@"remindTime == nil"];
-  [_listsWithoutDate removeAllObjects];
-  _listsWithoutDate = [[YYList MR_findAllSortedBy:@"dateCreated"
-                                        ascending:NO
-                                    withPredicate:hasRemindFilter] mutableCopy];
-
-  NSPredicate *noRemindFilter =
-      [NSPredicate predicateWithFormat:@"remindTime != nil"];
-  [_listsWithDate removeAllObjects];
-  _listsWithDate = [[YYList MR_findAllSortedBy:@"remindTime"
-                                     ascending:NO
-                                 withPredicate:noRemindFilter] mutableCopy];
 }
 
 #pragma mark - YYListViewControllerDelegate

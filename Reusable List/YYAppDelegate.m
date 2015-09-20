@@ -1,5 +1,5 @@
 //
-//  AppDelegate.m
+//  YYAppDelegate.m
 //  Reusable List
 //
 //  Created by Molay on 15/9/4.

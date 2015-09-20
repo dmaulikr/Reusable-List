@@ -21,6 +21,14 @@
 
 @interface YYListViewController : UITableViewController
 
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *doneButton;
+@property (weak, nonatomic) IBOutlet UITextView *contentView;
+@property (weak, nonatomic) IBOutlet UISwitch *alertSwitch;
+@property (weak, nonatomic) IBOutlet UISwitch *endAlertSwitch;
+@property (weak, nonatomic) IBOutlet UILabel *alterTimeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *repeatTypeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *endDateLabel;
+
 @property (nonatomic,weak) id <YYListViewControllerDelegate> delegate;
 
 - (IBAction)cancel:(id)sender;

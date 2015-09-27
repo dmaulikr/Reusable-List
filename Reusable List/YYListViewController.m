@@ -11,14 +11,47 @@
 
 @interface YYListViewController ()
 
+//@property (nonatomic,copy) NSArray *pickerViewArray;
+//@property (nonatomic,strong) UIDatePicker *dateTimePicker;
+//@property (nonatomic,strong) UIDatePicker *datePicker;
+//@property (nonatomic,strong) UIPickerView *pickerView;
+
 @end
 
-@implementation YYListViewController
+@implementation YYListViewController {
+  NSArray *_pickerViewArray;
+  UIDatePicker *_dateTimePicker;
+  UIDatePicker *_datePicker;
+  UIPickerView *_pickerView;
+}
 
 - (void)viewDidLoad {
   [super viewDidLoad];
   self.tableView.estimatedRowHeight = 44;
   self.tableView.rowHeight = UITableViewAutomaticDimension;
+
+  _pickerViewArray = [[NSArray alloc]
+      initWithObjects:@"永不", @"每天", @"每周", @"每周工作日",
+                      @"每周末", @"每月", @"每年", nil];
+
+  _pickerView = [[UIPickerView alloc] init];
+  _pickerView.delegate = self;
+  _pickerView.dataSource = self;
+  _pickerView.tag = 2;
+
+  _dateTimePicker = [[UIDatePicker alloc] init];
+  _dateTimePicker.datePickerMode = UIDatePickerModeDateAndTime;
+  _dateTimePicker.tag = 1;
+  [_dateTimePicker addTarget:self
+                      action:@selector(dateChanged:)
+            forControlEvents:UIControlEventValueChanged];
+
+  _datePicker = [[UIDatePicker alloc] init];
+  _datePicker.datePickerMode = UIDatePickerModeDate;
+  _datePicker.tag = 3;
+  [_datePicker addTarget:self
+                  action:@selector(dateChanged:)
+        forControlEvents:UIControlEventValueChanged];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -76,6 +109,7 @@ forIndexPath:indexPath];
 }
 
 #pragma mark - UITextViewDelegate
+
 - (void)textViewDidChange:(UITextView *)textView;
 {
   [self.tableView beginUpdates];
@@ -91,6 +125,11 @@ forIndexPath:indexPath];
     return NO;
   }
   return YES;
+}
+
+#pragma mark - UIPickerViewDelegate
+
+- (void)dateChanged:(UIDatePicker *)datePicker {
 }
 
 @end

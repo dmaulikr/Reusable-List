@@ -14,22 +14,20 @@
 @protocol YYListViewControllerDelegate <NSObject>
 
 - (void)YYListViewControllerDidCancel:(YYListViewController *)controller;
-- (void)YYListViewController:(YYListViewController *)controller didFinishAddingList:(YYList *)list;
-- (void)YYListViewController:(YYListViewController *)controller didFinishEditingList:(YYList *)list;
+- (void)YYListViewController:(YYListViewController *)controller
+         didFinishAddingList:(YYList *)list;
+- (void)YYListViewController:(YYListViewController *)controller
+        didFinishEditingList:(YYList *)list;
 
 @end
 
-@interface YYListViewController : UITableViewController
+@interface YYListViewController : UITableViewController <UIPickerViewDelegate,UIPickerViewDataSource>
 
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *doneButton;
-@property (weak, nonatomic) IBOutlet UITextView *contentView;
-@property (weak, nonatomic) IBOutlet UISwitch *alertSwitch;
-@property (weak, nonatomic) IBOutlet UISwitch *endAlertSwitch;
-@property (weak, nonatomic) IBOutlet UILabel *alterTimeLabel;
-@property (weak, nonatomic) IBOutlet UILabel *repeatTypeLabel;
-@property (weak, nonatomic) IBOutlet UILabel *endDateLabel;
-
-@property (nonatomic,weak) id <YYListViewControllerDelegate> delegate;
+@property(weak, nonatomic) IBOutlet UIBarButtonItem *doneButton;
+@property(weak, nonatomic) IBOutlet UITextView *contentView;
+@property(weak, nonatomic) IBOutlet UISwitch *alertSwitch;
+@property(weak, nonatomic) IBOutlet UISwitch *endAlertSwitch;
+@property(nonatomic, weak) id<YYListViewControllerDelegate> delegate;
 
 - (IBAction)cancel:(id)sender;
 - (IBAction)done:(id)sender;

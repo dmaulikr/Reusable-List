@@ -15,12 +15,15 @@
 
 @interface YYAllListsViewController ()
 
-@property(nonatomic, strong) NSMutableArray *listsWithDate;
-@property(nonatomic, strong) NSMutableArray *listsWithoutDate;
+//@property(nonatomic, strong) NSMutableArray *listsWithDate;
+//@property(nonatomic, strong) NSMutableArray *listsWithoutDate;
 
 @end
 
-@implementation YYAllListsViewController
+@implementation YYAllListsViewController {
+    NSMutableArray *_listsWithDate;
+    NSMutableArray *_listsWithoutDate;
+}
 
 - (void)viewDidLoad {
   [super viewDidLoad];
@@ -35,15 +38,15 @@
 - (void)classifyLists {
     NSPredicate *hasRemindFilter =
     [NSPredicate predicateWithFormat:@"remindTime == nil"];
-    [self.listsWithoutDate removeAllObjects];
-    self.listsWithoutDate = [[YYList MR_findAllSortedBy:@"dateCreated"
+    [_listsWithoutDate removeAllObjects];
+    _listsWithoutDate = [[YYList MR_findAllSortedBy:@"dateCreated"
                                           ascending:NO
                                       withPredicate:hasRemindFilter] mutableCopy];
     
     NSPredicate *noRemindFilter =
     [NSPredicate predicateWithFormat:@"remindTime != nil"];
-    [self.listsWithDate removeAllObjects];
-    self.listsWithDate = [[YYList MR_findAllSortedBy:@"remindTime"
+    [_listsWithDate removeAllObjects];
+    _listsWithDate = [[YYList MR_findAllSortedBy:@"remindTime"
                                        ascending:NO
                                    withPredicate:noRemindFilter] mutableCopy];
 }
@@ -58,9 +61,9 @@
  numberOfRowsInSection:(NSInteger)section {
   [self classifyLists];
   if (section == 0) {
-    return [self.listsWithDate count];
+    return [_listsWithDate count];
   } else {
-    return [self.listsWithoutDate count];
+    return [_listsWithoutDate count];
   }
 }
 
@@ -93,7 +96,7 @@
       [tableView dequeueReusableCellWithIdentifier:@"listCell"
                                       forIndexPath:indexPath];
   if (indexPath.section == 0) {
-    YYList *list = self.listsWithDate[indexPath.row];
+    YYList *list = _listsWithDate[indexPath.row];
     cell.textLabel.text = list.content;
     if (list.repeatType) {
       cell.detailTextLabel.text = [NSString
@@ -103,7 +106,7 @@
           [NSString stringWithFormat:@"%@", list.remindTime];
     }
   } else {
-    YYList *list = self.listsWithoutDate[indexPath.row];
+    YYList *list = _listsWithoutDate[indexPath.row];
     cell.textLabel.text = list.content;
     cell.detailTextLabel.text = @" ";
   }
@@ -121,10 +124,10 @@
      forRowAtIndexPath:(NSIndexPath *)indexPath {
   if (editingStyle == UITableViewCellEditingStyleDelete) {
     if (indexPath.section == 0) {
-      YYList *list = self.listsWithDate[indexPath.row];
+      YYList *list = _listsWithDate[indexPath.row];
       [list MR_deleteEntity];
     } else {
-      YYList *list = self.listsWithoutDate[indexPath.row];
+      YYList *list = _listsWithoutDate[indexPath.row];
       [list MR_deleteEntity];
     }
     [[NSManagedObjectContext MR_defaultContext]

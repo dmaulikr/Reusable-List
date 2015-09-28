@@ -27,9 +27,16 @@
 @property(weak, nonatomic) IBOutlet UITextView *contentView;
 @property(weak, nonatomic) IBOutlet UISwitch *alertSwitch;
 @property(weak, nonatomic) IBOutlet UISwitch *endAlertSwitch;
+@property (weak, nonatomic) IBOutlet UILabel *alertTimeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *repeatLabel;
+@property (weak, nonatomic) IBOutlet UILabel *endTimeLabel;
+@property (weak, nonatomic) IBOutlet UIDatePicker *dateTimePicker;
+@property (weak, nonatomic) IBOutlet UIPickerView *pickerView;
+@property (weak, nonatomic) IBOutlet UIDatePicker *datePicker;
+
 @property(nonatomic, weak) id<YYListViewControllerDelegate> delegate;
 
-- (IBAction)cancel:(id)sender;
-- (IBAction)done:(id)sender;
+- (IBAction)setAlert:(id)sender;
+- (IBAction)setEndDate:(id)sender;
 
 @end

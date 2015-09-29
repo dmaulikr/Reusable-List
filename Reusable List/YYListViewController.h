@@ -12,13 +12,11 @@
 @class YYList;
 
 @protocol YYListViewControllerDelegate <NSObject>
-
 - (void)YYListViewControllerDidCancel:(YYListViewController *)controller;
 - (void)YYListViewController:(YYListViewController *)controller
          didFinishAddingList:(YYList *)list;
 - (void)YYListViewController:(YYListViewController *)controller
         didFinishEditingList:(YYList *)list;
-
 @end
 
 @interface YYListViewController : UITableViewController <UIPickerViewDelegate,UIPickerViewDataSource>
@@ -33,7 +31,6 @@
 @property (weak, nonatomic) IBOutlet UIDatePicker *dateTimePicker;
 @property (weak, nonatomic) IBOutlet UIPickerView *pickerView;
 @property (weak, nonatomic) IBOutlet UIDatePicker *datePicker;
-
 @property(nonatomic, weak) id<YYListViewControllerDelegate> delegate;
 
 - (IBAction)setAlert:(id)sender;

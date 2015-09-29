@@ -21,7 +21,7 @@
 - (BOOL)application:(UIApplication *)application
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   [MagicalRecord setupCoreDataStackWithStoreNamed:@"Reusabl List"];
-//  [YYList MR_truncateAll];
+//    [YYList MR_truncateAll];
   NSArray *lists = [YYList MR_findAll];
   if ([lists count] == 0) {
     YYList *list1 = [YYList MR_createEntity];
@@ -30,13 +30,14 @@
     list2.content = @"取钱";
     YYList *list3 = [YYList MR_createEntity];
     list3.content = @"粥";
-    list3.remindTime = [NSDate dateWithTimeIntervalSinceNow:60 * 60];
+    list3.remindTime = [NSDate dateWithTimeIntervalSinceNow:24 * 60 * 60];
     YYList *list4 = [YYList MR_createEntity];
     list4.content = @"剪指甲";
-    list4.remindTime = [NSDate dateWithTimeIntervalSinceNow:120 * 60];
+    list4.remindTime = [NSDate dateWithTimeIntervalSinceNow:48 * 60 * 60];
     YYList *list5 = [YYList MR_createEntity];
     list5.content = @"粥";
-    list5.remindTime = [NSDate dateWithTimeIntervalSinceNow:60 * 60];
+    list5.remindTime = [NSDate dateWithTimeIntervalSinceNow:72 * 60 * 60];
+    list5.repeatType = @"永不";
     YYList *list6 = [YYList MR_createEntity];
     list6.content = @"剪指甲";
     list6.remindTime = [NSDate dateWithTimeIntervalSinceNow:120 * 60];
@@ -93,7 +94,7 @@
   }
   [[NSManagedObjectContext MR_defaultContext]
       MR_saveToPersistentStoreWithCompletion:nil];
-//    NSLog(@"%lu",[lists count]);
+  //    NSLog(@"%lu",[lists count]);
   return YES;
 }
 

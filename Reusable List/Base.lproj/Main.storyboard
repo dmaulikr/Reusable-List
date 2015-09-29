@@ -91,7 +91,7 @@
                                                         <constraint firstAttribute="width" constant="400" id="MeD-uT-qmJ"/>
                                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="hO9-Lj-gOT"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
                                                     <variation key="default">
                                                         <mask key="constraints">
@@ -329,9 +329,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" tag="100" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="217" id="ZV9-AN-EST">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="251" width="600" height="217"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ZV9-AN-EST" id="cGK-Lu-S55">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="217"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="yKu-ht-lcf">
@@ -389,7 +390,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="evn-F1-yE3">
-                                        <rect key="frame" x="0.0" y="251" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="468" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="evn-F1-yE3" id="71e-5f-S5D">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
@@ -479,9 +480,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" tag="200" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="217" id="H5a-ff-FLy">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="512" width="600" height="217"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="H5a-ff-FLy" id="at0-Do-ADn">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="217"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <pickerView tag="100" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xXA-TB-lch">
@@ -532,7 +534,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="wDN-9P-V2S">
-                                        <rect key="frame" x="0.0" y="295" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="729" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wDN-9P-V2S" id="61R-Bu-F6s">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
@@ -621,7 +623,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="oHo-n9-aa6">
-                                        <rect key="frame" x="0.0" y="339" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="773" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="oHo-n9-aa6" id="TrS-xR-fjZ">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
@@ -711,9 +713,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" tag="300" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="217" id="13O-IE-XGD">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="817" width="600" height="217"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="13O-IE-XGD" id="EJZ-R0-BkJ">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="217"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="aJa-Hm-H3k">

@@ -15,14 +15,11 @@
 
 @interface YYAllListsViewController ()
 
-//@property(nonatomic, strong) NSMutableArray *listsWithDate;
-//@property(nonatomic, strong) NSMutableArray *listsWithoutDate;
-
 @end
 
 @implementation YYAllListsViewController {
-    NSMutableArray *_listsWithDate;
-    NSMutableArray *_listsWithoutDate;
+  NSMutableArray *_listsWithDate;
+  NSMutableArray *_listsWithoutDate;
 }
 
 - (void)viewDidLoad {
@@ -36,19 +33,57 @@
 
 // init the mutablearray, add list item into them and sort by date
 - (void)classifyLists {
-    NSPredicate *hasRemindFilter =
-    [NSPredicate predicateWithFormat:@"remindTime == nil"];
-    [_listsWithoutDate removeAllObjects];
-    _listsWithoutDate = [[YYList MR_findAllSortedBy:@"dateCreated"
-                                          ascending:NO
-                                      withPredicate:hasRemindFilter] mutableCopy];
-    
-    NSPredicate *noRemindFilter =
-    [NSPredicate predicateWithFormat:@"remindTime != nil"];
-    [_listsWithDate removeAllObjects];
-    _listsWithDate = [[YYList MR_findAllSortedBy:@"remindTime"
-                                       ascending:NO
-                                   withPredicate:noRemindFilter] mutableCopy];
+  NSPredicate *hasRemindFilter =
+      [NSPredicate predicateWithFormat:@"remindTime == nil"];
+  [_listsWithoutDate removeAllObjects];
+  _listsWithoutDate = [[YYList MR_findAllSortedBy:@"dateCreated"
+                                        ascending:NO
+                                    withPredicate:hasRemindFilter] mutableCopy];
+
+  NSPredicate *noRemindFilter =
+      [NSPredicate predicateWithFormat:@"remindTime != nil"];
+  [_listsWithDate removeAllObjects];
+  _listsWithDate = [[YYList MR_findAllSortedBy:@"remindTime"
+                                     ascending:NO
+                                 withPredicate:noRemindFilter] mutableCopy];
+}
+
+// TODO: test 2 digital month / today,tomorrow,dayaftertomorrow / repeatlabel
+- (NSString *)formatDetailLabel:(YYList *)list {
+  NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+  formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"zh_CN"];
+
+  NSUInteger units =
+      NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay;
+  NSDateComponents *comps1 =
+      [[NSCalendar currentCalendar] components:units fromDate:[NSDate date]];
+  NSDate *today = [[NSCalendar currentCalendar] dateFromComponents:comps1];
+  comps1.day += 1;
+  NSDate *tomorrow = [[NSCalendar currentCalendar] dateFromComponents:comps1];
+  comps1.day += 1;
+  NSDate *dayAfterTomorrow =
+      [[NSCalendar currentCalendar] dateFromComponents:comps1];
+  NSDateComponents *comps2 =
+      [[NSCalendar currentCalendar] components:units fromDate:list.remindTime];
+  NSDate *listDateWithDate =
+      [[NSCalendar currentCalendar] dateFromComponents:comps2];
+  NSDateComponents *comps3 = [[NSCalendar currentCalendar]
+      components:(NSCalendarUnitHour | NSCalendarUnitMinute)
+        fromDate:list.remindTime];
+  NSDate *listDateWithTime =
+      [[NSCalendar currentCalendar] dateFromComponents:comps3];
+
+  if ([listDateWithDate isEqualToDate:today]) {
+    [formatter setDateFormat:@"今天 aaHH:mm"];
+  } else if ([listDateWithDate isEqualToDate:tomorrow]) {
+    [formatter setDateFormat:@"明天 aaHH:mm"];
+  } else if ([listDateWithDate isEqualToDate:dayAfterTomorrow]) {
+    [formatter setDateFormat:@"后天 aaHH:mm"];
+  } else {
+    [formatter setDateFormat:@"yy/M/d  aaHH:mm"];
+    return [formatter stringFromDate:list.remindTime];
+  }
+  return [formatter stringFromDate:listDateWithTime];
 }
 
 #pragma mark - Table view data source
@@ -67,7 +102,7 @@
   }
 }
 
-//TODO:implement headerview programatically
+// TODO:implement headerview programatically
 //- (UIView *)tableView:(UITableView *)tableView
 //    viewForHeaderInSection:(NSInteger)section {
 //    return nil;
@@ -82,12 +117,13 @@
 //  }
 //}
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    if (section == 0) {
-        return nil;
-    }else {
-        return @"可用事项";
-    }
+- (NSString *)tableView:(UITableView *)tableView
+titleForHeaderInSection:(NSInteger)section {
+  if (section == 0) {
+    return nil;
+  } else {
+    return @"可用事项";
+  }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
@@ -98,13 +134,15 @@
   if (indexPath.section == 0) {
     YYList *list = _listsWithDate[indexPath.row];
     cell.textLabel.text = list.content;
+
+    NSString *remindTimeStr = [self formatDetailLabel:list];
     if (list.repeatType) {
-      cell.detailTextLabel.text = [NSString
-          stringWithFormat:@"%@ %@", list.remindTime, list.repeatType];
-    } else {
       cell.detailTextLabel.text =
-          [NSString stringWithFormat:@"%@", list.remindTime];
+          [NSString stringWithFormat:@"%@ %@", remindTimeStr, list.repeatType];
+    } else {
+      cell.detailTextLabel.text = [NSString stringWithString:remindTimeStr];
     }
+
   } else {
     YYList *list = _listsWithoutDate[indexPath.row];
     cell.textLabel.text = list.content;

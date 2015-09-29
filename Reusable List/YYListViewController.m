@@ -26,6 +26,7 @@
   // make textview autoresizing according to it's content
   self.tableView.estimatedRowHeight = 44;
   self.tableView.rowHeight = UITableViewAutomaticDimension;
+  self.contentView.textContainerInset = UIEdgeInsetsMake(12, 12, 0, 12);
 
   // init private variables
   _pickerViewArray = [[NSArray alloc]
@@ -43,7 +44,20 @@
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
   [self.contentView becomeFirstResponder];
+  [[NSNotificationCenter defaultCenter]
+      addObserver:self
+         selector:@selector(keyboardWillShow)
+             name:UIKeyboardWillShowNotification
+           object:nil];
   self.doneButton.enabled = (self.contentView.text.length > 0);
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+  [super viewWillDisappear:animated];
+  [[NSNotificationCenter defaultCenter]
+      removeObserver:self
+                name:UIKeyboardWillShowNotification
+              object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -59,19 +73,34 @@
 }
 
 - (IBAction)setAlert:(id)sender {
+  [self.contentView resignFirstResponder];
   if (self.alertSwitch.on) {
     self.alertTimeLabel.textColor = [UIColor blackColor];
   } else {
     self.alertTimeLabel.textColor = [UIColor lightGrayColor];
+    self.alertTimeLabel.text = @"无";
+    self.repeatLabel.textColor = [UIColor lightGrayColor];
+    self.repeatLabel.text = @"永不";
+    [self hidePicker:100];
+    [self hidePicker:200];
   }
 }
 
 - (IBAction)setEndDate:(id)sender {
+  [self.contentView resignFirstResponder];
   if (self.endAlertSwitch.on) {
     self.endTimeLabel.textColor = [UIColor blackColor];
   } else {
     self.endTimeLabel.textColor = [UIColor lightGrayColor];
+    self.endTimeLabel.text = @"无";
+    [self hidePicker:300];
   }
+}
+
+- (void)keyboardWillShow {
+  [self hidePicker:100];
+  [self hidePicker:200];
+  [self hidePicker:300];
 }
 
 #pragma mark - Table view data source
@@ -123,7 +152,7 @@
         [self showPicker:300];
       }
     }
-  } else {
+  } else if (indexPath.section == 0) {
     [self.contentView becomeFirstResponder];
   }
 
@@ -151,22 +180,35 @@
 
 #pragma mark - UIPickerViewDelegate
 
-- (IBAction)alertTimeChanged:(id)sender {
+- (IBAction)alertTimeChanged:(UIDatePicker *)sender {
+  NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+  [formatter setDateFormat:@"yy/MM/d EEE  aaHH:mm"];
+  formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"zh_CN"];
+  self.alertTimeLabel.text = [formatter stringFromDate:sender.date];
+  self.repeatLabel.textColor = [UIColor blackColor];
 }
 
-- (IBAction)endDateChanged:(id)sender {
+- (IBAction)endDateChanged:(UIDatePicker *)sender {
+  NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+  [formatter setDateStyle:NSDateFormatterLongStyle];
+  [formatter setTimeStyle:NSDateFormatterNoStyle];
+  formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"zh_CN"];
+  self.endTimeLabel.text = [formatter stringFromDate:sender.date];
 }
 
 - (void)showPicker:(NSInteger)tag {
+  NSDate *currentDate = [NSDate date];
   switch (tag) {
   case 100:
     dateTimePickerIsShowing = YES;
+    self.dateTimePicker.minimumDate = currentDate;
     break;
   case 200:
     pickerViewIsShowing = YES;
     break;
   case 300:
     datePickerIsShowing = YES;
+    self.datePicker.minimumDate = currentDate;
     break;
   default:
     break;
@@ -211,6 +253,8 @@ numberOfRowsInComponent:(NSInteger)component {
 - (void)pickerView:(UIPickerView *)pickerView
       didSelectRow:(NSInteger)row
        inComponent:(NSInteger)component {
+  self.repeatLabel.text = [_pickerViewArray objectAtIndex:row];
+  self.repeatLabel.textColor = [UIColor blackColor];
 }
 
 @end

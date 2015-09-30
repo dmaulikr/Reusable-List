@@ -13,11 +13,11 @@
 		603002F81B992C9400DB2C4C /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 603002F61B992C9400DB2C4C /* LaunchScreen.xib */; };
 		603003041B992C9400DB2C4C /* Reusable_ListTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 603003031B992C9400DB2C4C /* Reusable_ListTests.m */; };
 		603003181B99C1C100DB2C4C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 603003161B99C1C100DB2C4C /* Main.storyboard */; };
-		6030032A1B99D07100DB2C4C /* YYAllListsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 603003291B99D07100DB2C4C /* YYAllListsViewController.m */; };
 		6030032D1B99D08200DB2C4C /* YYListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6030032C1B99D08200DB2C4C /* YYListViewController.m */; };
 		603003301B99D09100DB2C4C /* YYSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6030032F1B99D09100DB2C4C /* YYSettingViewController.m */; };
 		603003451B9E849900DB2C4C /* Reusable List.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 603003431B9E849900DB2C4C /* Reusable List.xcdatamodeld */; };
 		603003481B9EA58B00DB2C4C /* YYList.m in Sources */ = {isa = PBXBuildFile; fileRef = 603003471B9EA58B00DB2C4C /* YYList.m */; };
+		60EF5A271BBBBE7700EEFCB0 /* YYAllListsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60EF5A261BBBBE7700EEFCB0 /* YYAllListsViewController.m */; settings = {ASSET_TAGS = (); }; };
 		7320CB13B0467C503120078E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 307146F7928DDCC80F9D5FC1 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -44,8 +44,6 @@
 		603003021B992C9400DB2C4C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		603003031B992C9400DB2C4C /* Reusable_ListTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Reusable_ListTests.m; sourceTree = "<group>"; };
 		603003171B99C1C100DB2C4C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "Reusable List/Base.lproj/Main.storyboard"; sourceTree = "<group>"; };
-		603003281B99D07100DB2C4C /* YYAllListsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YYAllListsViewController.h; path = ../YYAllListsViewController.h; sourceTree = "<group>"; };
-		603003291B99D07100DB2C4C /* YYAllListsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YYAllListsViewController.m; path = ../YYAllListsViewController.m; sourceTree = "<group>"; };
 		6030032B1B99D08200DB2C4C /* YYListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYListViewController.h; sourceTree = "<group>"; };
 		6030032C1B99D08200DB2C4C /* YYListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYListViewController.m; sourceTree = "<group>"; };
 		6030032E1B99D09100DB2C4C /* YYSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYSettingViewController.h; sourceTree = "<group>"; };
@@ -53,6 +51,8 @@
 		603003441B9E849900DB2C4C /* Reusable List.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Reusable List.xcdatamodel"; sourceTree = "<group>"; };
 		603003461B9EA58B00DB2C4C /* YYList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYList.h; sourceTree = "<group>"; };
 		603003471B9EA58B00DB2C4C /* YYList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYList.m; sourceTree = "<group>"; };
+		60EF5A251BBBBE6D00EEFCB0 /* YYAllListsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYAllListsViewController.h; sourceTree = "<group>"; };
+		60EF5A261BBBBE7700EEFCB0 /* YYAllListsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYAllListsViewController.m; sourceTree = "<group>"; };
 		E140AD5B272A51982BB6BD19 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		EE0FF61C1C7EF85C36DFC9F2 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -146,8 +146,8 @@
 		603003341B99D0A600DB2C4C /* AllLists */ = {
 			isa = PBXGroup;
 			children = (
-				603003281B99D07100DB2C4C /* YYAllListsViewController.h */,
-				603003291B99D07100DB2C4C /* YYAllListsViewController.m */,
+				60EF5A251BBBBE6D00EEFCB0 /* YYAllListsViewController.h */,
+				60EF5A261BBBBE7700EEFCB0 /* YYAllListsViewController.m */,
 			);
 			name = AllLists;
 			sourceTree = "<group>";
@@ -357,8 +357,8 @@
 				603003451B9E849900DB2C4C /* Reusable List.xcdatamodeld in Sources */,
 				603003301B99D09100DB2C4C /* YYSettingViewController.m in Sources */,
 				603002EA1B992C9400DB2C4C /* main.m in Sources */,
-				6030032A1B99D07100DB2C4C /* YYAllListsViewController.m in Sources */,
 				603003481B9EA58B00DB2C4C /* YYList.m in Sources */,
+				60EF5A271BBBBE7700EEFCB0 /* YYAllListsViewController.m in Sources */,
 				6030032D1B99D08200DB2C4C /* YYListViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

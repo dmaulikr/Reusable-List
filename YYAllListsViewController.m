@@ -48,7 +48,6 @@
                                  withPredicate:noRemindFilter] mutableCopy];
 }
 
-// TODO: test 2 digital month / today,tomorrow,dayaftertomorrow / repeatlabel
 - (NSString *)formatDetailLabel:(YYList *)list {
   NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
   formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"zh_CN"];

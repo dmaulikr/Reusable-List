@@ -343,7 +343,6 @@
                                                     <date key="date" timeIntervalSinceReferenceDate="465036465.88716298">
                                                         <!--2015-09-27 08:47:45 +0000-->
                                                     </date>
-                                                    <locale key="locale" localeIdentifier="zh_CN"/>
                                                     <variation key="default">
                                                         <mask key="constraints">
                                                             <exclude reference="i6n-ni-l9F"/>
@@ -727,7 +726,6 @@
                                                     <date key="date" timeIntervalSinceReferenceDate="465036499.77016199">
                                                         <!--2015-09-27 08:48:19 +0000-->
                                                     </date>
-                                                    <locale key="locale" localeIdentifier="zh_CN"/>
                                                     <variation key="default">
                                                         <mask key="constraints">
                                                             <exclude reference="MlC-F1-WM0"/>

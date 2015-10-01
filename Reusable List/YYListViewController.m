@@ -8,13 +8,15 @@
 
 #import "YYListViewController.h"
 #import "YYList.h"
+#import <MagicalRecord/MagicalRecord.h>
 
 @interface YYListViewController ()
 
 @end
 
 @implementation YYListViewController {
-  NSArray *_pickerViewArray;
+  NSArray *_repeatTypeArray;
+  NSArray *_pickerArray;
   BOOL datePickerIsShowing;
   BOOL dateTimePickerIsShowing;
   BOOL pickerViewIsShowing;
@@ -28,10 +30,13 @@
   self.tableView.rowHeight = UITableViewAutomaticDimension;
   self.contentView.textContainerInset = UIEdgeInsetsMake(12, 12, 0, 12);
 
+  self.endAlertSwitch.enabled = NO;
+
   // init private variables
-  _pickerViewArray = [[NSArray alloc]
+  _repeatTypeArray = [[NSArray alloc]
       initWithObjects:@"永不", @"每天", @"每周", @"每周工作日",
                       @"每周末", @"每月", @"每年", nil];
+  _pickerArray = [[NSArray alloc] initWithObjects:@100, @200, @300, nil];
   datePickerIsShowing = NO;
   dateTimePickerIsShowing = NO;
   pickerViewIsShowing = NO;
@@ -70,6 +75,7 @@
 }
 
 - (IBAction)done:(id)sender {
+    
 }
 
 - (IBAction)setAlert:(id)sender {
@@ -81,8 +87,13 @@
     self.alertTimeLabel.text = @"无";
     self.repeatLabel.textColor = [UIColor lightGrayColor];
     self.repeatLabel.text = @"永不";
+    self.endTimeLabel.textColor = [UIColor lightGrayColor];
+    self.endTimeLabel.text = @"无";
     [self hidePicker:100];
     [self hidePicker:200];
+    [self hidePicker:300];
+    self.endAlertSwitch.on = NO;
+    self.endAlertSwitch.enabled = NO;
   }
 }
 
@@ -103,6 +114,16 @@
   [self hidePicker:300];
 }
 
+- (void)hideOtherPickerAndShowPicker:(NSInteger)tag {
+  for (NSNumber *picker in _pickerArray) {
+    if ([picker isEqualToNumber:[NSNumber numberWithInteger:tag]]) {
+      [self showPicker:[picker integerValue]];
+    } else {
+      [self hidePicker:[picker integerValue]];
+    }
+  }
+}
+
 #pragma mark - Table view data source
 
 - (CGFloat)tableView:(UITableView *)tableView
@@ -120,7 +141,6 @@
   return height;
 }
 
-// TODO: refine
 - (void)tableView:(UITableView *)tableView
     didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   if (indexPath.section == 1) {
@@ -130,26 +150,20 @@
       if (dateTimePickerIsShowing) {
         [self hidePicker:100];
       } else {
-        [self hidePicker:200];
-        [self hidePicker:300];
-        [self showPicker:100];
+        [self hideOtherPickerAndShowPicker:100];
       }
-    } else if (indexPath.row == 3 &&
-               ![self.alertTimeLabel.text isEqualToString:@"永不"]) {
+    } else if (indexPath.row == 3) {
       if (pickerViewIsShowing) {
         [self hidePicker:200];
-      } else {
-        [self hidePicker:100];
-        [self hidePicker:300];
-        [self showPicker:200];
+      } else if (self.alertSwitch.on &&
+                 ![self.alertTimeLabel.text isEqualToString:@"无"]) {
+        [self hideOtherPickerAndShowPicker:200];
       }
     } else if (indexPath.row == 6 && self.endAlertSwitch.on) {
       if (datePickerIsShowing) {
         [self hidePicker:300];
       } else {
-        [self hidePicker:100];
-        [self hidePicker:200];
-        [self showPicker:300];
+        [self hideOtherPickerAndShowPicker:300];
       }
     }
   } else if (indexPath.section == 0) {
@@ -183,7 +197,7 @@
 - (IBAction)alertTimeChanged:(UIDatePicker *)sender {
   NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
   [formatter setDateFormat:@"yy/MM/d EEE  aaHH:mm"];
-  formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"zh_CN"];
+    formatter.locale = [NSLocale autoupdatingCurrentLocale];
   self.alertTimeLabel.text = [formatter stringFromDate:sender.date];
   self.repeatLabel.textColor = [UIColor blackColor];
 }
@@ -192,7 +206,7 @@
   NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
   [formatter setDateStyle:NSDateFormatterLongStyle];
   [formatter setTimeStyle:NSDateFormatterNoStyle];
-  formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"zh_CN"];
+    formatter.locale = [NSLocale autoupdatingCurrentLocale];
   self.endTimeLabel.text = [formatter stringFromDate:sender.date];
 }
 
@@ -241,20 +255,28 @@
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView
 numberOfRowsInComponent:(NSInteger)component {
-  return [_pickerViewArray count];
+  return [_repeatTypeArray count];
 }
 
 - (NSString *)pickerView:(UIPickerView *)pickerView
              titleForRow:(NSInteger)row
             forComponent:(NSInteger)component {
-  return [_pickerViewArray objectAtIndex:row];
+  return [_repeatTypeArray objectAtIndex:row];
 }
 
 - (void)pickerView:(UIPickerView *)pickerView
       didSelectRow:(NSInteger)row
        inComponent:(NSInteger)component {
-  self.repeatLabel.text = [_pickerViewArray objectAtIndex:row];
-  self.repeatLabel.textColor = [UIColor blackColor];
+  self.repeatLabel.text = [_repeatTypeArray objectAtIndex:row];
+  if ([self.repeatLabel.text isEqualToString:@"永不"]) {
+    self.endAlertSwitch.enabled = NO;
+    self.endAlertSwitch.on = NO;
+    self.endTimeLabel.textColor = [UIColor lightGrayColor];
+    self.endTimeLabel.text = @"无";
+  } else {
+    self.endAlertSwitch.enabled = YES;
+    self.repeatLabel.textColor = [UIColor blackColor];
+  }
 }
 
 @end

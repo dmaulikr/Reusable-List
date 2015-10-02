@@ -11,7 +11,7 @@
 #import "YYSettingViewController.h"
 #import <MagicalRecord/MagicalRecord.h>
 
-@import CoreData;
+//@import CoreData;
 
 @interface YYAllListsViewController ()
 
@@ -24,6 +24,11 @@
 
 - (void)viewDidLoad {
   [super viewDidLoad];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -44,7 +49,7 @@
       [NSPredicate predicateWithFormat:@"remindTime != nil"];
   [_listsWithDate removeAllObjects];
   _listsWithDate = [[YYList MR_findAllSortedBy:@"remindTime"
-                                     ascending:NO
+                                     ascending:YES
                                  withPredicate:noRemindFilter] mutableCopy];
 }
 
@@ -173,23 +178,59 @@ titleForHeaderInSection:(NSInteger)section {
 
 #pragma mark - Navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-  UINavigationController *navController = segue.destinationViewController;
-  YYListViewController *controller =
-      (YYListViewController *)navController.topViewController;
-  controller.delegate = self;
+//  if ([segue.identifier isEqualToString:@"AddList"]) {
+//    UINavigationController *navController = segue.destinationViewController;
+//    YYListViewController *controller =
+//        (YYListViewController *)navController.topViewController;
+//    controller.delegate = self;
+//  } else if ([segue.identifier isEqualToString:@"EditList"]) {
+//    UINavigationController *navController = segue.destinationViewController;
+//    YYListViewController *controller =
+//        (YYListViewController *)navController.topViewController;
+//    controller.delegate = self;
+//    NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
+//    if (indexPath.section == 0) {
+//      controller.itemToEdit = _listsWithDate[indexPath.row];
+//    } else {
+//      controller.itemToEdit = _listsWithoutDate[indexPath.row];
+//    }
+//  }
+    
+    if ([segue.identifier isEqualToString:@"EditList"]) {
+        UINavigationController *navController = segue.destinationViewController;
+        YYListViewController *controller =
+        (YYListViewController *)navController.topViewController;
+        NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
+        if (indexPath.section == 0) {
+            controller.itemToEdit = _listsWithDate[indexPath.row];
+        } else {
+            controller.itemToEdit = _listsWithoutDate[indexPath.row];
+        }
+    }
 }
 
-#pragma mark - YYListViewControllerDelegate
-- (void)YYListViewControllerDidCancel:(YYListViewController *)controller {
-  [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)YYListViewController:(YYListViewController *)controller
-         didFinishAddingList:(YYList *)list {
-}
-
-- (void)YYListViewController:(YYListViewController *)controller
-        didFinishEditingList:(YYList *)list {
-}
+//#pragma mark - YYListViewControllerDelegate
+//- (void)YYListViewControllerDidCancel:(YYListViewController *)controller {
+//  [self dismissViewControllerAnimated:YES
+//                           completion:^{
+//                               [self.tableView reloadData];
+//                           }];
+//}
+//
+//- (void)YYListViewController:(YYListViewController *)controller
+//         didFinishAddingList:(YYList *)list {
+//    [[NSManagedObjectContext MR_defaultContext]
+//     MR_saveToPersistentStoreWithCompletion:nil];
+//    [self dismissViewControllerAnimated:YES completion:nil];
+//    [self.tableView reloadData];
+//}
+//
+//- (void)YYListViewController:(YYListViewController *)controller
+//        didFinishEditingList:(YYList *)list {
+//    [[NSManagedObjectContext MR_defaultContext]
+//     MR_saveToPersistentStoreWithCompletion:nil];
+//    [self dismissViewControllerAnimated:YES completion:nil];
+//    [self.tableView reloadData];
+//}
 
 @end

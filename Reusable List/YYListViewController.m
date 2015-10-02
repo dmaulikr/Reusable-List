@@ -20,6 +20,7 @@
   BOOL datePickerIsShowing;
   BOOL dateTimePickerIsShowing;
   BOOL pickerViewIsShowing;
+  NSDateFormatter *formatter;
 }
 
 - (void)viewDidLoad {
@@ -30,25 +31,66 @@
   self.tableView.rowHeight = UITableViewAutomaticDimension;
   self.contentView.textContainerInset = UIEdgeInsetsMake(12, 12, 0, 12);
 
-  self.endAlertSwitch.enabled = NO;
-
   // init private variables
-  _repeatTypeArray = [[NSArray alloc]
-      initWithObjects:@"永不", @"每天", @"每周", @"每周工作日",
-                      @"每周末", @"每月", @"每年", nil];
-  _pickerArray = [[NSArray alloc] initWithObjects:@100, @200, @300, nil];
+  _repeatTypeArray = @[
+    @"永不",
+    @"每天",
+    @"每周",
+    @"每周工作日",
+    @"每周末",
+    @"每月",
+    @"每年"
+  ];
+  _pickerArray = @[ @100, @200, @300 ];
   datePickerIsShowing = NO;
   dateTimePickerIsShowing = NO;
   pickerViewIsShowing = NO;
 
+  formatter = [[NSDateFormatter alloc] init];
+  formatter.locale = [NSLocale autoupdatingCurrentLocale];
+
   // init pickerView
   self.pickerView.delegate = self;
   self.pickerView.dataSource = self;
+
+  // configure the view
+  if (self.itemToEdit != nil) {
+    self.contentView.text = self.itemToEdit.content;
+    self.alertSwitch.on = [self.itemToEdit.hasAlert boolValue];
+    if (self.alertSwitch.on) {
+      self.alertTimeLabel.textColor = [UIColor blackColor];
+    }
+    if (self.itemToEdit.remindTime) {
+      [self configDateFormatterForDateTimeLabel];
+      self.alertTimeLabel.text =
+          [formatter stringFromDate:self.itemToEdit.remindTime];
+      self.repeatLabel.textColor = [UIColor blackColor];
+    } else {
+      self.alertTimeLabel.text = @"无";
+    }
+    self.repeatLabel.text = self.itemToEdit.repeatType;
+    if ([self.itemToEdit.repeatType isEqualToString:@"永不"]) {
+      self.endAlertSwitch.enabled = NO;
+    }
+    self.endAlertSwitch.on = [self.itemToEdit.hasEndDate boolValue];
+    if (self.endAlertSwitch.on) {
+      self.endTimeLabel.textColor = [UIColor blackColor];
+    }
+    if (self.itemToEdit.endDate) {
+      [self configDateFormatterForDateLabel];
+      self.endTimeLabel.text =
+          [formatter stringFromDate:self.itemToEdit.endDate];
+    } else {
+      self.endTimeLabel.text = @"无";
+    }
+  } else {
+    [self.contentView becomeFirstResponder];
+    self.endAlertSwitch.enabled = NO;
+  }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
-  [self.contentView becomeFirstResponder];
   [[NSNotificationCenter defaultCenter]
       addObserver:self
          selector:@selector(keyboardWillShow)
@@ -71,11 +113,36 @@
 }
 
 - (IBAction)cancel:(id)sender {
-  [self.delegate YYListViewControllerDidCancel:self];
+  [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (IBAction)done:(id)sender {
-    
+  if (self.itemToEdit != nil) {
+    self.itemToEdit.content = self.contentView.text;
+    self.itemToEdit.hasAlert = [NSNumber numberWithBool:self.alertSwitch.on];
+    [self configDateFormatterForDateTimeLabel];
+    self.itemToEdit.remindTime =
+        [formatter dateFromString:self.alertTimeLabel.text];
+    self.itemToEdit.repeatType = self.repeatLabel.text;
+    self.itemToEdit.hasEndDate =
+        [NSNumber numberWithBool:self.endAlertSwitch.on];
+    [self configDateFormatterForDateLabel];
+    self.itemToEdit.endDate = [formatter dateFromString:self.endTimeLabel.text];
+  } else {
+    YYList *list = [YYList MR_createEntity];
+    list.content = self.contentView.text;
+    list.hasAlert = [NSNumber numberWithBool:self.alertSwitch.on];
+    [self configDateFormatterForDateTimeLabel];
+    list.remindTime = [formatter dateFromString:self.alertTimeLabel.text];
+    list.repeatType = self.repeatLabel.text;
+    list.hasEndDate = [NSNumber numberWithBool:self.endAlertSwitch.on];
+    [self configDateFormatterForDateLabel];
+    list.endDate = [formatter dateFromString:self.endTimeLabel.text];
+    ;
+  }
+  [[NSManagedObjectContext MR_defaultContext]
+      MR_saveToPersistentStoreWithCompletion:nil];
+  [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (IBAction)setAlert:(id)sender {
@@ -122,6 +189,15 @@
       [self hidePicker:[picker integerValue]];
     }
   }
+}
+
+- (void)configDateFormatterForDateTimeLabel {
+  [formatter setDateFormat:@"yy/MM/d EEE  aaHH:mm"];
+}
+
+- (void)configDateFormatterForDateLabel {
+  [formatter setDateStyle:NSDateFormatterLongStyle];
+  [formatter setTimeStyle:NSDateFormatterNoStyle];
 }
 
 #pragma mark - Table view data source
@@ -195,18 +271,13 @@
 #pragma mark - UIPickerViewDelegate
 
 - (IBAction)alertTimeChanged:(UIDatePicker *)sender {
-  NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-  [formatter setDateFormat:@"yy/MM/d EEE  aaHH:mm"];
-    formatter.locale = [NSLocale autoupdatingCurrentLocale];
+  [self configDateFormatterForDateTimeLabel];
   self.alertTimeLabel.text = [formatter stringFromDate:sender.date];
   self.repeatLabel.textColor = [UIColor blackColor];
 }
 
 - (IBAction)endDateChanged:(UIDatePicker *)sender {
-  NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-  [formatter setDateStyle:NSDateFormatterLongStyle];
-  [formatter setTimeStyle:NSDateFormatterNoStyle];
-    formatter.locale = [NSLocale autoupdatingCurrentLocale];
+  [self configDateFormatterForDateLabel];
   self.endTimeLabel.text = [formatter stringFromDate:sender.date];
 }
 

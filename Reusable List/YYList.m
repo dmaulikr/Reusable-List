@@ -8,7 +8,6 @@
 
 #import "YYList.h"
 
-
 @implementation YYList
 
 @dynamic itemKey;
@@ -17,13 +16,15 @@
 @dynamic repeatType;
 @dynamic endDate;
 @dynamic dateCreated;
+@dynamic hasAlert;
+@dynamic hasEndDate;
 
 - (void)awakeFromInsert {
-    [super awakeFromInsert];
-    self.dateCreated = [NSDate date];
-    NSUUID *uuid = [[NSUUID alloc]init];
-    NSString *key = [uuid UUIDString];
-    self.itemKey = key;
+  [super awakeFromInsert];
+  self.dateCreated = [NSDate date];
+  NSUUID *uuid = [[NSUUID alloc] init];
+  NSString *key = [uuid UUIDString];
+  self.itemKey = key;
 }
 
 @end

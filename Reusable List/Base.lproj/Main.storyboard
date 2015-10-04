@@ -823,7 +823,7 @@
                                 <action selector="cancel:" destination="GKS-VF-QHe" id="84D-hg-SCb"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="qhm-aK-8wz">
+                        <barButtonItem key="rightBarButtonItem" enabled="NO" systemItem="done" id="qhm-aK-8wz">
                             <connections>
                                 <action selector="done:" destination="GKS-VF-QHe" id="bjA-DE-35x"/>
                             </connections>

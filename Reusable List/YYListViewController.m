@@ -9,6 +9,7 @@
 #import "YYListViewController.h"
 #import "YYList.h"
 #import <MagicalRecord/MagicalRecord.h>
+#import <ChameleonFramework/Chameleon.h>
 
 @interface YYListViewController ()
 
@@ -55,6 +56,7 @@
 
   // configure the view
   if (self.itemToEdit != nil) {
+    self.doneButton.enabled = YES;
     self.contentView.text = self.itemToEdit.content;
     self.alertSwitch.on = [self.itemToEdit.hasAlert boolValue];
     if (self.alertSwitch.on) {
@@ -96,7 +98,6 @@
          selector:@selector(keyboardWillShow)
              name:UIKeyboardWillShowNotification
            object:nil];
-  self.doneButton.enabled = (self.contentView.text.length > 0);
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -143,6 +144,7 @@
   [[NSManagedObjectContext MR_defaultContext]
       MR_saveToPersistentStoreWithCompletion:nil];
   [self dismissViewControllerAnimated:YES completion:nil];
+//    [self.delegate YYListViewControllerDismiss:self];
 }
 
 - (IBAction)setAlert:(id)sender {
@@ -198,6 +200,45 @@
 - (void)configDateFormatterForDateLabel {
   [formatter setDateStyle:NSDateFormatterLongStyle];
   [formatter setTimeStyle:NSDateFormatterNoStyle];
+}
+
+- (void)configLabelAndSwitch {
+  if (self.alertSwitch.on) {
+    self.alertTimeLabel.textColor = [UIColor blackColor];
+    if (self.alertTimeLabel.text) {
+      self.repeatLabel.textColor = [UIColor blackColor];
+      if (![self.repeatLabel.text isEqualToString:@"永不"]) {
+        self.endAlertSwitch.enabled = YES;
+        if (self.endAlertSwitch.on) {
+          self.endTimeLabel.textColor = [UIColor blackColor];
+        } else {
+          self.endTimeLabel.textColor = [UIColor lightGrayColor];
+          self.endTimeLabel.text = @"无";
+        }
+      } else {
+        self.endAlertSwitch.enabled = NO;
+        self.endAlertSwitch.on = NO;
+        self.endTimeLabel.textColor = [UIColor lightGrayColor];
+        self.endTimeLabel.text = @"无";
+      }
+    } else {
+      self.repeatLabel.textColor = [UIColor lightGrayColor];
+      self.repeatLabel.text = @"永不";
+      self.endAlertSwitch.enabled = NO;
+      self.endAlertSwitch.on = NO;
+      self.endTimeLabel.textColor = [UIColor lightGrayColor];
+      self.endTimeLabel.text = @"无";
+    }
+  } else {
+    self.alertTimeLabel.textColor = [UIColor lightGrayColor];
+    self.alertTimeLabel.text = @"无";
+    self.repeatLabel.textColor = [UIColor lightGrayColor];
+    self.repeatLabel.text = @"永不";
+    self.endAlertSwitch.enabled = NO;
+    self.endAlertSwitch.on = NO;
+    self.endTimeLabel.textColor = [UIColor lightGrayColor];
+    self.endTimeLabel.text = @"无";
+  }
 }
 
 #pragma mark - Table view data source
@@ -260,7 +301,7 @@
 - (BOOL)textView:(UITextView *)textView
     shouldChangeTextInRange:(NSRange)range
             replacementText:(NSString *)text {
-  self.doneButton.enabled = (self.contentView.text.length > 0);
+  self.doneButton.enabled = (text.length > 0);
   if ([text isEqualToString:@"\n"]) {
     [textView resignFirstResponder];
     return NO;

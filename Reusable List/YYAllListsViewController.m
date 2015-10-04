@@ -10,6 +10,8 @@
 #import "YYList.h"
 #import "YYSettingViewController.h"
 #import <MagicalRecord/MagicalRecord.h>
+#import <ChameleonFramework/Chameleon.h>
+#import "Masonry.h"
 
 //@import CoreData;
 
@@ -27,8 +29,11 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    [self.tableView reloadData];
+  [super viewWillAppear:animated];
+  [self.tableView reloadData];
+  NSIndexSet *indexSet = [[NSIndexSet alloc] initWithIndex:1];
+  [self.tableView reloadSections:indexSet
+                withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -87,6 +92,36 @@
   return [formatter stringFromDate:listDateWithTime];
 }
 
+- (void)clearAllListsWithoutDate {
+  UIAlertController *alertController = [UIAlertController
+      alertControllerWithTitle:@"删除所有可用事项"
+                       message:@"确" @"定"
+                       @"要删除所有可用事项吗？该操作不可恢复"
+                preferredStyle:UIAlertControllerStyleAlert];
+  UIAlertAction *cancel =
+      [UIAlertAction actionWithTitle:@"取消"
+                               style:UIAlertActionStyleCancel
+                             handler:nil];
+  UIAlertAction *delete = [UIAlertAction
+      actionWithTitle:@"删除"
+                style:UIAlertActionStyleDestructive
+              handler:^(UIAlertAction *_Nonnull action) {
+                for (YYList *list in _listsWithoutDate) {
+                  [list MR_deleteEntity];
+                }
+                [[NSManagedObjectContext MR_defaultContext]
+                    MR_saveToPersistentStoreWithCompletion:nil];
+//                [self.tableView reloadData];
+                NSIndexSet *indexSet = [[NSIndexSet alloc] initWithIndex:1];
+                [self.tableView
+                      reloadSections:indexSet
+                    withRowAnimation:UITableViewRowAnimationAutomatic];
+              }];
+  [alertController addAction:cancel];
+  [alertController addAction:delete];
+  [self presentViewController:alertController animated:YES completion:nil];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -103,27 +138,52 @@
   }
 }
 
-// TODO:implement headerview programatically
-//- (UIView *)tableView:(UITableView *)tableView
-//    viewForHeaderInSection:(NSInteger)section {
-//    return nil;
-//}
-//
-//- (CGFloat)tableView:(UITableView *)tableView
-//    heightForHeaderInSection:(NSInteger)section {
-//  if (section == 0) {
-//    return 0;
-//  } else {
-//    return 22;
-//  }
-//}
-
-- (NSString *)tableView:(UITableView *)tableView
-titleForHeaderInSection:(NSInteger)section {
+- (UIView *)tableView:(UITableView *)tableView
+    viewForHeaderInSection:(NSInteger)section {
   if (section == 0) {
     return nil;
+  }
+  UIView *headerView = [[UIView alloc]
+      initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 22)];
+  headerView.backgroundColor = [UIColor colorWithHexString:@"#F7F7F7"];
+
+  UILabel *headerLabel =
+      [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 100, 22)];
+  headerLabel.text = @"可用事项";
+  headerLabel.font = [UIFont systemFontOfSize:14];
+  [headerView addSubview:headerLabel];
+
+  UIButton *headerButton = [UIButton buttonWithType:UIButtonTypeCustom];
+  [headerButton setTitle:@"清空所有" forState:UIControlStateNormal];
+  [headerButton setTitleColor:[UIColor colorWithHexString:@"#0C7EFB"]
+                     forState:UIControlStateNormal];
+  headerButton.titleLabel.font = [UIFont systemFontOfSize:14];
+  headerButton.contentHorizontalAlignment =
+      UIControlContentHorizontalAlignmentRight;
+  [headerButton addTarget:self
+                   action:@selector(clearAllListsWithoutDate)
+         forControlEvents:UIControlEventTouchUpInside];
+  [headerView addSubview:headerButton];
+  [headerButton mas_makeConstraints:^(MASConstraintMaker *make) {
+    make.right.equalTo(headerView.mas_right).with.offset(-15);
+    make.top.equalTo(headerView.mas_top);
+    make.bottom.equalTo(headerView.mas_bottom);
+    make.width.equalTo(headerLabel.mas_width);
+    make.height.equalTo(headerLabel.mas_height);
+  }];
+
+  return headerView;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView
+    heightForHeaderInSection:(NSInteger)section {
+  if (section == 0) {
+    return 0;
   } else {
-    return @"可用事项";
+    if ([_listsWithoutDate count] == 0) {
+      return 0;
+    }
+    return 22;
   }
 }
 
@@ -178,45 +238,50 @@ titleForHeaderInSection:(NSInteger)section {
 
 #pragma mark - Navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-//  if ([segue.identifier isEqualToString:@"AddList"]) {
-//    UINavigationController *navController = segue.destinationViewController;
-//    YYListViewController *controller =
-//        (YYListViewController *)navController.topViewController;
-//    controller.delegate = self;
-//  } else if ([segue.identifier isEqualToString:@"EditList"]) {
-//    UINavigationController *navController = segue.destinationViewController;
-//    YYListViewController *controller =
-//        (YYListViewController *)navController.topViewController;
-//    controller.delegate = self;
-//    NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
-//    if (indexPath.section == 0) {
-//      controller.itemToEdit = _listsWithDate[indexPath.row];
-//    } else {
-//      controller.itemToEdit = _listsWithoutDate[indexPath.row];
-//    }
-//  }
-    
-    if ([segue.identifier isEqualToString:@"EditList"]) {
-        UINavigationController *navController = segue.destinationViewController;
-        YYListViewController *controller =
+  //  if ([segue.identifier isEqualToString:@"AddList"]) {
+  //    UINavigationController *navController = segue.destinationViewController;
+  //    YYListViewController *controller =
+  //        (YYListViewController *)navController.topViewController;
+  //    controller.delegate = self;
+  //  } else if ([segue.identifier isEqualToString:@"EditList"]) {
+  //    UINavigationController *navController = segue.destinationViewController;
+  //    YYListViewController *controller =
+  //        (YYListViewController *)navController.topViewController;
+  //    controller.delegate = self;
+  //    NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
+  //    if (indexPath.section == 0) {
+  //      controller.itemToEdit = _listsWithDate[indexPath.row];
+  //    } else {
+  //      controller.itemToEdit = _listsWithoutDate[indexPath.row];
+  //    }
+  //  }
+
+  if ([segue.identifier isEqualToString:@"EditList"]) {
+    UINavigationController *navController = segue.destinationViewController;
+    YYListViewController *controller =
         (YYListViewController *)navController.topViewController;
-        NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
-        if (indexPath.section == 0) {
-            controller.itemToEdit = _listsWithDate[indexPath.row];
-        } else {
-            controller.itemToEdit = _listsWithoutDate[indexPath.row];
-        }
+    //       controller.delegate = self;
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
+    if (indexPath.section == 0) {
+      controller.itemToEdit = _listsWithDate[indexPath.row];
+    } else {
+      controller.itemToEdit = _listsWithoutDate[indexPath.row];
     }
+  }
 }
 
 //#pragma mark - YYListViewControllerDelegate
-//- (void)YYListViewControllerDidCancel:(YYListViewController *)controller {
+//- (void)YYListViewControllerDismiss:(YYListViewController *)controller {
 //  [self dismissViewControllerAnimated:YES
 //                           completion:^{
 //                               [self.tableView reloadData];
+//                               NSIndexSet *indexSet = [[NSIndexSet alloc]
+//                               initWithIndex:1];
+//                               [self.tableView reloadSections:indexSet
+//                                             withRowAnimation:UITableViewRowAnimationAutomatic];
 //                           }];
 //}
-//
+
 //- (void)YYListViewController:(YYListViewController *)controller
 //         didFinishAddingList:(YYList *)list {
 //    [[NSManagedObjectContext MR_defaultContext]

@@ -12,7 +12,7 @@
 @class YYList;
 
 //@protocol YYListViewControllerDelegate <NSObject>
-//- (void)YYListViewControllerDidCancel:(YYListViewController *)controller;
+//- (void)YYListViewControllerDismiss:(YYListViewController *)controller;
 //- (void)YYListViewController:(YYListViewController *)controller
 //         didFinishAddingList:(YYList *)list;
 //- (void)YYListViewController:(YYListViewController *)controller

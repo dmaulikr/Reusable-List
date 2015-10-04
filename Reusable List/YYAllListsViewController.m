@@ -13,7 +13,6 @@
 #import <ChameleonFramework/Chameleon.h>
 #import "Masonry.h"
 
-//@import CoreData;
 
 @interface YYAllListsViewController ()
 
@@ -30,10 +29,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
-  [self.tableView reloadData];
-  NSIndexSet *indexSet = [[NSIndexSet alloc] initWithIndex:1];
-  [self.tableView reloadSections:indexSet
-                withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -111,7 +106,6 @@
                 }
                 [[NSManagedObjectContext MR_defaultContext]
                     MR_saveToPersistentStoreWithCompletion:nil];
-//                [self.tableView reloadData];
                 NSIndexSet *indexSet = [[NSIndexSet alloc] initWithIndex:1];
                 [self.tableView
                       reloadSections:indexSet
@@ -238,29 +232,11 @@
 
 #pragma mark - Navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-  //  if ([segue.identifier isEqualToString:@"AddList"]) {
-  //    UINavigationController *navController = segue.destinationViewController;
-  //    YYListViewController *controller =
-  //        (YYListViewController *)navController.topViewController;
-  //    controller.delegate = self;
-  //  } else if ([segue.identifier isEqualToString:@"EditList"]) {
-  //    UINavigationController *navController = segue.destinationViewController;
-  //    YYListViewController *controller =
-  //        (YYListViewController *)navController.topViewController;
-  //    controller.delegate = self;
-  //    NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
-  //    if (indexPath.section == 0) {
-  //      controller.itemToEdit = _listsWithDate[indexPath.row];
-  //    } else {
-  //      controller.itemToEdit = _listsWithoutDate[indexPath.row];
-  //    }
-  //  }
-
+  UINavigationController *navController = segue.destinationViewController;
+  YYListViewController *controller =
+      (YYListViewController *)navController.topViewController;
+  controller.delegate = self;
   if ([segue.identifier isEqualToString:@"EditList"]) {
-    UINavigationController *navController = segue.destinationViewController;
-    YYListViewController *controller =
-        (YYListViewController *)navController.topViewController;
-    //       controller.delegate = self;
     NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
     if (indexPath.section == 0) {
       controller.itemToEdit = _listsWithDate[indexPath.row];
@@ -270,17 +246,16 @@
   }
 }
 
-//#pragma mark - YYListViewControllerDelegate
-//- (void)YYListViewControllerDismiss:(YYListViewController *)controller {
-//  [self dismissViewControllerAnimated:YES
-//                           completion:^{
-//                               [self.tableView reloadData];
-//                               NSIndexSet *indexSet = [[NSIndexSet alloc]
-//                               initWithIndex:1];
-//                               [self.tableView reloadSections:indexSet
-//                                             withRowAnimation:UITableViewRowAnimationAutomatic];
-//                           }];
-//}
+#pragma mark - YYListViewControllerDelegate
+- (void)DismissYYListViewController:(YYListViewController *)controller {
+  [self dismissViewControllerAnimated:
+            YES completion:^{
+    [self.tableView reloadData];
+    NSIndexSet *indexSet = [[NSIndexSet alloc] initWithIndex:1];
+    [self.tableView reloadSections:indexSet
+                  withRowAnimation:UITableViewRowAnimationAutomatic];
+  }];
+}
 
 //- (void)YYListViewController:(YYListViewController *)controller
 //         didFinishAddingList:(YYList *)list {

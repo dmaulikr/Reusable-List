@@ -11,13 +11,13 @@
 @class YYListViewController;
 @class YYList;
 
-//@protocol YYListViewControllerDelegate <NSObject>
-//- (void)YYListViewControllerDismiss:(YYListViewController *)controller;
+@protocol YYListViewControllerDelegate <NSObject>
+- (void)DismissYYListViewController:(YYListViewController *)controller;
 //- (void)YYListViewController:(YYListViewController *)controller
 //         didFinishAddingList:(YYList *)list;
 //- (void)YYListViewController:(YYListViewController *)controller
 //        didFinishEditingList:(YYList *)list;
-//@end
+@end
 
 @interface YYListViewController
     : UITableViewController <UIPickerViewDelegate, UIPickerViewDataSource>
@@ -32,7 +32,7 @@
 @property(weak, nonatomic) IBOutlet UIDatePicker *dateTimePicker;
 @property(weak, nonatomic) IBOutlet UIPickerView *pickerView;
 @property(weak, nonatomic) IBOutlet UIDatePicker *datePicker;
-//@property(nonatomic, weak) id<YYListViewControllerDelegate> delegate;
+@property(nonatomic, weak) id<YYListViewControllerDelegate> delegate;
 @property(nonatomic, strong) YYList *itemToEdit;
 
 - (IBAction)setAlert:(id)sender;

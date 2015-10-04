@@ -143,8 +143,7 @@
   }
   [[NSManagedObjectContext MR_defaultContext]
       MR_saveToPersistentStoreWithCompletion:nil];
-  [self dismissViewControllerAnimated:YES completion:nil];
-//    [self.delegate YYListViewControllerDismiss:self];
+  [self.delegate DismissYYListViewController:self];
 }
 
 - (IBAction)setAlert:(id)sender {

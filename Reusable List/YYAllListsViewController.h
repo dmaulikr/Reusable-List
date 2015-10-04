@@ -11,6 +11,6 @@
 
 @class YYList;
 
-@interface YYAllListsViewController : UITableViewController 
+@interface YYAllListsViewController : UITableViewController <YYListViewControllerDelegate>
 
 @end

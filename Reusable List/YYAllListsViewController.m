@@ -12,7 +12,7 @@
 #import <MagicalRecord/MagicalRecord.h>
 #import <ChameleonFramework/Chameleon.h>
 #import "Masonry.h"
-
+#import "MZFormSheetPresentationControllerSegue.h"
 
 @interface YYAllListsViewController ()
 
@@ -232,17 +232,34 @@
 
 #pragma mark - Navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-  UINavigationController *navController = segue.destinationViewController;
-  YYListViewController *controller =
-      (YYListViewController *)navController.topViewController;
-  controller.delegate = self;
-  if ([segue.identifier isEqualToString:@"EditList"]) {
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
-    if (indexPath.section == 0) {
-      controller.itemToEdit = _listsWithDate[indexPath.row];
-    } else {
-      controller.itemToEdit = _listsWithoutDate[indexPath.row];
+  if ([segue.identifier isEqualToString:@"EditList"] ||
+      [segue.identifier isEqualToString:@"AddList"]) {
+    UINavigationController *navController = segue.destinationViewController;
+    YYListViewController *controller =
+        (YYListViewController *)navController.topViewController;
+    controller.delegate = self;
+    if ([segue.identifier isEqualToString:@"EditList"]) {
+      NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
+      if (indexPath.section == 0) {
+        controller.itemToEdit = _listsWithDate[indexPath.row];
+      } else {
+        controller.itemToEdit = _listsWithoutDate[indexPath.row];
+      }
     }
+  } else if ([segue.identifier isEqualToString:@"presentFormSheet"]) {
+    YYSettingViewController *setting =
+        [self.storyboard instantiateViewControllerWithIdentifier:@"setting"];
+    MZFormSheetPresentationController *formSheetController =
+        [[MZFormSheetPresentationController alloc]
+            initWithContentViewController:setting];
+    formSheetController.shouldApplyBackgroundBlurEffect = YES;
+    formSheetController.contentViewControllerTransitionStyle =
+        MZFormSheetPresentationTransitionStyleFade;
+    formSheetController.shouldDismissOnBackgroundViewTap = YES;
+    formSheetController.shouldCenterVertically = YES;
+    [self presentViewController:formSheetController
+                       animated:YES
+                     completion:nil];
   }
 }
 

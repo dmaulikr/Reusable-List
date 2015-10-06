@@ -9,8 +9,9 @@
         <attribute name="itemKey" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="remindTime" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="repeatType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="timeInterval" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
     </entity>
     <elements>
-        <element name="YYList" positionX="-63" positionY="-18" width="128" height="165"/>
+        <element name="YYList" positionX="-63" positionY="-18" width="128" height="180"/>
     </elements>
 </model>

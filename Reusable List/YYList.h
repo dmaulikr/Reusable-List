@@ -29,6 +29,7 @@
 @property (nullable, nonatomic, retain) NSString *repeatType;
 @property (nullable, nonatomic, retain) NSNumber *hasAlert;
 @property (nullable, nonatomic, retain) NSNumber *hasEndDate;
+@property (nullable, nonatomic, retain) NSNumber *timeInterval;
 
 @end
 

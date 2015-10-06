@@ -18,6 +18,7 @@
 @dynamic dateCreated;
 @dynamic hasAlert;
 @dynamic hasEndDate;
+@dynamic timeInterval;
 
 - (void)awakeFromInsert {
   [super awakeFromInsert];

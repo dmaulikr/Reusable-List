@@ -13,4 +13,6 @@
 
 @interface YYAllListsViewController : UITableViewController <YYListViewControllerDelegate>
 
+- (IBAction)setting:(id)sender;
+
 @end

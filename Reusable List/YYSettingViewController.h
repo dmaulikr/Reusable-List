@@ -7,13 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MessageUI/MessageUI.h>
 
-@interface YYSettingViewController : UITableViewController
+extern NSString *const APPVERSION;
+
+@interface YYSettingViewController : UITableViewController <MFMailComposeViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UISwitch *icloudSyn;
 @property (weak, nonatomic) IBOutlet UISwitch *autoChangeTheme;
 
-- (IBAction)rate:(id)sender;
 - (IBAction)feedback:(id)sender;
 
 @end

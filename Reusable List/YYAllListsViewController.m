@@ -36,6 +36,22 @@
   // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)setting:(id)sender {
+    YYSettingViewController *setting =
+    [self.storyboard instantiateViewControllerWithIdentifier:@"setting"];
+    MZFormSheetPresentationController *formSheetController =
+    [[MZFormSheetPresentationController alloc]
+     initWithContentViewController:setting];
+    formSheetController.shouldApplyBackgroundBlurEffect = YES;
+    formSheetController.contentViewControllerTransitionStyle =
+    MZFormSheetPresentationTransitionStyleFade;
+    formSheetController.shouldDismissOnBackgroundViewTap = YES;
+    formSheetController.shouldCenterVertically = YES;
+    [self presentViewController:formSheetController
+                       animated:YES
+                     completion:nil];
+}
+
 // init the mutablearray, add list item into them and sort by date
 - (void)classifyLists {
   NSPredicate *hasRemindFilter =
@@ -181,6 +197,14 @@
   }
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 0) {
+        return 66;
+    }else {
+        return 44;
+    }
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
   UITableViewCell *cell =
@@ -191,7 +215,7 @@
     cell.textLabel.text = list.content;
 
     NSString *remindTimeStr = [self formatDetailLabel:list];
-    if (list.repeatType) {
+    if (list.repeatType && ![list.repeatType isEqualToString:@"永不"]) {
       cell.detailTextLabel.text =
           [NSString stringWithFormat:@"%@ %@", remindTimeStr, list.repeatType];
     } else {
@@ -246,20 +270,6 @@
         controller.itemToEdit = _listsWithoutDate[indexPath.row];
       }
     }
-  } else if ([segue.identifier isEqualToString:@"presentFormSheet"]) {
-    YYSettingViewController *setting =
-        [self.storyboard instantiateViewControllerWithIdentifier:@"setting"];
-    MZFormSheetPresentationController *formSheetController =
-        [[MZFormSheetPresentationController alloc]
-            initWithContentViewController:setting];
-    formSheetController.shouldApplyBackgroundBlurEffect = YES;
-    formSheetController.contentViewControllerTransitionStyle =
-        MZFormSheetPresentationTransitionStyleFade;
-    formSheetController.shouldDismissOnBackgroundViewTap = YES;
-    formSheetController.shouldCenterVertically = YES;
-    [self presentViewController:formSheetController
-                       animated:YES
-                     completion:nil];
   }
 }
 

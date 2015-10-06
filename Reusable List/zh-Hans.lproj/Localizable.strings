@@ -1,0 +1,28 @@
+/* 
+  Localizable.strings
+  Reusable List
+
+  Created by Molay on 15/10/6.
+  Copyright © 2015年 yuying. All rights reserved.
+*/
+
+"Today aaHH:mm" = "今天 aaHH:mm";
+"Tomorrow aaHH:mm" = "明天 aaHH:mm";
+"Day after tomorrow aaHH:mm" = "后天 aaHH:mm";
+"Caution" = "警告";
+"Do you want to delete all the spare lists? This operation cannot be canceled" = "确定要删除所有可用事项吗？该操作不可恢复";
+"Cancel" = "取消";
+"Delete" = "删除";
+"Cannot sent email" = "无法发送邮件";
+"Please check the email setting" = "请检查系统邮件的设置";
+"OK" = "好的";
+"Spare Lists" = "可用事项";
+"Delete All" = "清空所有";
+"Never" = "永不";
+"Daily" = "每天";
+"Weekly" = "每周";
+"Workday" = "每工作日";
+"Weekends" = "每周末";
+"Monthly" = "每月";
+"Yearly" = "每年";
+"None" = "无";

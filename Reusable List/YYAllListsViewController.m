@@ -75,11 +75,12 @@ NSString *const APPVERSION = @"1.0";
   NSDate *listDateWithTime = [calendar dateFromComponents:comps3];
 
   if ([listDateWithDate isEqualToDate:today]) {
-    [formatter setDateFormat:@"今天 aaHH:mm"];
+    [formatter setDateFormat:NSLocalizedString(@"Today aaHH:mm", nil)];
   } else if ([listDateWithDate isEqualToDate:tomorrow]) {
-    [formatter setDateFormat:@"明天 aaHH:mm"];
+    [formatter setDateFormat:NSLocalizedString(@"Tomorrow aaHH:mm", nil)];
   } else if ([listDateWithDate isEqualToDate:dayAfterTomorrow]) {
-    [formatter setDateFormat:@"后天 aaHH:mm"];
+    [formatter
+        setDateFormat:NSLocalizedString(@"Day after tomorrow aaHH:mm", nil)];
   } else {
     [formatter setDateFormat:@"yy/M/d  aaHH:mm"];
     return [formatter stringFromDate:list.remindTime];
@@ -89,16 +90,18 @@ NSString *const APPVERSION = @"1.0";
 
 - (void)clearAllListsWithoutDate {
   UIAlertController *alertController = [UIAlertController
-      alertControllerWithTitle:@"删除所有可用事项"
-                       message:@"确" @"定"
-                       @"要删除所有可用事项吗？该操作不可恢复"
+      alertControllerWithTitle:NSLocalizedString(@"Caution", nil)
+                       message:NSLocalizedString(
+                                   @"Do you want to delete all the spare "
+                                   @"lists? This operation cannot be canceled",
+                                   nil)
                 preferredStyle:UIAlertControllerStyleAlert];
   UIAlertAction *cancel =
-      [UIAlertAction actionWithTitle:@"取消"
+      [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil)
                                style:UIAlertActionStyleCancel
                              handler:nil];
   UIAlertAction *delete = [UIAlertAction
-      actionWithTitle:@"删除"
+      actionWithTitle:NSLocalizedString(@"Delete", nil)
                 style:UIAlertActionStyleDestructive
               handler:^(UIAlertAction *_Nonnull action) {
                 for (YYList *list in _listsWithoutDate) {
@@ -117,36 +120,39 @@ NSString *const APPVERSION = @"1.0";
 }
 
 - (IBAction)sendFeedback:(id)sender {
-    if ([MFMailComposeViewController canSendMail]) {
-        MFMailComposeViewController *picker =
+  if ([MFMailComposeViewController canSendMail]) {
+    MFMailComposeViewController *picker =
         [[MFMailComposeViewController alloc] init];
-        picker.mailComposeDelegate = self;
-        [picker setSubject:@"【反馈】"];
-        [picker
-         setToRecipients:[NSArray arrayWithObject:@"reusablelist@gmail.com"]];
-        NSString *body = [NSString
-                          stringWithFormat:@"App version: %@\niOS version: %@\nDevice modal: %@\n",
-                          APPVERSION, [[UIDevice currentDevice] systemVersion],
-                          [[UIDevice currentDevice] model]];
-        [picker setMessageBody:body isHTML:NO];
-        [self presentViewController:picker animated:YES completion:nil];
-    } else {
-        UIAlertController *alert = [UIAlertController
-                                    alertControllerWithTitle:@"无法发送邮件"
-                                    message:@"请检查系统邮件的设置"
-                                    preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"好的"
-                                                     style:UIAlertActionStyleDefault
-                                                   handler:nil];
-        [alert addAction:ok];
-        [self presentViewController:alert animated:YES completion:nil];
-    }
+    picker.mailComposeDelegate = self;
+    [picker setSubject:@"Feedback"];
+    [picker
+        setToRecipients:[NSArray arrayWithObject:@"reusablelist@gmail.com"]];
+    NSString *body =
+        [NSString stringWithFormat:
+                      @"App version: %@\niOS version: %@\nDevice modal: %@\n",
+                      APPVERSION, [[UIDevice currentDevice] systemVersion],
+                      [[UIDevice currentDevice] model]];
+    [picker setMessageBody:body isHTML:NO];
+    [self presentViewController:picker animated:YES completion:nil];
+  } else {
+    UIAlertController *alert = [UIAlertController
+        alertControllerWithTitle:NSLocalizedString(@"Cannot sent email", nil)
+                         message:NSLocalizedString(
+                                     @"Please check the email setting", nil)
+                  preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *ok =
+        [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
+                                 style:UIAlertActionStyleDefault
+                               handler:nil];
+    [alert addAction:ok];
+    [self presentViewController:alert animated:YES completion:nil];
+  }
 }
 
 - (void)mailComposeController:(MFMailComposeViewController *)controller
           didFinishWithResult:(MFMailComposeResult)result
                         error:(NSError *)error {
-    [self dismissViewControllerAnimated:YES completion:nil];
+  [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Table view data source
@@ -176,12 +182,13 @@ NSString *const APPVERSION = @"1.0";
 
   UILabel *headerLabel =
       [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 100, 22)];
-  headerLabel.text = @"可用事项";
+  headerLabel.text = NSLocalizedString(@"Spare Lists", nil);
   headerLabel.font = [UIFont systemFontOfSize:14];
   [headerView addSubview:headerLabel];
 
   UIButton *headerButton = [UIButton buttonWithType:UIButtonTypeCustom];
-  [headerButton setTitle:@"清空所有" forState:UIControlStateNormal];
+  [headerButton setTitle:NSLocalizedString(@"Delete All", nil)
+                forState:UIControlStateNormal];
   [headerButton setTitleColor:[UIColor colorWithHexString:@"#0C7EFB"]
                      forState:UIControlStateNormal];
   headerButton.titleLabel.font = [UIFont systemFontOfSize:14];
@@ -214,12 +221,13 @@ NSString *const APPVERSION = @"1.0";
   }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 0) {
-        return 66;
-    }else {
-        return 44;
-    }
+- (CGFloat)tableView:(UITableView *)tableView
+    heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+  if (indexPath.section == 0) {
+    return 66;
+  } else {
+    return 44;
+  }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
@@ -232,9 +240,11 @@ NSString *const APPVERSION = @"1.0";
     cell.textLabel.text = list.content;
 
     NSString *remindTimeStr = [self formatDetailLabel:list];
-    if (list.repeatType && ![list.repeatType isEqualToString:@"永不"]) {
+    if (list.repeatType &&
+        ![list.repeatType isEqualToString:NSLocalizedString(@"Never", nil)]) {
       cell.detailTextLabel.text =
-          [NSString stringWithFormat:@"%@ %@", remindTimeStr, list.repeatType];
+          [NSString stringWithFormat:@"%@ %@", remindTimeStr,
+                                     NSLocalizedString(list.repeatType, nil)];
     } else {
       cell.detailTextLabel.text = [NSString stringWithString:remindTimeStr];
     }

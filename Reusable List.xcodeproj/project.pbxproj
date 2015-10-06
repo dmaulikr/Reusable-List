@@ -17,6 +17,7 @@
 		6030032D1B99D08200DB2C4C /* YYListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6030032C1B99D08200DB2C4C /* YYListViewController.m */; };
 		603003451B9E849900DB2C4C /* Reusable List.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 603003431B9E849900DB2C4C /* Reusable List.xcdatamodeld */; };
 		603003481B9EA58B00DB2C4C /* YYList.m in Sources */ = {isa = PBXBuildFile; fileRef = 603003471B9EA58B00DB2C4C /* YYList.m */; };
+		6059CCCC1BC41505005CA839 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6059CCCE1BC41505005CA839 /* Localizable.strings */; };
 		60EF5A271BBBBE7700EEFCB0 /* YYAllListsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60EF5A261BBBBE7700EEFCB0 /* YYAllListsViewController.m */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
@@ -48,6 +49,10 @@
 		603003441B9E849900DB2C4C /* Reusable List.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Reusable List.xcdatamodel"; sourceTree = "<group>"; };
 		603003461B9EA58B00DB2C4C /* YYList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYList.h; sourceTree = "<group>"; };
 		603003471B9EA58B00DB2C4C /* YYList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYList.m; sourceTree = "<group>"; };
+		6059CCCA1BC414DD005CA839 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "Reusable List/zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
+		6059CCCB1BC414DD005CA839 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		6059CCCD1BC41505005CA839 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		6059CCCF1BC41537005CA839 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		60EF5A251BBBBE6D00EEFCB0 /* YYAllListsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYAllListsViewController.h; sourceTree = "<group>"; };
 		60EF5A261BBBBE7700EEFCB0 /* YYAllListsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYAllListsViewController.m; sourceTree = "<group>"; };
 		E140AD5B272A51982BB6BD19 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -192,6 +197,7 @@
 			children = (
 				603002EB1B992C9400DB2C4C /* YYAppDelegate.h */,
 				603002EC1B992C9400DB2C4C /* YYAppDelegate.m */,
+				6059CCCE1BC41505005CA839 /* Localizable.strings */,
 			);
 			name = Other;
 			sourceTree = "<group>";
@@ -272,6 +278,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hans",
 			);
 			mainGroup = 603002DB1B992C9400DB2C4C;
 			productRefGroup = 603002E51B992C9400DB2C4C /* Products */;
@@ -290,6 +297,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				603003181B99C1C100DB2C4C /* Main.storyboard in Resources */,
+				6059CCCC1BC41505005CA839 /* Localizable.strings in Resources */,
 				603002F81B992C9400DB2C4C /* LaunchScreen.xib in Resources */,
 				603002F51B992C9400DB2C4C /* Images.xcassets in Resources */,
 			);
@@ -389,6 +397,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				603002F71B992C9400DB2C4C /* Base */,
+				6059CCCB1BC414DD005CA839 /* zh-Hans */,
 			);
 			name = LaunchScreen.xib;
 			sourceTree = "<group>";
@@ -397,9 +406,19 @@
 			isa = PBXVariantGroup;
 			children = (
 				603003171B99C1C100DB2C4C /* Base */,
+				6059CCCA1BC414DD005CA839 /* zh-Hans */,
 			);
 			name = Main.storyboard;
 			path = ..;
+			sourceTree = "<group>";
+		};
+		6059CCCE1BC41505005CA839 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6059CCCD1BC41505005CA839 /* en */,
+				6059CCCF1BC41537005CA839 /* zh-Hans */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

@@ -34,13 +34,13 @@
 
   // init private variables
   _repeatTypeArray = @[
-    @"永不",
-    @"每天",
-    @"每周",
-    @"每周工作日",
-    @"每周末",
-    @"每月",
-    @"每年"
+    NSLocalizedString(@"Never", nil),
+    NSLocalizedString(@"Daily", nil),
+    NSLocalizedString(@"Weekly", nil),
+    NSLocalizedString(@"Workday", nil),
+    NSLocalizedString(@"Weekends", nil),
+    NSLocalizedString(@"Monthly", nil),
+    NSLocalizedString(@"Yearly", nil)
   ];
   _pickerArray = @[ @100, @200, @300 ];
   datePickerIsShowing = NO;
@@ -68,10 +68,11 @@
           [formatter stringFromDate:self.itemToEdit.remindTime];
       self.repeatLabel.textColor = [UIColor blackColor];
     } else {
-      self.alertTimeLabel.text = @"无";
+      self.alertTimeLabel.text = NSLocalizedString(@"None", nil);
     }
     self.repeatLabel.text = self.itemToEdit.repeatType;
-    if ([self.itemToEdit.repeatType isEqualToString:@"永不"]) {
+    if ([self.itemToEdit.repeatType
+            isEqualToString:NSLocalizedString(@"Never", nil)]) {
       self.endAlertSwitch.enabled = NO;
     }
     self.endAlertSwitch.on = [self.itemToEdit.hasEndDate boolValue];
@@ -83,7 +84,7 @@
       self.endTimeLabel.text =
           [formatter stringFromDate:self.itemToEdit.endDate];
     } else {
-      self.endTimeLabel.text = @"无";
+      self.endTimeLabel.text = NSLocalizedString(@"None", nil);
     }
   } else {
     [self.contentView becomeFirstResponder];
@@ -170,11 +171,11 @@
     }
   } else {
     self.alertTimeLabel.textColor = [UIColor lightGrayColor];
-    self.alertTimeLabel.text = @"无";
+    self.alertTimeLabel.text = NSLocalizedString(@"None", nil);
     self.repeatLabel.textColor = [UIColor lightGrayColor];
-    self.repeatLabel.text = @"永不";
+    self.repeatLabel.text = NSLocalizedString(@"Never", nil);
     self.endTimeLabel.textColor = [UIColor lightGrayColor];
-    self.endTimeLabel.text = @"无";
+    self.endTimeLabel.text = NSLocalizedString(@"None", nil);
     [self hidePicker:100];
     [self hidePicker:200];
     [self hidePicker:300];
@@ -189,7 +190,7 @@
     self.endTimeLabel.textColor = [UIColor blackColor];
   } else {
     self.endTimeLabel.textColor = [UIColor lightGrayColor];
-    self.endTimeLabel.text = @"无";
+    self.endTimeLabel.text = NSLocalizedString(@"None", nil);
     [self hidePicker:300];
   }
 }
@@ -251,7 +252,8 @@
       if (pickerViewIsShowing) {
         [self hidePicker:200];
       } else if (self.alertSwitch.on &&
-                 ![self.alertTimeLabel.text isEqualToString:@"无"]) {
+                 ![self.alertTimeLabel.text
+                     isEqualToString:NSLocalizedString(@"None", nil)]) {
         [self hideOtherPickerAndShowPicker:200];
       }
     } else if (indexPath.row == 6 && self.endAlertSwitch.on) {
@@ -358,11 +360,12 @@ numberOfRowsInComponent:(NSInteger)component {
       didSelectRow:(NSInteger)row
        inComponent:(NSInteger)component {
   self.repeatLabel.text = [_repeatTypeArray objectAtIndex:row];
-  if ([self.repeatLabel.text isEqualToString:@"永不"]) {
+  if ([self.repeatLabel.text
+          isEqualToString:NSLocalizedString(@"Never", nil)]) {
     self.endAlertSwitch.enabled = NO;
     self.endAlertSwitch.on = NO;
     self.endTimeLabel.textColor = [UIColor lightGrayColor];
-    self.endTimeLabel.text = @"无";
+    self.endTimeLabel.text = NSLocalizedString(@"None", nil);
   } else {
     self.endAlertSwitch.enabled = YES;
     self.repeatLabel.textColor = [UIColor blackColor];

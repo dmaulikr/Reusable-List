@@ -1,0 +1,28 @@
+/* 
+  Localizable.strings
+  Reusable List
+
+  Created by Molay on 15/10/6.
+  Copyright © 2015年 yuying. All rights reserved.
+*/
+
+"Today aaHH:mm" = "Today aaHH:mm";
+"Tomorrow aaHH:mm" = "Tomorrow aaHH:mm";
+"Day after tomorrow aaHH:mm" = "Day after tomorrow aaHH:mm";
+"Caution" = "Caution";
+"Do you want to delete all the spare lists? This operation cannot be canceled" = "Do you want to delete all the spare lists? This operation cannot be canceled";
+"Cancel" = "Cancel";
+"Delete" = "Delete";
+"Cannot sent email" = "Cannot sent email";
+"Please check the email setting" = "Please check the email setting";
+"OK" = "OK";
+"Spare Lists" = "Spare Lists";
+"Delete All" = "Delete All";
+"Never" = "Never";
+"Daily" = "Daily";
+"Weekly" = "Weekly";
+"Workday" = "Workday";
+"Weekends" = "Weekends";
+"Monthly" = "Monthly";
+"Yearly" = "Yearly";
+"None" = "None";

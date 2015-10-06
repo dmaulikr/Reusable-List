@@ -1,0 +1,36 @@
+
+/* Class = "UILabel"; text = "Subtitle"; ObjectID = "2RJ-Xf-j68"; */
+"2RJ-Xf-j68.text" = "Subtitle";
+
+/* Class = "UILabel"; text = "时间"; ObjectID = "67z-x7-Scv"; */
+"67z-x7-Scv.text" = "时间";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "8iR-lo-8m4"; */
+"8iR-lo-8m4.text" = "Title";
+
+/* Class = "UINavigationItem"; title = "Reusable List"; ObjectID = "ccK-Mi-y2P"; */
+"ccK-Mi-y2P.title" = "Reusable List";
+
+/* Class = "UILabel"; text = "提醒"; ObjectID = "dSv-3w-1Nz"; */
+"dSv-3w-1Nz.text" = "提醒";
+
+/* Class = "UIBarButtonItem"; title = "反馈"; ObjectID = "f3J-Jb-MEE"; */
+"f3J-Jb-MEE.title" = "反馈";
+
+/* Class = "UILabel"; text = "无"; ObjectID = "gtB-CN-0iT"; */
+"gtB-CN-0iT.text" = "无";
+
+/* Class = "UILabel"; text = "永不"; ObjectID = "iac-wM-4LV"; */
+"iac-wM-4LV.text" = "永不";
+
+/* Class = "UILabel"; text = "重复"; ObjectID = "kwE-mV-5MC"; */
+"kwE-mV-5MC.text" = "重复";
+
+/* Class = "UILabel"; text = "无"; ObjectID = "msO-db-eU9"; */
+"msO-db-eU9.text" = "无";
+
+/* Class = "UILabel"; text = "时间"; ObjectID = "nAi-n2-Pim"; */
+"nAi-n2-Pim.text" = "时间";
+
+/* Class = "UILabel"; text = "结束重复"; ObjectID = "wuw-d8-By0"; */
+"wuw-d8-By0.text" = "结束重复";

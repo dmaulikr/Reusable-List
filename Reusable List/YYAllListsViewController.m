@@ -8,11 +8,11 @@
 
 #import "YYAllListsViewController.h"
 #import "YYList.h"
-#import "YYSettingViewController.h"
 #import <MagicalRecord/MagicalRecord.h>
 #import <ChameleonFramework/Chameleon.h>
 #import "Masonry.h"
-#import "MZFormSheetPresentationControllerSegue.h"
+
+NSString *const APPVERSION = @"1.0";
 
 @interface YYAllListsViewController ()
 
@@ -34,22 +34,6 @@
 - (void)didReceiveMemoryWarning {
   [super didReceiveMemoryWarning];
   // Dispose of any resources that can be recreated.
-}
-
-- (IBAction)setting:(id)sender {
-    YYSettingViewController *setting =
-    [self.storyboard instantiateViewControllerWithIdentifier:@"setting"];
-    MZFormSheetPresentationController *formSheetController =
-    [[MZFormSheetPresentationController alloc]
-     initWithContentViewController:setting];
-    formSheetController.shouldApplyBackgroundBlurEffect = YES;
-    formSheetController.contentViewControllerTransitionStyle =
-    MZFormSheetPresentationTransitionStyleFade;
-    formSheetController.shouldDismissOnBackgroundViewTap = YES;
-    formSheetController.shouldCenterVertically = YES;
-    [self presentViewController:formSheetController
-                       animated:YES
-                     completion:nil];
 }
 
 // init the mutablearray, add list item into them and sort by date
@@ -130,6 +114,39 @@
   [alertController addAction:cancel];
   [alertController addAction:delete];
   [self presentViewController:alertController animated:YES completion:nil];
+}
+
+- (IBAction)sendFeedback:(id)sender {
+    if ([MFMailComposeViewController canSendMail]) {
+        MFMailComposeViewController *picker =
+        [[MFMailComposeViewController alloc] init];
+        picker.mailComposeDelegate = self;
+        [picker setSubject:@"【反馈】"];
+        [picker
+         setToRecipients:[NSArray arrayWithObject:@"reusablelist@gmail.com"]];
+        NSString *body = [NSString
+                          stringWithFormat:@"App version: %@\niOS version: %@\nDevice modal: %@\n",
+                          APPVERSION, [[UIDevice currentDevice] systemVersion],
+                          [[UIDevice currentDevice] model]];
+        [picker setMessageBody:body isHTML:NO];
+        [self presentViewController:picker animated:YES completion:nil];
+    } else {
+        UIAlertController *alert = [UIAlertController
+                                    alertControllerWithTitle:@"无法发送邮件"
+                                    message:@"请检查系统邮件的设置"
+                                    preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"好的"
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:nil];
+        [alert addAction:ok];
+        [self presentViewController:alert animated:YES completion:nil];
+    }
+}
+
+- (void)mailComposeController:(MFMailComposeViewController *)controller
+          didFinishWithResult:(MFMailComposeResult)result
+                        error:(NSError *)error {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Table view data source
@@ -283,21 +300,5 @@
                   withRowAnimation:UITableViewRowAnimationAutomatic];
   }];
 }
-
-//- (void)YYListViewController:(YYListViewController *)controller
-//         didFinishAddingList:(YYList *)list {
-//    [[NSManagedObjectContext MR_defaultContext]
-//     MR_saveToPersistentStoreWithCompletion:nil];
-//    [self dismissViewControllerAnimated:YES completion:nil];
-//    [self.tableView reloadData];
-//}
-//
-//- (void)YYListViewController:(YYListViewController *)controller
-//        didFinishEditingList:(YYList *)list {
-//    [[NSManagedObjectContext MR_defaultContext]
-//     MR_saveToPersistentStoreWithCompletion:nil];
-//    [self dismissViewControllerAnimated:YES completion:nil];
-//    [self.tableView reloadData];
-//}
 
 @end

@@ -13,10 +13,6 @@
 
 @protocol YYListViewControllerDelegate <NSObject>
 - (void)DismissYYListViewController:(YYListViewController *)controller;
-//- (void)YYListViewController:(YYListViewController *)controller
-//         didFinishAddingList:(YYList *)list;
-//- (void)YYListViewController:(YYListViewController *)controller
-//        didFinishEditingList:(YYList *)list;
 @end
 
 @interface YYListViewController

@@ -8,11 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import "YYListViewController.h"
+#import <MessageUI/MessageUI.h>
 
 @class YYList;
 
-@interface YYAllListsViewController : UITableViewController <YYListViewControllerDelegate>
+extern NSString *const APPVERSION;
 
-- (IBAction)setting:(id)sender;
+@interface YYAllListsViewController : UITableViewController <YYListViewControllerDelegate,MFMailComposeViewControllerDelegate>
+
+- (IBAction)sendFeedback:(id)sender;
 
 @end

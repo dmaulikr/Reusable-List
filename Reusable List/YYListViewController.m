@@ -219,45 +219,6 @@
   [formatter setTimeStyle:NSDateFormatterNoStyle];
 }
 
-//- (void)configLabelAndSwitch {
-//  if (self.alertSwitch.on) {
-//    self.alertTimeLabel.textColor = [UIColor blackColor];
-//    if (self.alertTimeLabel.text) {
-//      self.repeatLabel.textColor = [UIColor blackColor];
-//      if (![self.repeatLabel.text isEqualToString:@"永不"]) {
-//        self.endAlertSwitch.enabled = YES;
-//        if (self.endAlertSwitch.on) {
-//          self.endTimeLabel.textColor = [UIColor blackColor];
-//        } else {
-//          self.endTimeLabel.textColor = [UIColor lightGrayColor];
-//          self.endTimeLabel.text = @"无";
-//        }
-//      } else {
-//        self.endAlertSwitch.enabled = NO;
-//        self.endAlertSwitch.on = NO;
-//        self.endTimeLabel.textColor = [UIColor lightGrayColor];
-//        self.endTimeLabel.text = @"无";
-//      }
-//    } else {
-//      self.repeatLabel.textColor = [UIColor lightGrayColor];
-//      self.repeatLabel.text = @"永不";
-//      self.endAlertSwitch.enabled = NO;
-//      self.endAlertSwitch.on = NO;
-//      self.endTimeLabel.textColor = [UIColor lightGrayColor];
-//      self.endTimeLabel.text = @"无";
-//    }
-//  } else {
-//    self.alertTimeLabel.textColor = [UIColor lightGrayColor];
-//    self.alertTimeLabel.text = @"无";
-//    self.repeatLabel.textColor = [UIColor lightGrayColor];
-//    self.repeatLabel.text = @"永不";
-//    self.endAlertSwitch.enabled = NO;
-//    self.endAlertSwitch.on = NO;
-//    self.endTimeLabel.textColor = [UIColor lightGrayColor];
-//    self.endTimeLabel.text = @"无";
-//  }
-//}
-
 #pragma mark - Table view data source
 
 - (CGFloat)tableView:(UITableView *)tableView

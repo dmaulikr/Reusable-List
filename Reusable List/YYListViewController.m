@@ -27,11 +27,16 @@
 
 - (void)viewDidLoad {
   [super viewDidLoad];
+  NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
+  [defaultCenter addObserver:self
+                    selector:@selector(keyboardWillShow)
+                        name:UIKeyboardWillShowNotification
+                      object:nil];
 
   // make textview autoresizing according to it's content
   self.tableView.estimatedRowHeight = 44;
   self.tableView.rowHeight = UITableViewAutomaticDimension;
-  self.contentView.textContainerInset = UIEdgeInsetsMake(12, 12, 0, 12);
+  self.textView.textContainerInset = UIEdgeInsetsMake(12, 12, 0, 12);
 
   // init private variables
   _repeatTypeArray = @[
@@ -58,7 +63,7 @@
   // configure the view
   if (self.itemToEdit != nil) {
     self.doneButton.enabled = YES;
-    self.contentView.text = self.itemToEdit.content;
+    self.textView.text = self.itemToEdit.content;
     self.alertSwitch.on = [self.itemToEdit.hasAlert boolValue];
     if (self.alertSwitch.on) {
       self.alertTimeLabel.textColor = [UIColor blackColor];
@@ -87,26 +92,13 @@
       self.endTimeLabel.text = NSLocalizedString(@"None", nil);
     }
   } else {
-    [self.contentView becomeFirstResponder];
+    [self.textView becomeFirstResponder];
     self.endAlertSwitch.enabled = NO;
   }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
-  [[NSNotificationCenter defaultCenter]
-      addObserver:self
-         selector:@selector(keyboardWillShow)
-             name:UIKeyboardWillShowNotification
-           object:nil];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-  [super viewWillDisappear:animated];
-  [[NSNotificationCenter defaultCenter]
-      removeObserver:self
-                name:UIKeyboardWillShowNotification
-              object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -120,7 +112,7 @@
 
 - (IBAction)done:(id)sender {
   if (self.itemToEdit != nil) {
-    self.itemToEdit.content = self.contentView.text;
+    self.itemToEdit.content = self.textView.text;
     self.itemToEdit.hasAlert = [NSNumber numberWithBool:self.alertSwitch.on];
     [self configDateFormatterForDateTimeLabel];
     self.itemToEdit.remindTime =
@@ -144,7 +136,7 @@
     }
   } else {
     YYList *list = [YYList MR_createEntity];
-    list.content = self.contentView.text;
+    list.content = self.textView.text;
     list.hasAlert = [NSNumber numberWithBool:self.alertSwitch.on];
     [self configDateFormatterForDateTimeLabel];
     list.remindTime = [formatter dateFromString:self.alertTimeLabel.text];
@@ -165,7 +157,7 @@
 }
 
 - (IBAction)setAlert:(id)sender {
-  [self.contentView resignFirstResponder];
+  [self.textView resignFirstResponder];
   if (self.alertSwitch.on) {
     self.alertTimeLabel.textColor = [UIColor blackColor];
     if (self.itemToEdit) {
@@ -194,7 +186,7 @@
 }
 
 - (IBAction)setEndDate:(id)sender {
-  [self.contentView resignFirstResponder];
+  [self.textView resignFirstResponder];
   if (self.endAlertSwitch.on) {
     self.endTimeLabel.textColor = [UIColor blackColor];
   } else {
@@ -229,6 +221,10 @@
   [formatter setTimeStyle:NSDateFormatterNoStyle];
 }
 
+- (void)dealloc {
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 #pragma mark - Table view data source
 
 - (CGFloat)tableView:(UITableView *)tableView
@@ -249,7 +245,7 @@
 - (void)tableView:(UITableView *)tableView
     didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   if (indexPath.section == 1) {
-    [self.contentView resignFirstResponder];
+    [self.textView resignFirstResponder];
 
     if (indexPath.row == 1 && self.alertSwitch.on) {
       if (dateTimePickerIsShowing) {
@@ -273,7 +269,7 @@
       }
     }
   } else if (indexPath.section == 0) {
-    [self.contentView becomeFirstResponder];
+    [self.textView becomeFirstResponder];
   }
 
   [self.tableView deselectRowAtIndexPath:indexPath animated:YES];

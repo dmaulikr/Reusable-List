@@ -74,18 +74,6 @@ NSString *const APPVERSION = @"1.0";
                   fromDate:list.remindTime];
   NSDate *listDateWithTime = [calendar dateFromComponents:comps3];
 
-  //    if ([listDateWithDate isEqualToDate:today]) {
-  //        [formatter setDateFormat:@"今天 aaHH:mm"];
-  //    } else if ([listDateWithDate isEqualToDate:tomorrow]) {
-  //        [formatter setDateFormat:@"明天 aaHH:mm"];
-  //    } else if ([listDateWithDate isEqualToDate:dayAfterTomorrow]) {
-  //        [formatter setDateFormat:@"后天 aaHH:mm"];
-  //    } else {
-  //        [formatter setDateFormat:@"yy/M/d  aaHH:mm"];
-  //        return [formatter stringFromDate:list.remindTime];
-  //    }
-  //    return [formatter stringFromDate:listDateWithTime];
-
   if ([listDateWithDate isEqualToDate:today]) {
     [formatter setDateFormat:@" aaK:mm"];
     return [NSLocalizedString(@"Today", nil)
@@ -239,10 +227,12 @@ NSString *const APPVERSION = @"1.0";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView
-    heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
   if (indexPath.section == 0) {
+    self.tableView.estimatedRowHeight = 66;
     return 66;
   } else {
+    self.tableView.estimatedRowHeight = 44;
     return 44;
   }
 }

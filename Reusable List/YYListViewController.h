@@ -19,7 +19,7 @@
     : UITableViewController <UIPickerViewDelegate, UIPickerViewDataSource>
 
 @property(weak, nonatomic) IBOutlet UIBarButtonItem *doneButton;
-@property(weak, nonatomic) IBOutlet UITextView *contentView;
+@property(weak, nonatomic) IBOutlet UITextView *textView;
 @property(weak, nonatomic) IBOutlet UISwitch *alertSwitch;
 @property(weak, nonatomic) IBOutlet UISwitch *endAlertSwitch;
 @property(weak, nonatomic) IBOutlet UILabel *alertTimeLabel;
@@ -30,6 +30,11 @@
 @property(weak, nonatomic) IBOutlet UIDatePicker *datePicker;
 @property(nonatomic, weak) id<YYListViewControllerDelegate> delegate;
 @property(nonatomic, strong) YYList *itemToEdit;
+@property (weak, nonatomic) IBOutlet UILabel *reminderTitle;
+@property (weak, nonatomic) IBOutlet UILabel *alertTimeTitle;
+@property (weak, nonatomic) IBOutlet UILabel *repeatTitle;
+@property (weak, nonatomic) IBOutlet UILabel *endRepeatTitle;
+@property (weak, nonatomic) IBOutlet UILabel *endTimeTitle;
 
 - (IBAction)setAlert:(id)sender;
 - (IBAction)setEndDate:(id)sender;

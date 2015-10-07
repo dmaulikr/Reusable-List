@@ -22,6 +22,7 @@
   BOOL dateTimePickerIsShowing;
   BOOL pickerViewIsShowing;
   NSDateFormatter *formatter;
+  NSString *repeat;
 }
 
 - (void)viewDidLoad {
@@ -34,13 +35,13 @@
 
   // init private variables
   _repeatTypeArray = @[
-    NSLocalizedString(@"Never", nil),
-    NSLocalizedString(@"Daily", nil),
-    NSLocalizedString(@"Weekly", nil),
-    NSLocalizedString(@"Workday", nil),
-    NSLocalizedString(@"Weekends", nil),
-    NSLocalizedString(@"Monthly", nil),
-    NSLocalizedString(@"Yearly", nil)
+    @"Never",
+    @"Daily",
+    @"Weekly",
+    @"Workday",
+    @"Weekends",
+    @"Monthly",
+    @"Yearly"
   ];
   _pickerArray = @[ @100, @200, @300 ];
   datePickerIsShowing = NO;
@@ -70,9 +71,8 @@
     } else {
       self.alertTimeLabel.text = NSLocalizedString(@"None", nil);
     }
-    self.repeatLabel.text = self.itemToEdit.repeatType;
-    if ([self.itemToEdit.repeatType
-            isEqualToString:NSLocalizedString(@"Never", nil)]) {
+    self.repeatLabel.text = NSLocalizedString(self.itemToEdit.repeatType, nil);
+    if ([self.itemToEdit.repeatType isEqualToString:@"Never"]) {
       self.endAlertSwitch.enabled = NO;
     }
     self.endAlertSwitch.on = [self.itemToEdit.hasEndDate boolValue];
@@ -125,7 +125,11 @@
     [self configDateFormatterForDateTimeLabel];
     self.itemToEdit.remindTime =
         [formatter dateFromString:self.alertTimeLabel.text];
-    self.itemToEdit.repeatType = self.repeatLabel.text;
+    if (repeat) {
+      self.itemToEdit.repeatType = repeat;
+    } else {
+      self.itemToEdit.repeatType = @"Never";
+    }
     self.itemToEdit.hasEndDate =
         [NSNumber numberWithBool:self.endAlertSwitch.on];
     [self configDateFormatterForDateLabel];
@@ -144,7 +148,11 @@
     list.hasAlert = [NSNumber numberWithBool:self.alertSwitch.on];
     [self configDateFormatterForDateTimeLabel];
     list.remindTime = [formatter dateFromString:self.alertTimeLabel.text];
-    list.repeatType = self.repeatLabel.text;
+    if (repeat) {
+      list.repeatType = repeat;
+    } else {
+      list.repeatType = @"Never";
+    }
     list.hasEndDate = [NSNumber numberWithBool:self.endAlertSwitch.on];
     [self configDateFormatterForDateLabel];
     list.endDate = [formatter dateFromString:self.endTimeLabel.text];
@@ -164,10 +172,11 @@
       NSDate *suggestDate =
           [NSDate dateWithTimeIntervalSinceNow:[self.itemToEdit.timeInterval
                                                        floatValue]];
-      if (suggestDate) {
-        [self configDateFormatterForDateTimeLabel];
-        self.alertTimeLabel.text = [formatter stringFromDate:suggestDate];
-      }
+      [self configDateFormatterForDateTimeLabel];
+      self.alertTimeLabel.text = [formatter stringFromDate:suggestDate];
+    } else {
+      [self configDateFormatterForDateTimeLabel];
+      self.alertTimeLabel.text = [formatter stringFromDate:[NSDate date]];
     }
   } else {
     self.alertTimeLabel.textColor = [UIColor lightGrayColor];
@@ -353,13 +362,14 @@ numberOfRowsInComponent:(NSInteger)component {
 - (NSString *)pickerView:(UIPickerView *)pickerView
              titleForRow:(NSInteger)row
             forComponent:(NSInteger)component {
-  return [_repeatTypeArray objectAtIndex:row];
+  return NSLocalizedString([_repeatTypeArray objectAtIndex:row], nil);
 }
 
 - (void)pickerView:(UIPickerView *)pickerView
       didSelectRow:(NSInteger)row
        inComponent:(NSInteger)component {
-  self.repeatLabel.text = [_repeatTypeArray objectAtIndex:row];
+  repeat = [_repeatTypeArray objectAtIndex:row];
+  self.repeatLabel.text = NSLocalizedString(repeat, nil);
   if ([self.repeatLabel.text
           isEqualToString:NSLocalizedString(@"Never", nil)]) {
     self.endAlertSwitch.enabled = NO;

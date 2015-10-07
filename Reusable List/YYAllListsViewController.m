@@ -74,18 +74,30 @@ NSString *const APPVERSION = @"1.0";
                   fromDate:list.remindTime];
   NSDate *listDateWithTime = [calendar dateFromComponents:comps3];
 
-  if ([listDateWithDate isEqualToDate:today]) {
-    [formatter setDateFormat:NSLocalizedString(@"Today aaHH:mm", nil)];
-  } else if ([listDateWithDate isEqualToDate:tomorrow]) {
-    [formatter setDateFormat:NSLocalizedString(@"Tomorrow aaHH:mm", nil)];
-  } else if ([listDateWithDate isEqualToDate:dayAfterTomorrow]) {
-    [formatter
-        setDateFormat:NSLocalizedString(@"Day after tomorrow aaHH:mm", nil)];
-  } else {
-    [formatter setDateFormat:@"yy/M/d  aaHH:mm"];
-    return [formatter stringFromDate:list.remindTime];
-  }
-  return [formatter stringFromDate:listDateWithTime];
+//  if ([listDateWithDate isEqualToDate:today]) {
+//    [formatter setDateFormat:NSLocalizedString(@"Today aaHH:mm", nil)];
+//  } else if ([listDateWithDate isEqualToDate:tomorrow]) {
+//    [formatter setDateFormat:NSLocalizedString(@"Tomorrow aaHH:mm", nil)];
+//  } else if ([listDateWithDate isEqualToDate:dayAfterTomorrow]) {
+//    [formatter
+//        setDateFormat:NSLocalizedString(@"Day after tomorrow aaHH:mm", nil)];
+//  } else {
+//    [formatter setDateFormat:@"yy/M/d  aaHH:mm"];
+//    return [formatter stringFromDate:list.remindTime];
+//  }
+//  return [formatter stringFromDate:listDateWithTime];
+    
+    if ([listDateWithDate isEqualToDate:today]) {
+        [formatter setDateFormat:@"今天 aaHH:mm"];
+    } else if ([listDateWithDate isEqualToDate:tomorrow]) {
+        [formatter setDateFormat:@"明天 aaHH:mm"];
+    } else if ([listDateWithDate isEqualToDate:dayAfterTomorrow]) {
+        [formatter setDateFormat:@"后天 aaHH:mm"];
+    } else {
+        [formatter setDateFormat:@"yy/M/d  aaHH:mm"];
+        return [formatter stringFromDate:list.remindTime];
+    }
+    return [formatter stringFromDate:listDateWithTime];
 }
 
 - (void)clearAllListsWithoutDate {
@@ -241,7 +253,7 @@ NSString *const APPVERSION = @"1.0";
 
     NSString *remindTimeStr = [self formatDetailLabel:list];
     if (list.repeatType &&
-        ![list.repeatType isEqualToString:NSLocalizedString(@"Never", nil)]) {
+        ![list.repeatType isEqualToString:@"Never"]) {
       cell.detailTextLabel.text =
           [NSString stringWithFormat:@"%@ %@", remindTimeStr,
                                      NSLocalizedString(list.repeatType, nil)];

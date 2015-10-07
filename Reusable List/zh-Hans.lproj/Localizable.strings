@@ -6,9 +6,9 @@
   Copyright © 2015年 yuying. All rights reserved.
 */
 
-"Today aaHH:mm" = "今天 aaHH:mm";
-"Tomorrow aaHH:mm" = "明天 aaHH:mm";
-"Day after tomorrow aaHH:mm" = "后天 aaHH:mm";
+"Today" = "今天";
+"Tomorrow" = "明天";
+"Day after tomorrow" = "后天";
 "Caution" = "警告";
 "Do you want to delete all the spare lists? This operation cannot be canceled" = "确定要删除所有可用事项吗？该操作不可恢复";
 "Cancel" = "取消";

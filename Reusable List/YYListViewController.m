@@ -22,7 +22,7 @@
   BOOL dateTimePickerIsShowing;
   BOOL pickerViewIsShowing;
   NSDateFormatter *formatter;
-  NSString *repeat;
+  NSString *repeat; // store choosed picker value
 }
 
 - (void)viewDidLoad {
@@ -221,7 +221,7 @@
 }
 
 - (void)configDateFormatterForDateTimeLabel {
-  [formatter setDateFormat:@"yy/MM/d EEE  aaHH:mm"];
+  [formatter setDateFormat:@"yy/MM/d EEE  aaK:mm"];
 }
 
 - (void)configDateFormatterForDateLabel {

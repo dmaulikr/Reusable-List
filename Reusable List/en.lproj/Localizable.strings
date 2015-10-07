@@ -6,9 +6,9 @@
   Copyright © 2015年 yuying. All rights reserved.
 */
 
-"Today aaHH:mm" = "Today aaHH:mm";
-"Tomorrow aaHH:mm" = "Tomorrow aaHH:mm";
-"Day after tomorrow aaHH:mm" = "Day after tomorrow aaHH:mm";
+"Today" = "Today";
+"Tomorrow" = "Tomorrow";
+"Day after tomorrow" = "Day after tomorrow";
 "Caution" = "Caution";
 "Do you want to delete all the spare lists? This operation cannot be canceled" = "Do you want to delete all the spare lists? This operation cannot be canceled";
 "Cancel" = "Cancel";

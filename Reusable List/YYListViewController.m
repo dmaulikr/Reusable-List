@@ -22,7 +22,8 @@
   BOOL dateTimePickerIsShowing;
   BOOL pickerViewIsShowing;
   NSDateFormatter *formatter;
-  NSString *repeat; // store choosed picker value
+  NSString *repeat;    // store choosed picker value
+  YYList *unsavedList; // used for saving when app be terminated
 }
 
 - (void)viewDidLoad {
@@ -55,6 +56,12 @@
 
   formatter = [[NSDateFormatter alloc] init];
   formatter.locale = [NSLocale autoupdatingCurrentLocale];
+
+  if (self.itemToEdit) {
+    unsavedList = self.itemToEdit;
+  } else {
+    unsavedList = [YYList MR_createEntity];
+  }
 
   // init pickerView
   self.pickerView.delegate = self;
@@ -183,6 +190,7 @@
     self.endAlertSwitch.on = NO;
     self.endAlertSwitch.enabled = NO;
   }
+  unsavedList.hasAlert = [NSNumber numberWithBool:self.alertSwitch.on];
 }
 
 - (IBAction)setEndDate:(id)sender {
@@ -194,6 +202,7 @@
     self.endTimeLabel.text = NSLocalizedString(@"None", nil);
     [self hidePicker:300];
   }
+  unsavedList.hasEndDate = [NSNumber numberWithBool:self.endAlertSwitch.on];
 }
 
 - (void)keyboardWillShow {
@@ -294,17 +303,23 @@
   return YES;
 }
 
+- (void)textViewDidEndEditing:(UITextView *)textView {
+  unsavedList.content = textView.text;
+}
+
 #pragma mark - UIPickerViewDelegate
 
 - (IBAction)alertTimeChanged:(UIDatePicker *)sender {
   [self configDateFormatterForDateTimeLabel];
   self.alertTimeLabel.text = [formatter stringFromDate:sender.date];
   self.repeatLabel.textColor = [UIColor blackColor];
+  unsavedList.remindTime = sender.date;
 }
 
 - (IBAction)endDateChanged:(UIDatePicker *)sender {
   [self configDateFormatterForDateLabel];
   self.endTimeLabel.text = [formatter stringFromDate:sender.date];
+  unsavedList.endDate = sender.date;
 }
 
 - (void)showPicker:(NSInteger)tag {
@@ -376,6 +391,7 @@ numberOfRowsInComponent:(NSInteger)component {
     self.endAlertSwitch.enabled = YES;
     self.repeatLabel.textColor = [UIColor blackColor];
   }
+  unsavedList.repeatType = repeat;
 }
 
 @end

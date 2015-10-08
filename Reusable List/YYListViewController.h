@@ -30,11 +30,11 @@
 @property(weak, nonatomic) IBOutlet UIDatePicker *datePicker;
 @property(nonatomic, weak) id<YYListViewControllerDelegate> delegate;
 @property(nonatomic, strong) YYList *itemToEdit;
-@property (weak, nonatomic) IBOutlet UILabel *reminderTitle;
-@property (weak, nonatomic) IBOutlet UILabel *alertTimeTitle;
-@property (weak, nonatomic) IBOutlet UILabel *repeatTitle;
-@property (weak, nonatomic) IBOutlet UILabel *endRepeatTitle;
-@property (weak, nonatomic) IBOutlet UILabel *endTimeTitle;
+@property(weak, nonatomic) IBOutlet UILabel *reminderTitle;
+@property(weak, nonatomic) IBOutlet UILabel *alertTimeTitle;
+@property(weak, nonatomic) IBOutlet UILabel *repeatTitle;
+@property(weak, nonatomic) IBOutlet UILabel *endRepeatTitle;
+@property(weak, nonatomic) IBOutlet UILabel *endTimeTitle;
 
 - (IBAction)setAlert:(id)sender;
 - (IBAction)setEndDate:(id)sender;

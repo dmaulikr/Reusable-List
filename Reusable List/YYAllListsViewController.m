@@ -254,7 +254,6 @@ NSString *const APPVERSION = @"1.0";
     } else {
       cell.detailTextLabel.text = [NSString stringWithString:remindTimeStr];
     }
-
   } else {
     YYList *list = _listsWithoutDate[indexPath.row];
     cell.textLabel.text = list.content;
@@ -289,8 +288,6 @@ NSString *const APPVERSION = @"1.0";
 
 #pragma mark - Navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-  if ([segue.identifier isEqualToString:@"EditList"] ||
-      [segue.identifier isEqualToString:@"AddList"]) {
     UINavigationController *navController = segue.destinationViewController;
     YYListViewController *controller =
         (YYListViewController *)navController.topViewController;
@@ -303,7 +300,6 @@ NSString *const APPVERSION = @"1.0";
         controller.itemToEdit = _listsWithoutDate[indexPath.row];
       }
     }
-  }
 }
 
 #pragma mark - YYListViewControllerDelegate

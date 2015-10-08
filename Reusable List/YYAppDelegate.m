@@ -8,7 +8,7 @@
 
 #import "YYAppDelegate.h"
 #import <MagicalRecord/MagicalRecord.h>
-#import "YYList.h"
+//#import "YYList.h"
 
 @import CoreData;
 
@@ -18,9 +18,14 @@
 
 @implementation AppDelegate
 
+- (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    [MagicalRecord setupCoreDataStackWithStoreNamed:@"Reusable List"];
+    return YES;
+}
+
 - (BOOL)application:(UIApplication *)application
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-  [MagicalRecord setupCoreDataStackWithStoreNamed:@"Reusabl List"];
+//  [MagicalRecord setupCoreDataStackWithStoreNamed:@"Reusable List"];
   return YES;
 }
 
@@ -39,6 +44,8 @@
   // application to its current state in case it is terminated later.
   // If your application supports background execution, this method is called
   // instead of applicationWillTerminate: when the user quits.
+    [[NSManagedObjectContext MR_defaultContext]
+     MR_saveToPersistentStoreWithCompletion:nil];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
@@ -53,7 +60,17 @@
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
+    [[NSManagedObjectContext MR_defaultContext]
+     MR_saveToPersistentStoreWithCompletion:nil];
   [MagicalRecord cleanUp];
+}
+
+- (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(nonnull NSCoder *)coder {
+    return YES;
+}
+
+- (BOOL)application:(UIApplication *)application shouldRestoreApplicationState:(NSCoder *)coder {
+    return YES;
 }
 
 @end

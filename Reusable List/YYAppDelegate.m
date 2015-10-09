@@ -26,6 +26,7 @@
 - (BOOL)application:(UIApplication *)application
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 //  [MagicalRecord setupCoreDataStackWithStoreNamed:@"Reusable List"];
+    [[UIApplication sharedApplication]registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil]];
   return YES;
 }
 
@@ -63,6 +64,10 @@
     [[NSManagedObjectContext MR_defaultContext]
      MR_saveToPersistentStoreWithCompletion:nil];
   [MagicalRecord cleanUp];
+}
+
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"ListShouldRefresh" object:nil];
 }
 
 - (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(nonnull NSCoder *)coder {

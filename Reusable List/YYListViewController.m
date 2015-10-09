@@ -141,6 +141,11 @@
     } else {
       self.itemToEdit.dateCreated = [NSDate date];
     }
+
+    if (self.itemToEdit.remindTime) {
+      [self scheduleNotificaiton:self.itemToEdit];
+    }
+
   } else {
     YYList *list = [YYList MR_createEntity];
     list.content = self.textView.text;
@@ -157,9 +162,14 @@
     list.endDate = [formatter dateFromString:self.endTimeLabel.text];
     list.timeInterval =
         [NSNumber numberWithDouble:[list.remindTime timeIntervalSinceNow]];
+
+    if (list.remindTime) {
+      [self scheduleNotificaiton:list];
+    }
   }
   [[NSManagedObjectContext MR_defaultContext]
       MR_saveToPersistentStoreWithCompletion:nil];
+
   [self.delegate DismissYYListViewController:self];
 }
 
@@ -228,6 +238,15 @@
 - (void)configDateFormatterForDateLabel {
   [formatter setDateStyle:NSDateFormatterLongStyle];
   [formatter setTimeStyle:NSDateFormatterNoStyle];
+}
+
+- (void)scheduleNotificaiton:(YYList *)list {
+  UILocalNotification *notification = [[UILocalNotification alloc] init];
+  notification.alertBody = list.content;
+  notification.fireDate = list.remindTime;
+  notification.soundName = UILocalNotificationDefaultSoundName;
+  notification.userInfo = @{ @"UUID" : list.itemKey };
+  [[UIApplication sharedApplication] scheduleLocalNotification:notification];
 }
 
 - (void)dealloc {

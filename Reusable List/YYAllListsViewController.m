@@ -25,6 +25,7 @@ NSString *const APPVERSION = @"1.0";
 
 - (void)viewDidLoad {
   [super viewDidLoad];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshList) name:@"ListShouldRefresh" object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -160,6 +161,19 @@ NSString *const APPVERSION = @"1.0";
   [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (void)refreshList {
+    [self.tableView reloadData];
+}
+
+- (void)cancelNotification:(YYList *)list {
+    for (UILocalNotification *notification in [[UIApplication sharedApplication]scheduledLocalNotifications]) {
+        if ([notification.userInfo[@"UUID"] isEqualToString:list.itemKey]) {
+            [[UIApplication sharedApplication] cancelLocalNotification:notification];
+            break;
+        }
+    }
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -274,9 +288,11 @@ NSString *const APPVERSION = @"1.0";
   if (editingStyle == UITableViewCellEditingStyleDelete) {
     if (indexPath.section == 0) {
       YYList *list = _listsWithDate[indexPath.row];
+        [self cancelNotification:list];
       [list MR_deleteEntity];
     } else {
       YYList *list = _listsWithoutDate[indexPath.row];
+        [self cancelNotification:list];
       [list MR_deleteEntity];
     }
     [[NSManagedObjectContext MR_defaultContext]

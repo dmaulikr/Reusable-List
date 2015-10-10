@@ -25,7 +25,10 @@ NSString *const APPVERSION = @"1.0";
 
 - (void)viewDidLoad {
   [super viewDidLoad];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshList) name:@"ListShouldRefresh" object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(refreshList)
+                                               name:@"ListShouldRefresh"
+                                             object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -162,16 +165,17 @@ NSString *const APPVERSION = @"1.0";
 }
 
 - (void)refreshList {
-    [self.tableView reloadData];
+  [self.tableView reloadData];
 }
 
 - (void)cancelNotification:(YYList *)list {
-    for (UILocalNotification *notification in [[UIApplication sharedApplication]scheduledLocalNotifications]) {
-        if ([notification.userInfo[@"UUID"] isEqualToString:list.itemKey]) {
-            [[UIApplication sharedApplication] cancelLocalNotification:notification];
-            break;
-        }
+  for (UILocalNotification *notification in
+       [[UIApplication sharedApplication] scheduledLocalNotifications]) {
+    if ([notification.userInfo[@"UUID"] isEqualToString:list.itemKey]) {
+      [[UIApplication sharedApplication] cancelLocalNotification:notification];
+      break;
     }
+  }
 }
 
 #pragma mark - Table view data source
@@ -288,11 +292,11 @@ NSString *const APPVERSION = @"1.0";
   if (editingStyle == UITableViewCellEditingStyleDelete) {
     if (indexPath.section == 0) {
       YYList *list = _listsWithDate[indexPath.row];
-        [self cancelNotification:list];
+      [self cancelNotification:list];
       [list MR_deleteEntity];
     } else {
       YYList *list = _listsWithoutDate[indexPath.row];
-        [self cancelNotification:list];
+      [self cancelNotification:list];
       [list MR_deleteEntity];
     }
     [[NSManagedObjectContext MR_defaultContext]
@@ -304,18 +308,18 @@ NSString *const APPVERSION = @"1.0";
 
 #pragma mark - Navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    UINavigationController *navController = segue.destinationViewController;
-    YYListViewController *controller =
-        (YYListViewController *)navController.topViewController;
-    controller.delegate = self;
-    if ([segue.identifier isEqualToString:@"EditList"]) {
-      NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
-      if (indexPath.section == 0) {
-        controller.itemToEdit = _listsWithDate[indexPath.row];
-      } else {
-        controller.itemToEdit = _listsWithoutDate[indexPath.row];
-      }
+  UINavigationController *navController = segue.destinationViewController;
+  YYListViewController *controller =
+      (YYListViewController *)navController.topViewController;
+  controller.delegate = self;
+  if ([segue.identifier isEqualToString:@"EditList"]) {
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
+    if (indexPath.section == 0) {
+      controller.itemToEdit = _listsWithDate[indexPath.row];
+    } else {
+      controller.itemToEdit = _listsWithoutDate[indexPath.row];
     }
+  }
 }
 
 #pragma mark - YYListViewControllerDelegate

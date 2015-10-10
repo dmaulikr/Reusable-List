@@ -33,7 +33,7 @@
                     selector:@selector(keyboardWillShow)
                         name:UIKeyboardWillShowNotification
                       object:nil];
-
+    
   // make textview autoresizing according to it's content
   self.tableView.estimatedRowHeight = 44;
   self.tableView.rowHeight = UITableViewAutomaticDimension;
@@ -57,9 +57,7 @@
   formatter = [[NSDateFormatter alloc] init];
   formatter.locale = [NSLocale autoupdatingCurrentLocale];
 
-  if (self.itemToEdit) {
-    unsavedList = self.itemToEdit;
-  } else {
+  if (!self.itemToEdit) {
     unsavedList = [YYList MR_createEntity];
   }
 
@@ -83,7 +81,12 @@
     } else {
       self.alertTimeLabel.text = NSLocalizedString(@"None", nil);
     }
-    self.repeatLabel.text = NSLocalizedString(self.itemToEdit.repeatType, nil);
+    if (self.itemToEdit.repeatType) {
+      self.repeatLabel.text =
+          NSLocalizedString(self.itemToEdit.repeatType, nil);
+    } else {
+      self.repeatLabel.text = NSLocalizedString(@"Never", nil);
+    }
     if ([self.itemToEdit.repeatType isEqualToString:@"Never"]) {
       self.endAlertSwitch.enabled = NO;
     }
@@ -166,6 +169,9 @@
     if (list.remindTime) {
       [self scheduleNotificaiton:list];
     }
+
+    [unsavedList MR_deleteEntity];
+    unsavedList = nil;
   }
   [[NSManagedObjectContext MR_defaultContext]
       MR_saveToPersistentStoreWithCompletion:nil];
@@ -200,7 +206,6 @@
     self.endAlertSwitch.on = NO;
     self.endAlertSwitch.enabled = NO;
   }
-  unsavedList.hasAlert = [NSNumber numberWithBool:self.alertSwitch.on];
 }
 
 - (IBAction)setEndDate:(id)sender {
@@ -212,7 +217,6 @@
     self.endTimeLabel.text = NSLocalizedString(@"None", nil);
     [self hidePicker:300];
   }
-  unsavedList.hasEndDate = [NSNumber numberWithBool:self.endAlertSwitch.on];
 }
 
 - (void)keyboardWillShow {
@@ -244,8 +248,11 @@
   UILocalNotification *notification = [[UILocalNotification alloc] init];
   notification.alertBody = list.content;
   notification.fireDate = list.remindTime;
+    notification.timeZone = [NSTimeZone defaultTimeZone];
   notification.soundName = UILocalNotificationDefaultSoundName;
   notification.userInfo = @{ @"UUID" : list.itemKey };
+    notification.category = @"listCategory";
+//    notification.applicationIconBadgeNumber = [[UIApplication sharedApplication]applicationIconBadgeNumber] + 1;
   [[UIApplication sharedApplication] scheduleLocalNotification:notification];
 }
 
@@ -323,7 +330,11 @@
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView {
-  unsavedList.content = textView.text;
+    if (self.itemToEdit) {
+        self.itemToEdit.content = textView.text;
+    } else {
+        unsavedList.content = textView.text;
+    }
 }
 
 #pragma mark - UIPickerViewDelegate
@@ -332,13 +343,11 @@
   [self configDateFormatterForDateTimeLabel];
   self.alertTimeLabel.text = [formatter stringFromDate:sender.date];
   self.repeatLabel.textColor = [UIColor blackColor];
-  unsavedList.remindTime = sender.date;
 }
 
 - (IBAction)endDateChanged:(UIDatePicker *)sender {
   [self configDateFormatterForDateLabel];
   self.endTimeLabel.text = [formatter stringFromDate:sender.date];
-  unsavedList.endDate = sender.date;
 }
 
 - (void)showPicker:(NSInteger)tag {
@@ -410,7 +419,6 @@ numberOfRowsInComponent:(NSInteger)component {
     self.endAlertSwitch.enabled = YES;
     self.repeatLabel.textColor = [UIColor blackColor];
   }
-  unsavedList.repeatType = repeat;
 }
 
 @end

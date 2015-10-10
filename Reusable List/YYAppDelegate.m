@@ -18,15 +18,55 @@
 
 @implementation AppDelegate
 
-- (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    [MagicalRecord setupCoreDataStackWithStoreNamed:@"Reusable List"];
-    return YES;
+- (BOOL)application:(UIApplication *)application
+    willFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+  [MagicalRecord setupCoreDataStackWithStoreNamed:@"Reusable List"];
+  return YES;
 }
 
 - (BOOL)application:(UIApplication *)application
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-//  [MagicalRecord setupCoreDataStackWithStoreNamed:@"Reusable List"];
-    [[UIApplication sharedApplication]registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil]];
+  //  [MagicalRecord setupCoreDataStackWithStoreNamed:@"Reusable List"];
+
+  //  UIMutableUserNotificationAction *ok =
+  //      [[UIMutableUserNotificationAction alloc] init];
+  //  ok.identifier = @"ok";
+  //  ok.title = NSLocalizedString(@"OK", nil);
+  //  ok.activationMode = UIUserNotificationActivationModeBackground;
+  //  ok.destructive = NO;
+  //  ok.authenticationRequired = NO;
+
+  UIMutableUserNotificationAction *mark =
+      [[UIMutableUserNotificationAction alloc] init];
+  mark.identifier = @"mark";
+  mark.title = NSLocalizedString(@"Marked as completed", nil);
+  mark.activationMode = UIUserNotificationActivationModeBackground;
+  mark.destructive = NO;
+  mark.authenticationRequired = NO;
+
+  //  UIMutableUserNotificationCategory *category =
+  //      [[UIMutableUserNotificationCategory alloc] init];
+  //  category.identifier = @"listCategory";
+  //  [category setActions:@[ ok, mark ]
+  //            forContext:UIUserNotificationActionContextDefault];
+  //  [category setActions:@[ ok, mark ]
+  //            forContext:UIUserNotificationActionContextMinimal];
+
+  UIMutableUserNotificationCategory *category =
+      [[UIMutableUserNotificationCategory alloc] init];
+  category.identifier = @"listCategory";
+  [category setActions:@[ mark ]
+            forContext:UIUserNotificationActionContextDefault];
+  [category setActions:@[ mark ]
+            forContext:UIUserNotificationActionContextMinimal];
+
+  [[UIApplication sharedApplication]
+      registerUserNotificationSettings:
+          [UIUserNotificationSettings
+              settingsForTypes:UIUserNotificationTypeAlert |
+                               UIUserNotificationTypeBadge |
+                               UIUserNotificationTypeSound
+                    categories:[NSSet setWithArray:@[ category ]]]];
   return YES;
 }
 
@@ -45,8 +85,8 @@
   // application to its current state in case it is terminated later.
   // If your application supports background execution, this method is called
   // instead of applicationWillTerminate: when the user quits.
-    [[NSManagedObjectContext MR_defaultContext]
-     MR_saveToPersistentStoreWithCompletion:nil];
+  [[NSManagedObjectContext MR_defaultContext]
+      MR_saveToPersistentStoreWithCompletion:nil];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
@@ -61,21 +101,37 @@
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
-    [[NSManagedObjectContext MR_defaultContext]
-     MR_saveToPersistentStoreWithCompletion:nil];
+  [[NSManagedObjectContext MR_defaultContext]
+      MR_saveToPersistentStoreWithCompletion:nil];
   [MagicalRecord cleanUp];
 }
 
-- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
-    [[NSNotificationCenter defaultCenter]postNotificationName:@"ListShouldRefresh" object:nil];
+- (void)application:(UIApplication *)application
+    didReceiveLocalNotification:(UILocalNotification *)notification {
+  [[NSNotificationCenter defaultCenter]
+      postNotificationName:@"ListShouldRefresh"
+                    object:nil];
 }
 
-- (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(nonnull NSCoder *)coder {
-    return YES;
+- (void)application:(UIApplication *)application
+    handleActionWithIdentifier:(NSString *)identifier
+          forLocalNotification:(UILocalNotification *)notification
+             completionHandler:(void (^)())completionHandler {
+  if ([identifier isEqualToString:@"mark"]) {
+  }
+  if (completionHandler) {
+    completionHandler();
+  }
 }
 
-- (BOOL)application:(UIApplication *)application shouldRestoreApplicationState:(NSCoder *)coder {
-    return YES;
+- (BOOL)application:(UIApplication *)application
+    shouldSaveApplicationState:(nonnull NSCoder *)coder {
+  return YES;
+}
+
+- (BOOL)application:(UIApplication *)application
+    shouldRestoreApplicationState:(NSCoder *)coder {
+  return YES;
 }
 
 @end

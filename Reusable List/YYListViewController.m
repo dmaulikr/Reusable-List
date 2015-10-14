@@ -33,7 +33,7 @@
                     selector:@selector(keyboardWillShow)
                         name:UIKeyboardWillShowNotification
                       object:nil];
-    
+
   // make textview autoresizing according to it's content
   self.tableView.estimatedRowHeight = 44;
   self.tableView.rowHeight = UITableViewAutomaticDimension;
@@ -117,6 +117,7 @@
 }
 
 - (IBAction)cancel:(id)sender {
+  [self.textView resignFirstResponder];
   [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -175,7 +176,7 @@
   }
   [[NSManagedObjectContext MR_defaultContext]
       MR_saveToPersistentStoreWithCompletion:nil];
-
+  [self.textView resignFirstResponder];
   [self.delegate DismissYYListViewController:self];
 }
 
@@ -248,11 +249,20 @@
   UILocalNotification *notification = [[UILocalNotification alloc] init];
   notification.alertBody = list.content;
   notification.fireDate = list.remindTime;
-    notification.timeZone = [NSTimeZone defaultTimeZone];
+  notification.timeZone = [NSTimeZone defaultTimeZone];
   notification.soundName = UILocalNotificationDefaultSoundName;
   notification.userInfo = @{ @"UUID" : list.itemKey };
-    notification.category = @"listCategory";
-//    notification.applicationIconBadgeNumber = [[UIApplication sharedApplication]applicationIconBadgeNumber] + 1;
+  notification.category = @"listCategory";
+  //    notification.applicationIconBadgeNumber++;
+  if ([list.repeatType isEqualToString:@"Daily"]) {
+    notification.repeatInterval = NSCalendarUnitDay;
+  } else if ([list.repeatType isEqualToString:@"Weekly"]) {
+    notification.repeatInterval = NSCalendarUnitWeekday;
+  } else if ([list.repeatType isEqualToString:@"Monthly"]) {
+    notification.repeatInterval = NSCalendarUnitMonth;
+  } else if ([list.repeatType isEqualToString:@"Yearly"]) {
+    notification.repeatInterval = NSCalendarUnitYear;
+  }
   [[UIApplication sharedApplication] scheduleLocalNotification:notification];
 }
 
@@ -330,11 +340,11 @@
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView {
-    if (self.itemToEdit) {
-        self.itemToEdit.content = textView.text;
-    } else {
-        unsavedList.content = textView.text;
-    }
+  if (self.itemToEdit) {
+    self.itemToEdit.content = textView.text;
+  } else {
+    unsavedList.content = textView.text;
+  }
 }
 
 #pragma mark - UIPickerViewDelegate

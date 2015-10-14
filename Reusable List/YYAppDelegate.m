@@ -28,45 +28,31 @@
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   //  [MagicalRecord setupCoreDataStackWithStoreNamed:@"Reusable List"];
 
-  //  UIMutableUserNotificationAction *ok =
-  //      [[UIMutableUserNotificationAction alloc] init];
-  //  ok.identifier = @"ok";
-  //  ok.title = NSLocalizedString(@"OK", nil);
-  //  ok.activationMode = UIUserNotificationActivationModeBackground;
-  //  ok.destructive = NO;
-  //  ok.authenticationRequired = NO;
-
-  UIMutableUserNotificationAction *mark =
-      [[UIMutableUserNotificationAction alloc] init];
-  mark.identifier = @"mark";
-  mark.title = NSLocalizedString(@"Marked as completed", nil);
-  mark.activationMode = UIUserNotificationActivationModeBackground;
-  mark.destructive = NO;
-  mark.authenticationRequired = NO;
-
-  //  UIMutableUserNotificationCategory *category =
-  //      [[UIMutableUserNotificationCategory alloc] init];
-  //  category.identifier = @"listCategory";
-  //  [category setActions:@[ ok, mark ]
-  //            forContext:UIUserNotificationActionContextDefault];
-  //  [category setActions:@[ ok, mark ]
-  //            forContext:UIUserNotificationActionContextMinimal];
-
-  UIMutableUserNotificationCategory *category =
-      [[UIMutableUserNotificationCategory alloc] init];
-  category.identifier = @"listCategory";
-  [category setActions:@[ mark ]
-            forContext:UIUserNotificationActionContextDefault];
-  [category setActions:@[ mark ]
-            forContext:UIUserNotificationActionContextMinimal];
-
-  [[UIApplication sharedApplication]
-      registerUserNotificationSettings:
-          [UIUserNotificationSettings
-              settingsForTypes:UIUserNotificationTypeAlert |
-                               UIUserNotificationTypeBadge |
-                               UIUserNotificationTypeSound
-                    categories:[NSSet setWithArray:@[ category ]]]];
+    if ([[UIApplication sharedApplication]currentUserNotificationSettings].types == UIUserNotificationTypeNone) {
+        UIMutableUserNotificationAction *mark =
+        [[UIMutableUserNotificationAction alloc] init];
+        mark.identifier = @"mark";
+        mark.title = NSLocalizedString(@"Complete", nil);
+        mark.activationMode = UIUserNotificationActivationModeBackground;
+        mark.destructive = NO;
+        mark.authenticationRequired = NO;
+        
+        UIMutableUserNotificationCategory *category =
+        [[UIMutableUserNotificationCategory alloc] init];
+        category.identifier = @"listCategory";
+        [category setActions:@[ mark ]
+                  forContext:UIUserNotificationActionContextDefault];
+        [category setActions:@[ mark ]
+                  forContext:UIUserNotificationActionContextMinimal];
+        
+        [[UIApplication sharedApplication]
+         registerUserNotificationSettings:
+         [UIUserNotificationSettings
+          settingsForTypes:UIUserNotificationTypeAlert |
+          UIUserNotificationTypeBadge |
+          UIUserNotificationTypeSound
+          categories:[NSSet setWithArray:@[ category ]]]];
+    }
   return YES;
 }
 
@@ -118,6 +104,7 @@
           forLocalNotification:(UILocalNotification *)notification
              completionHandler:(void (^)())completionHandler {
   if ([identifier isEqualToString:@"mark"]) {
+      [[NSNotificationCenter defaultCenter]postNotificationName:@"MarkAsCompleted" object:nil userInfo:@{@"UUID":notification.userInfo[@"UUID"]}];
   }
   if (completionHandler) {
     completionHandler();

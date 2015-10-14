@@ -29,6 +29,10 @@ NSString *const APPVERSION = @"1.0";
                                            selector:@selector(refreshList)
                                                name:@"ListShouldRefresh"
                                              object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(markAsCompleted:)
+                                               name:@"MarkAsCompleted"
+                                             object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -168,6 +172,16 @@ NSString *const APPVERSION = @"1.0";
   [self.tableView reloadData];
 }
 
+- (void)markAsCompleted:(NSString *)UUID {
+  //  YYList *list = [YYList MR_findFirstByAttribute:@"itemKey" withValue:UUID];
+}
+
+- (void)manuallyMarkAsCompleted:(UIButton *)sender {
+  NSString *itemKey = sender.titleLabel.text;
+  YYList *list = [YYList MR_findFirstByAttribute:@"itemKey" withValue:itemKey];
+  NSLog(@"%@", list.content);
+}
+
 - (void)cancelNotification:(YYList *)list {
   for (UILocalNotification *notification in
        [[UIApplication sharedApplication] scheduledLocalNotifications]) {
@@ -245,12 +259,10 @@ NSString *const APPVERSION = @"1.0";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView
-    estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    heightForRowAtIndexPath:(NSIndexPath *)indexPath {
   if (indexPath.section == 0) {
-    self.tableView.estimatedRowHeight = 66;
     return 66;
   } else {
-    self.tableView.estimatedRowHeight = 44;
     return 44;
   }
 }
@@ -263,7 +275,6 @@ NSString *const APPVERSION = @"1.0";
   if (indexPath.section == 0) {
     YYList *list = _listsWithDate[indexPath.row];
     cell.textLabel.text = list.content;
-
     NSString *remindTimeStr = [self formatDetailLabel:list];
     if (list.repeatType && ![list.repeatType isEqualToString:@"Never"]) {
       cell.detailTextLabel.text =
@@ -272,10 +283,23 @@ NSString *const APPVERSION = @"1.0";
     } else {
       cell.detailTextLabel.text = [NSString stringWithString:remindTimeStr];
     }
+    cell.imageView.image = [UIImage imageNamed:@"placeholder"];
+    cell.imageView.userInteractionEnabled = YES;
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.backgroundColor = [UIColor clearColor];
+    [button addTarget:self
+                  action:@selector(manuallyMarkAsCompleted:)
+        forControlEvents:UIControlEventTouchUpInside];
+    button.frame = CGRectMake(0, 0, 40, 40);
+    button.titleLabel.text = list.itemKey;
+    button.titleLabel.hidden = YES;
+    [cell.imageView addSubview:button];
   } else {
     YYList *list = _listsWithoutDate[indexPath.row];
     cell.textLabel.text = list.content;
     cell.detailTextLabel.text = @" ";
+    cell.imageView.image = [UIImage imageNamed:@"transparent"];
+    cell.imageView.userInteractionEnabled = NO;
   }
 
   return cell;
@@ -296,7 +320,7 @@ NSString *const APPVERSION = @"1.0";
       [list MR_deleteEntity];
     } else {
       YYList *list = _listsWithoutDate[indexPath.row];
-      [self cancelNotification:list];
+      //      [self cancelNotification:list];
       [list MR_deleteEntity];
     }
     [[NSManagedObjectContext MR_defaultContext]

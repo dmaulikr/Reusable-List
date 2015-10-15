@@ -27,6 +27,12 @@
 - (BOOL)application:(UIApplication *)application
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   //  [MagicalRecord setupCoreDataStackWithStoreNamed:@"Reusable List"];
+    
+    //clear old notification before first launch
+    if (![[NSUserDefaults standardUserDefaults]boolForKey:@"firstLaunch"]) {
+        [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"firstLaunch"];
+        [[UIApplication sharedApplication]cancelAllLocalNotifications];
+    }
 
     if ([[UIApplication sharedApplication]currentUserNotificationSettings].types == UIUserNotificationTypeNone) {
         UIMutableUserNotificationAction *mark =
@@ -63,6 +69,10 @@
   // and it begins the transition to the background state.
   // Use this method to pause ongoing tasks, disable timers, and throttle down
   // OpenGL ES frame rates. Games should use this method to pause the game.
+    
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName:@"CalculateBadge"
+     object:nil];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
@@ -71,6 +81,7 @@
   // application to its current state in case it is terminated later.
   // If your application supports background execution, this method is called
   // instead of applicationWillTerminate: when the user quits.
+    
   [[NSManagedObjectContext MR_defaultContext]
       MR_saveToPersistentStoreWithCompletion:nil];
 }

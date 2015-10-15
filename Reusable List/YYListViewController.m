@@ -22,17 +22,13 @@
   BOOL dateTimePickerIsShowing;
   BOOL pickerViewIsShowing;
   NSDateFormatter *formatter;
+  NSCalendar *calendar;
   NSString *repeat;    // store choosed picker value
   YYList *unsavedList; // used for saving when app be terminated
 }
 
 - (void)viewDidLoad {
   [super viewDidLoad];
-  NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
-  [defaultCenter addObserver:self
-                    selector:@selector(keyboardWillShow)
-                        name:UIKeyboardWillShowNotification
-                      object:nil];
 
   // make textview autoresizing according to it's content
   self.tableView.estimatedRowHeight = 44;
@@ -56,6 +52,7 @@
 
   formatter = [[NSDateFormatter alloc] init];
   formatter.locale = [NSLocale autoupdatingCurrentLocale];
+  calendar = [NSCalendar autoupdatingCurrentCalendar];
 
   if (!self.itemToEdit) {
     unsavedList = [YYList MR_createEntity];
@@ -66,7 +63,7 @@
   self.pickerView.dataSource = self;
 
   // configure the view
-  if (self.itemToEdit != nil) {
+  if (self.itemToEdit) {
     self.doneButton.enabled = YES;
     self.textView.text = self.itemToEdit.content;
     self.alertSwitch.on = [self.itemToEdit.hasAlert boolValue];
@@ -109,6 +106,14 @@
 
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -117,12 +122,14 @@
 }
 
 - (IBAction)cancel:(id)sender {
+  [unsavedList MR_deleteEntity];
+  unsavedList = nil;
   [self.textView resignFirstResponder];
   [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (IBAction)done:(id)sender {
-  if (self.itemToEdit != nil) {
+  if (self.itemToEdit) {
     self.itemToEdit.content = self.textView.text;
     self.itemToEdit.hasAlert = [NSNumber numberWithBool:self.alertSwitch.on];
     [self configDateFormatterForDateTimeLabel];
@@ -130,26 +137,20 @@
         [formatter dateFromString:self.alertTimeLabel.text];
     if (repeat) {
       self.itemToEdit.repeatType = repeat;
-    } else {
+    } else if (!self.itemToEdit.repeatType) {
       self.itemToEdit.repeatType = @"Never";
     }
     self.itemToEdit.hasEndDate =
         [NSNumber numberWithBool:self.endAlertSwitch.on];
     [self configDateFormatterForDateLabel];
     self.itemToEdit.endDate = [formatter dateFromString:self.endTimeLabel.text];
-    if (self.itemToEdit.remindTime) {
-      self.itemToEdit.timeInterval =
-          [NSNumber numberWithFloat:
-                        [self.itemToEdit.remindTime
-                            timeIntervalSinceDate:self.itemToEdit.dateCreated]];
-    } else {
-      self.itemToEdit.dateCreated = [NSDate date];
-    }
 
     if (self.itemToEdit.remindTime) {
       [self scheduleNotificaiton:self.itemToEdit];
+      [self calculateTimeInterval:self.itemToEdit];
+    } else {
+      self.itemToEdit.dateCreated = [NSDate date];
     }
-
   } else {
     YYList *list = [YYList MR_createEntity];
     list.content = self.textView.text;
@@ -164,18 +165,19 @@
     list.hasEndDate = [NSNumber numberWithBool:self.endAlertSwitch.on];
     [self configDateFormatterForDateLabel];
     list.endDate = [formatter dateFromString:self.endTimeLabel.text];
-    list.timeInterval =
-        [NSNumber numberWithDouble:[list.remindTime timeIntervalSinceNow]];
 
     if (list.remindTime) {
       [self scheduleNotificaiton:list];
+      [self calculateTimeInterval:list];
     }
 
     [unsavedList MR_deleteEntity];
     unsavedList = nil;
   }
+
   [[NSManagedObjectContext MR_defaultContext]
       MR_saveToPersistentStoreWithCompletion:nil];
+
   [self.textView resignFirstResponder];
   [self.delegate DismissYYListViewController:self];
 }
@@ -184,16 +186,31 @@
   [self.textView resignFirstResponder];
   if (self.alertSwitch.on) {
     self.alertTimeLabel.textColor = [UIColor blackColor];
-    if (self.itemToEdit) {
-      NSDate *suggestDate =
-          [NSDate dateWithTimeIntervalSinceNow:[self.itemToEdit.timeInterval
-                                                       floatValue]];
+    if (self.itemToEdit.day || self.itemToEdit.hour || self.itemToEdit.minute) {
+      NSDateComponents *comps = [[NSDateComponents alloc] init];
+      comps.day = self.itemToEdit.day;
+      NSDate *suggestDate = [calendar dateByAddingComponents:comps
+                                                      toDate:[NSDate date]
+                                                     options:0];
+
+      NSUInteger units = NSCalendarUnitYear | NSCalendarUnitMonth |
+                         NSCalendarUnitDay | NSCalendarUnitHour |
+                         NSCalendarUnitMinute;
+      NSDateComponents *comps1 =
+          [calendar components:units fromDate:suggestDate];
+      comps1.hour = self.itemToEdit.hour;
+      comps1.minute = self.itemToEdit.minute;
+
+      NSDate *suggestDateTime = [calendar dateFromComponents:comps1];
+
       [self configDateFormatterForDateTimeLabel];
-      self.alertTimeLabel.text = [formatter stringFromDate:suggestDate];
+      self.alertTimeLabel.text = [formatter stringFromDate:suggestDateTime];
     } else {
       [self configDateFormatterForDateTimeLabel];
-      self.alertTimeLabel.text = [formatter stringFromDate:[NSDate date]];
+      self.alertTimeLabel.text = [formatter
+          stringFromDate:[NSDate date]];
     }
+    self.repeatLabel.textColor = [UIColor blackColor];
   } else {
     self.alertTimeLabel.textColor = [UIColor lightGrayColor];
     self.alertTimeLabel.text = NSLocalizedString(@"None", nil);
@@ -220,6 +237,8 @@
   }
 }
 
+#pragma mark - help methods
+
 - (void)keyboardWillShow {
   [self hidePicker:100];
   [self hidePicker:200];
@@ -245,7 +264,95 @@
   [formatter setTimeStyle:NSDateFormatterNoStyle];
 }
 
+- (void)calculateTimeInterval:(YYList *)list {
+  list.day = [self daysWithinEraFromDate:[NSDate date] toDate:list.remindTime];
+  NSDateComponents *comps =
+      [calendar components:NSCalendarUnitHour | NSCalendarUnitMinute
+                  fromDate:list.remindTime];
+  list.hour = [comps hour];
+  list.minute = [comps minute];
+}
+
+//- (void)scheduleNotificaiton:(YYList *)list {
+//  UILocalNotification *notification = [[UILocalNotification alloc] init];
+//  notification.alertBody = list.content;
+//  notification.fireDate = list.remindTime;
+//  notification.timeZone = [NSTimeZone defaultTimeZone];
+//  notification.soundName = UILocalNotificationDefaultSoundName;
+//  notification.userInfo = @{ @"UUID" : list.itemKey };
+//  notification.category = @"listCategory";
+//  if ([list.repeatType isEqualToString:@"Daily"]) {
+//    notification.repeatInterval = NSCalendarUnitDay;
+//  } else if ([list.repeatType isEqualToString:@"Weekly"]) {
+//    notification.repeatInterval = NSCalendarUnitWeekday;
+//  } else if ([list.repeatType isEqualToString:@"Monthly"]) {
+//    notification.repeatInterval = NSCalendarUnitMonth;
+//  } else if ([list.repeatType isEqualToString:@"Yearly"]) {
+//    notification.repeatInterval = NSCalendarUnitYear;
+//  }else if ([list.repeatType isEqualToString:@"Weekends"]) {
+//      NSDateComponents *comps = [calendar
+//      components:NSCalendarUnitWeekday|NSCalendarUnitHour|NSCalendarUnitMinute
+//      fromDate:list.remindTime];
+//      comps.weekday = 7;
+//      notification.fireDate = [calendar dateFromComponents:comps];
+//      notification.repeatInterval = NSCalendarUnitWeekday;
+//  }
+//  [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+//}
+
 - (void)scheduleNotificaiton:(YYList *)list {
+  if ([list.repeatType isEqualToString:@"Daily"]) {
+    UILocalNotification *notification = [self configureNotification:list];
+    notification.repeatInterval = NSCalendarUnitDay;
+    [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+  } else if ([list.repeatType isEqualToString:@"Weekly"]) {
+    UILocalNotification *notification = [self configureNotification:list];
+    notification.repeatInterval = NSCalendarUnitWeekday;
+    [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+  } else if ([list.repeatType isEqualToString:@"Monthly"]) {
+    UILocalNotification *notification = [self configureNotification:list];
+    notification.repeatInterval = NSCalendarUnitMonth;
+    [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+  } else if ([list.repeatType isEqualToString:@"Yearly"]) {
+    UILocalNotification *notification = [self configureNotification:list];
+    notification.repeatInterval = NSCalendarUnitYear;
+    [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+  } else if ([list.repeatType isEqualToString:@"Weekends"]) {
+    NSDateComponents *comps =
+        [calendar components:NSCalendarUnitWeekday | NSCalendarUnitHour |
+                             NSCalendarUnitMinute
+                    fromDate:list.remindTime];
+    comps.weekday = 7;
+    UILocalNotification *notification1 = [self configureNotification:list];
+    notification1.fireDate = [calendar dateFromComponents:comps];
+    notification1.repeatInterval = NSCalendarUnitWeekday;
+    [[UIApplication sharedApplication] scheduleLocalNotification:notification1];
+
+    comps.weekday = 1;
+    UILocalNotification *notification2 = [self configureNotification:list];
+    notification2.fireDate = [calendar dateFromComponents:comps];
+    notification2.repeatInterval = NSCalendarUnitWeekday;
+    [[UIApplication sharedApplication] scheduleLocalNotification:notification2];
+  } else if ([list.repeatType isEqualToString:@"Workday"]) {
+    NSDateComponents *comps =
+        [calendar components:NSCalendarUnitWeekday | NSCalendarUnitHour |
+                             NSCalendarUnitMinute
+                    fromDate:list.remindTime];
+    for (NSInteger i = 2; i <= 6; i++) {
+      comps.weekday = i;
+      UILocalNotification *notification = [self configureNotification:list];
+      notification.fireDate = [calendar dateFromComponents:comps];
+      notification.repeatInterval = NSCalendarUnitWeekday;
+      [[UIApplication sharedApplication]
+          scheduleLocalNotification:notification];
+    }
+  } else if ([list.repeatType isEqualToString:@"Never"]) {
+    UILocalNotification *notification = [self configureNotification:list];
+    [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+  }
+}
+
+- (UILocalNotification *)configureNotification:(YYList *)list {
   UILocalNotification *notification = [[UILocalNotification alloc] init];
   notification.alertBody = list.content;
   notification.fireDate = list.remindTime;
@@ -253,21 +360,18 @@
   notification.soundName = UILocalNotificationDefaultSoundName;
   notification.userInfo = @{ @"UUID" : list.itemKey };
   notification.category = @"listCategory";
-  //    notification.applicationIconBadgeNumber++;
-  if ([list.repeatType isEqualToString:@"Daily"]) {
-    notification.repeatInterval = NSCalendarUnitDay;
-  } else if ([list.repeatType isEqualToString:@"Weekly"]) {
-    notification.repeatInterval = NSCalendarUnitWeekday;
-  } else if ([list.repeatType isEqualToString:@"Monthly"]) {
-    notification.repeatInterval = NSCalendarUnitMonth;
-  } else if ([list.repeatType isEqualToString:@"Yearly"]) {
-    notification.repeatInterval = NSCalendarUnitYear;
-  }
-  [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+  return notification;
 }
 
-- (void)dealloc {
-  [[NSNotificationCenter defaultCenter] removeObserver:self];
+- (NSInteger)daysWithinEraFromDate:(NSDate *)startDate
+                            toDate:(NSDate *)endDate {
+  NSInteger startDay = [calendar ordinalityOfUnit:NSCalendarUnitDay
+                                           inUnit:NSCalendarUnitEra
+                                          forDate:startDate];
+  NSInteger endDay = [calendar ordinalityOfUnit:NSCalendarUnitDay
+                                         inUnit:NSCalendarUnitEra
+                                        forDate:endDate];
+  return endDay - startDay;
 }
 
 #pragma mark - Table view data source
@@ -326,6 +430,11 @@
 {
   [self.tableView beginUpdates];
   [self.tableView endUpdates];
+  if (self.itemToEdit) {
+    self.itemToEdit.content = textView.text;
+  } else {
+    unsavedList.content = textView.text;
+  }
 }
 
 - (BOOL)textView:(UITextView *)textView
@@ -339,13 +448,13 @@
   return YES;
 }
 
-- (void)textViewDidEndEditing:(UITextView *)textView {
-  if (self.itemToEdit) {
-    self.itemToEdit.content = textView.text;
-  } else {
-    unsavedList.content = textView.text;
-  }
-}
+//- (void)textViewDidEndEditing:(UITextView *)textView {
+//  if (self.itemToEdit) {
+//    self.itemToEdit.content = textView.text;
+//  } else {
+//    unsavedList.content = textView.text;
+//  }
+//}
 
 #pragma mark - UIPickerViewDelegate
 
@@ -372,7 +481,10 @@
     break;
   case 300:
     datePickerIsShowing = YES;
-    self.datePicker.minimumDate = currentDate;
+    [self configDateFormatterForDateTimeLabel];
+    self.datePicker.minimumDate =
+        [[formatter dateFromString:self.alertTimeLabel.text]
+            dateByAddingTimeInterval:24 * 60 * 60];
     break;
   default:
     break;

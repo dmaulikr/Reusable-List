@@ -25,18 +25,35 @@ NSString *const APPVERSION = @"1.0";
 
 - (void)viewDidLoad {
   [super viewDidLoad];
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(refreshList)
-                                               name:@"ListShouldRefresh"
-                                             object:nil];
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(markAsCompleted:)
-                                               name:@"MarkAsCompleted"
-                                             object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
+  NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
+  [defaultCenter addObserver:self
+                    selector:@selector(refreshList)
+                        name:@"ListShouldRefresh"
+                      object:nil];
+  [defaultCenter addObserver:self
+                    selector:@selector(markAsCompleted:)
+                        name:@"MarkAsCompleted"
+                      object:nil];
+  [defaultCenter addObserver:self
+                    selector:@selector(calculateBadge)
+                        name:@"CalculateBadge"
+                      object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+  [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                  name:@"ListShouldRefresh"
+                                                object:nil];
+  [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                  name:@"MarkAsCompleted"
+                                                object:nil];
+  [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                  name:@"CalculateBadge"
+                                                object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -44,8 +61,17 @@ NSString *const APPVERSION = @"1.0";
   // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - help methods
+
 // init the mutablearray, add list and sort
 - (void)classifyLists {
+  NSArray *lists = [YYList MR_findAll];
+  for (YYList *list in lists) {
+    if (!list.content) {
+      [list MR_deleteEntity];
+    }
+  }
+
   NSPredicate *hasRemindFilter =
       [NSPredicate predicateWithFormat:@"remindTime == nil"];
   [_listsWithoutDate removeAllObjects];
@@ -137,7 +163,7 @@ NSString *const APPVERSION = @"1.0";
     MFMailComposeViewController *picker =
         [[MFMailComposeViewController alloc] init];
     picker.mailComposeDelegate = self;
-    [picker setSubject:@"Feedback"];
+    [picker setSubject:@"Reusable List Feedback"];
     [picker
         setToRecipients:[NSArray arrayWithObject:@"reusablelist@gmail.com"]];
     NSString *body =
@@ -180,6 +206,15 @@ NSString *const APPVERSION = @"1.0";
   NSString *itemKey = sender.titleLabel.text;
   YYList *list = [YYList MR_findFirstByAttribute:@"itemKey" withValue:itemKey];
   NSLog(@"%@", list.content);
+}
+
+- (void)calculateBadge {
+  [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+  for (YYList *list in _listsWithDate) {
+    if ([list.remindTime compare:[NSDate date]] != NSOrderedDescending) {
+      [UIApplication sharedApplication].applicationIconBadgeNumber++;
+    }
+  }
 }
 
 - (void)cancelNotification:(YYList *)list {

@@ -18,7 +18,9 @@
 @dynamic dateCreated;
 @dynamic hasAlert;
 @dynamic hasEndDate;
-@dynamic timeInterval;
+@dynamic day;
+@synthesize hour;
+@dynamic minute;
 
 - (void)awakeFromInsert {
   [super awakeFromInsert];

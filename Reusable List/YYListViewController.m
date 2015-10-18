@@ -40,8 +40,6 @@
     @"Never",
     @"Daily",
     @"Weekly",
-    @"Workday",
-    @"Weekends",
     @"Monthly",
     @"Yearly"
   ];
@@ -106,14 +104,18 @@
 
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillShow)
-                                                 name:UIKeyboardWillShowNotification
-                                               object:nil];
+  [[NSNotificationCenter defaultCenter]
+      addObserver:self
+         selector:@selector(keyboardWillShow)
+             name:UIKeyboardWillShowNotification
+           object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+  [[NSNotificationCenter defaultCenter]
+      removeObserver:self
+                name:UIKeyboardWillShowNotification
+              object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -145,6 +147,16 @@
     [self configDateFormatterForDateLabel];
     self.itemToEdit.endDate = [formatter dateFromString:self.endTimeLabel.text];
 
+    for (UILocalNotification *notification in
+         [[UIApplication sharedApplication] scheduledLocalNotifications]) {
+      if ([notification.userInfo[@"UUID"]
+              isEqualToString:self.itemToEdit.itemKey]) {
+        [[UIApplication sharedApplication]
+            cancelLocalNotification:notification];
+        break;
+      }
+    }
+
     if (self.itemToEdit.remindTime) {
       [self scheduleNotificaiton:self.itemToEdit];
       [self calculateTimeInterval:self.itemToEdit];
@@ -165,12 +177,10 @@
     list.hasEndDate = [NSNumber numberWithBool:self.endAlertSwitch.on];
     [self configDateFormatterForDateLabel];
     list.endDate = [formatter dateFromString:self.endTimeLabel.text];
-
     if (list.remindTime) {
       [self scheduleNotificaiton:list];
       [self calculateTimeInterval:list];
     }
-
     [unsavedList MR_deleteEntity];
     unsavedList = nil;
   }
@@ -204,11 +214,14 @@
       NSDate *suggestDateTime = [calendar dateFromComponents:comps1];
 
       [self configDateFormatterForDateTimeLabel];
-      self.alertTimeLabel.text = [formatter stringFromDate:suggestDateTime];
+        if ([suggestDateTime compare:[NSDate date]] == NSOrderedAscending) {
+             self.alertTimeLabel.text = [formatter stringFromDate:[suggestDateTime dateByAddingTimeInterval:24*60*60]];
+        }else {
+            self.alertTimeLabel.text = [formatter stringFromDate:suggestDateTime];
+        }
     } else {
       [self configDateFormatterForDateTimeLabel];
-      self.alertTimeLabel.text = [formatter
-          stringFromDate:[NSDate date]];
+      self.alertTimeLabel.text = [formatter stringFromDate:[NSDate date]];
     }
     self.repeatLabel.textColor = [UIColor blackColor];
   } else {
@@ -273,83 +286,18 @@
   list.minute = [comps minute];
 }
 
-//- (void)scheduleNotificaiton:(YYList *)list {
-//  UILocalNotification *notification = [[UILocalNotification alloc] init];
-//  notification.alertBody = list.content;
-//  notification.fireDate = list.remindTime;
-//  notification.timeZone = [NSTimeZone defaultTimeZone];
-//  notification.soundName = UILocalNotificationDefaultSoundName;
-//  notification.userInfo = @{ @"UUID" : list.itemKey };
-//  notification.category = @"listCategory";
-//  if ([list.repeatType isEqualToString:@"Daily"]) {
-//    notification.repeatInterval = NSCalendarUnitDay;
-//  } else if ([list.repeatType isEqualToString:@"Weekly"]) {
-//    notification.repeatInterval = NSCalendarUnitWeekday;
-//  } else if ([list.repeatType isEqualToString:@"Monthly"]) {
-//    notification.repeatInterval = NSCalendarUnitMonth;
-//  } else if ([list.repeatType isEqualToString:@"Yearly"]) {
-//    notification.repeatInterval = NSCalendarUnitYear;
-//  }else if ([list.repeatType isEqualToString:@"Weekends"]) {
-//      NSDateComponents *comps = [calendar
-//      components:NSCalendarUnitWeekday|NSCalendarUnitHour|NSCalendarUnitMinute
-//      fromDate:list.remindTime];
-//      comps.weekday = 7;
-//      notification.fireDate = [calendar dateFromComponents:comps];
-//      notification.repeatInterval = NSCalendarUnitWeekday;
-//  }
-//  [[UIApplication sharedApplication] scheduleLocalNotification:notification];
-//}
-
 - (void)scheduleNotificaiton:(YYList *)list {
+    UILocalNotification *notification = [self configureNotification:list];
   if ([list.repeatType isEqualToString:@"Daily"]) {
-    UILocalNotification *notification = [self configureNotification:list];
     notification.repeatInterval = NSCalendarUnitDay;
-    [[UIApplication sharedApplication] scheduleLocalNotification:notification];
   } else if ([list.repeatType isEqualToString:@"Weekly"]) {
-    UILocalNotification *notification = [self configureNotification:list];
-    notification.repeatInterval = NSCalendarUnitWeekday;
-    [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+      notification.repeatInterval = NSCalendarUnitWeekOfYear;
   } else if ([list.repeatType isEqualToString:@"Monthly"]) {
-    UILocalNotification *notification = [self configureNotification:list];
     notification.repeatInterval = NSCalendarUnitMonth;
-    [[UIApplication sharedApplication] scheduleLocalNotification:notification];
   } else if ([list.repeatType isEqualToString:@"Yearly"]) {
-    UILocalNotification *notification = [self configureNotification:list];
     notification.repeatInterval = NSCalendarUnitYear;
+  } 
     [[UIApplication sharedApplication] scheduleLocalNotification:notification];
-  } else if ([list.repeatType isEqualToString:@"Weekends"]) {
-    NSDateComponents *comps =
-        [calendar components:NSCalendarUnitWeekday | NSCalendarUnitHour |
-                             NSCalendarUnitMinute
-                    fromDate:list.remindTime];
-    comps.weekday = 7;
-    UILocalNotification *notification1 = [self configureNotification:list];
-    notification1.fireDate = [calendar dateFromComponents:comps];
-    notification1.repeatInterval = NSCalendarUnitWeekday;
-    [[UIApplication sharedApplication] scheduleLocalNotification:notification1];
-
-    comps.weekday = 1;
-    UILocalNotification *notification2 = [self configureNotification:list];
-    notification2.fireDate = [calendar dateFromComponents:comps];
-    notification2.repeatInterval = NSCalendarUnitWeekday;
-    [[UIApplication sharedApplication] scheduleLocalNotification:notification2];
-  } else if ([list.repeatType isEqualToString:@"Workday"]) {
-    NSDateComponents *comps =
-        [calendar components:NSCalendarUnitWeekday | NSCalendarUnitHour |
-                             NSCalendarUnitMinute
-                    fromDate:list.remindTime];
-    for (NSInteger i = 2; i <= 6; i++) {
-      comps.weekday = i;
-      UILocalNotification *notification = [self configureNotification:list];
-      notification.fireDate = [calendar dateFromComponents:comps];
-      notification.repeatInterval = NSCalendarUnitWeekday;
-      [[UIApplication sharedApplication]
-          scheduleLocalNotification:notification];
-    }
-  } else if ([list.repeatType isEqualToString:@"Never"]) {
-    UILocalNotification *notification = [self configureNotification:list];
-    [[UIApplication sharedApplication] scheduleLocalNotification:notification];
-  }
 }
 
 - (UILocalNotification *)configureNotification:(YYList *)list {
@@ -359,7 +307,7 @@
   notification.timeZone = [NSTimeZone defaultTimeZone];
   notification.soundName = UILocalNotificationDefaultSoundName;
   notification.userInfo = @{ @"UUID" : list.itemKey };
-  notification.category = @"listCategory";
+//  notification.category = @"listCategory";
   return notification;
 }
 

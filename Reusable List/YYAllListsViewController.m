@@ -21,141 +21,54 @@ NSString *const APPVERSION = @"1.0";
 @implementation YYAllListsViewController {
   NSMutableArray *_listsWithDate;
   NSMutableArray *_listsWithoutDate;
+  NSCalendar *calendar;
 }
 
 - (void)viewDidLoad {
   [super viewDidLoad];
+  calendar = [NSCalendar autoupdatingCurrentCalendar];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
+  [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
   NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
   [defaultCenter addObserver:self
-                    selector:@selector(refreshList)
-                        name:@"ListShouldRefresh"
+                    selector:@selector(updateTimeLabel:)
+                        name:@"UpdateTimeLabel"
                       object:nil];
-  [defaultCenter addObserver:self
-                    selector:@selector(markAsCompleted:)
-                        name:@"MarkAsCompleted"
-                      object:nil];
+  //  [defaultCenter addObserver:self
+  //                    selector:@selector(markAsCompleted:)
+  //                        name:@"MarkAsCompleted"
+  //                      object:nil];
   [defaultCenter addObserver:self
                     selector:@selector(calculateBadge)
                         name:@"CalculateBadge"
+                      object:nil];
+  [defaultCenter addObserver:self
+                    selector:@selector(refresh)
+                        name:@"RefreshApp"
                       object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
   [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                  name:@"ListShouldRefresh"
+                                                  name:@"UpdateTimeLabel"
                                                 object:nil];
-  [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                  name:@"MarkAsCompleted"
-                                                object:nil];
+  //  [[NSNotificationCenter defaultCenter] removeObserver:self
+  //                                                  name:@"MarkAsCompleted"
+  //                                                object:nil];
   [[NSNotificationCenter defaultCenter] removeObserver:self
                                                   name:@"CalculateBadge"
+                                                object:nil];
+  [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                  name:@"RefreshApp"
                                                 object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
   [super didReceiveMemoryWarning];
   // Dispose of any resources that can be recreated.
-}
-
-#pragma mark - help methods
-
-// init the mutablearray, add list and sort
-- (void)classifyLists {
-  NSArray *lists = [YYList MR_findAll];
-  for (YYList *list in lists) {
-    if (!list.content) {
-      [list MR_deleteEntity];
-    }
-  }
-
-  NSPredicate *hasRemindFilter =
-      [NSPredicate predicateWithFormat:@"remindTime == nil"];
-  [_listsWithoutDate removeAllObjects];
-  _listsWithoutDate = [[YYList MR_findAllSortedBy:@"dateCreated"
-                                        ascending:NO
-                                    withPredicate:hasRemindFilter] mutableCopy];
-
-  NSPredicate *noRemindFilter =
-      [NSPredicate predicateWithFormat:@"remindTime != nil"];
-  [_listsWithDate removeAllObjects];
-  _listsWithDate = [[YYList MR_findAllSortedBy:@"remindTime"
-                                     ascending:YES
-                                 withPredicate:noRemindFilter] mutableCopy];
-}
-
-- (NSString *)formatDetailLabel:(YYList *)list {
-  NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-  formatter.locale = [NSLocale autoupdatingCurrentLocale];
-
-  NSUInteger units =
-      NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay;
-  NSCalendar *calendar = [NSCalendar autoupdatingCurrentCalendar];
-  NSDateComponents *comps1 = [calendar components:units fromDate:[NSDate date]];
-  NSDate *today = [calendar dateFromComponents:comps1];
-  comps1.day += 1;
-  NSDate *tomorrow = [calendar dateFromComponents:comps1];
-  comps1.day += 1;
-  NSDate *dayAfterTomorrow = [calendar dateFromComponents:comps1];
-  NSDateComponents *comps2 =
-      [calendar components:units fromDate:list.remindTime];
-  NSDate *listDateWithDate = [calendar dateFromComponents:comps2];
-  NSDateComponents *comps3 =
-      [calendar components:(NSCalendarUnitHour | NSCalendarUnitMinute)
-                  fromDate:list.remindTime];
-  NSDate *listDateWithTime = [calendar dateFromComponents:comps3];
-
-  if ([listDateWithDate isEqualToDate:today]) {
-    [formatter setDateFormat:@" aaK:mm"];
-    return [NSLocalizedString(@"Today", nil)
-        stringByAppendingString:[formatter stringFromDate:listDateWithTime]];
-  } else if ([listDateWithDate isEqualToDate:tomorrow]) {
-    [formatter setDateFormat:@" aaK:mm"];
-    return [NSLocalizedString(@"Tomorrow", nil)
-        stringByAppendingString:[formatter stringFromDate:listDateWithTime]];
-  } else if ([listDateWithDate isEqualToDate:dayAfterTomorrow]) {
-    [formatter setDateFormat:@" aaK:mm"];
-    return [NSLocalizedString(@"Day after tomorrow", nil)
-        stringByAppendingString:[formatter stringFromDate:listDateWithTime]];
-  } else {
-    [formatter setDateFormat:@"yy/M/d  aaK:mm"];
-    return [formatter stringFromDate:list.remindTime];
-  }
-}
-
-// clear button selector
-- (void)clearAllListsWithoutDate {
-  UIAlertController *alertController = [UIAlertController
-      alertControllerWithTitle:NSLocalizedString(@"Caution", nil)
-                       message:NSLocalizedString(
-                                   @"Do you want to delete all the spare "
-                                   @"lists? This operation cannot be canceled",
-                                   nil)
-                preferredStyle:UIAlertControllerStyleAlert];
-  UIAlertAction *cancel =
-      [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil)
-                               style:UIAlertActionStyleCancel
-                             handler:nil];
-  UIAlertAction *delete = [UIAlertAction
-      actionWithTitle:NSLocalizedString(@"Delete", nil)
-                style:UIAlertActionStyleDestructive
-              handler:^(UIAlertAction *_Nonnull action) {
-                for (YYList *list in _listsWithoutDate) {
-                  [list MR_deleteEntity];
-                }
-                [[NSManagedObjectContext MR_defaultContext]
-                    MR_saveToPersistentStoreWithCompletion:nil];
-                NSIndexSet *indexSet = [[NSIndexSet alloc] initWithIndex:1];
-                [self.tableView
-                      reloadSections:indexSet
-                    withRowAnimation:UITableViewRowAnimationAutomatic];
-              }];
-  [alertController addAction:cancel];
-  [alertController addAction:delete];
-  [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (IBAction)sendFeedback:(id)sender {
@@ -194,18 +107,127 @@ NSString *const APPVERSION = @"1.0";
   [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)refreshList {
-  [self.tableView reloadData];
+#pragma mark - help methods
+// init the mutablearray, add list and sort
+- (void)classifyLists {
+  NSArray *lists = [YYList MR_findAll];
+  for (YYList *list in lists) {
+    if (!list.content) {
+      [list MR_deleteEntity];
+    }
+  }
+
+  NSPredicate *hasRemindFilter =
+      [NSPredicate predicateWithFormat:@"remindTime == nil"];
+  [_listsWithoutDate removeAllObjects];
+  _listsWithoutDate = [[YYList MR_findAllSortedBy:@"dateCreated"
+                                        ascending:NO
+                                    withPredicate:hasRemindFilter] mutableCopy];
+
+  NSPredicate *noRemindFilter =
+      [NSPredicate predicateWithFormat:@"remindTime != nil"];
+  [_listsWithDate removeAllObjects];
+  _listsWithDate = [[YYList MR_findAllSortedBy:@"remindTime"
+                                     ascending:YES
+                                 withPredicate:noRemindFilter] mutableCopy];
 }
 
-- (void)markAsCompleted:(NSString *)UUID {
-  //  YYList *list = [YYList MR_findFirstByAttribute:@"itemKey" withValue:UUID];
+- (NSString *)formatDetailLabel:(YYList *)list {
+  NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+  formatter.locale = [NSLocale autoupdatingCurrentLocale];
+
+  NSUInteger units =
+      NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay;
+  NSDateComponents *comps1 = [calendar components:units fromDate:[NSDate date]];
+  NSDate *today = [calendar dateFromComponents:comps1];
+  comps1.day += 1;
+  NSDate *tomorrow = [calendar dateFromComponents:comps1];
+  comps1.day += 1;
+  NSDate *dayAfterTomorrow = [calendar dateFromComponents:comps1];
+  NSDateComponents *comps2 =
+      [calendar components:units fromDate:list.remindTime];
+  NSDate *listDateWithDate = [calendar dateFromComponents:comps2];
+  NSDateComponents *comps3 =
+      [calendar components:(NSCalendarUnitHour | NSCalendarUnitMinute)
+                  fromDate:list.remindTime];
+  NSDate *listDateWithTime = [calendar dateFromComponents:comps3];
+
+  if ([listDateWithDate isEqualToDate:today]) {
+    [formatter setDateFormat:@" aaK:mm"];
+    return [NSLocalizedString(@"Today", nil)
+        stringByAppendingString:[formatter stringFromDate:listDateWithTime]];
+  } else if ([listDateWithDate isEqualToDate:tomorrow]) {
+    [formatter setDateFormat:@" aaK:mm"];
+    return [NSLocalizedString(@"Tomorrow", nil)
+        stringByAppendingString:[formatter stringFromDate:listDateWithTime]];
+  } else if ([listDateWithDate isEqualToDate:dayAfterTomorrow]) {
+    [formatter setDateFormat:@" aaK:mm"];
+    return [NSLocalizedString(@"Day after tomorrow", nil)
+        stringByAppendingString:[formatter stringFromDate:listDateWithTime]];
+  } else {
+    [formatter setDateFormat:@"yy/M/d  aaK:mm"];
+    return [formatter stringFromDate:list.remindTime];
+  }
 }
+
+- (void)clearAllListsWithoutDate {
+  UIAlertController *alertController = [UIAlertController
+      alertControllerWithTitle:NSLocalizedString(@"Caution", nil)
+                       message:NSLocalizedString(
+                                   @"Do you want to delete all the spare "
+                                   @"lists? This operation cannot be canceled",
+                                   nil)
+                preferredStyle:UIAlertControllerStyleAlert];
+  UIAlertAction *cancel =
+      [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil)
+                               style:UIAlertActionStyleCancel
+                             handler:nil];
+  UIAlertAction *delete = [UIAlertAction
+      actionWithTitle:NSLocalizedString(@"Delete", nil)
+                style:UIAlertActionStyleDestructive
+              handler:^(UIAlertAction *_Nonnull action) {
+                for (YYList *list in _listsWithoutDate) {
+                  [list MR_deleteEntity];
+                }
+                [[NSManagedObjectContext MR_defaultContext]
+                    MR_saveToPersistentStoreWithCompletion:nil];
+                NSIndexSet *indexSet = [[NSIndexSet alloc] initWithIndex:1];
+                [self.tableView
+                      reloadSections:indexSet
+                    withRowAnimation:UITableViewRowAnimationAutomatic];
+              }];
+  [alertController addAction:cancel];
+  [alertController addAction:delete];
+  [self presentViewController:alertController animated:YES completion:nil];
+}
+
+- (void)refresh {
+  for (YYList *list in _listsWithDate) {
+    if ([list.remindTime compare:[NSDate date]] != NSOrderedDescending) {
+      [self cancelNotification:list];
+    }
+  }
+  [self reloadTableViewAndSection];
+}
+
+- (void)updateTimeLabel:(NSNotification *)notification {
+  YYList *list = [self relatedListWithNotification:notification];
+  [self cancelNotification:list];
+  [self reloadTableViewAndSection];
+}
+
+//- (void)markAsCompleted:(NSNotification *)notification {
+//  YYList *list = [self relatedListWithNotification:notification];
+//  [self resetList:list];
+//  [self cancelNotification:list];
+//  [self calculateBadge];
+//}
 
 - (void)manuallyMarkAsCompleted:(UIButton *)sender {
   NSString *itemKey = sender.titleLabel.text;
   YYList *list = [YYList MR_findFirstByAttribute:@"itemKey" withValue:itemKey];
-  NSLog(@"%@", list.content);
+  [self resetList:list];
+  [self cancelNotification:list];
 }
 
 - (void)calculateBadge {
@@ -217,14 +239,90 @@ NSString *const APPVERSION = @"1.0";
   }
 }
 
+- (void)resetList:(YYList *)list {
+  NSDate *nextFireDate = [self nextFireDate:list];
+  if (nextFireDate) {
+    if (![self date:nextFireDate reachEndDate:list.endDate]) {
+      list.remindTime = nextFireDate;
+    }
+  } else {
+    list.remindTime = nil;
+    list.dateCreated = [NSDate date];
+    list.endDate = nil;
+    list.repeatType = @"Never";
+    list.hasAlert = [NSNumber numberWithBool:NO];
+    list.hasEndDate = [NSNumber numberWithBool:NO];
+    [[NSManagedObjectContext MR_defaultContext]
+        MR_saveToPersistentStoreWithCompletion:nil];
+  }
+  [self reloadTableViewAndSection];
+}
+
 - (void)cancelNotification:(YYList *)list {
-  for (UILocalNotification *notification in
-       [[UIApplication sharedApplication] scheduledLocalNotifications]) {
-    if ([notification.userInfo[@"UUID"] isEqualToString:list.itemKey]) {
-      [[UIApplication sharedApplication] cancelLocalNotification:notification];
-      break;
+  NSDate *nextFireDate = [self nextFireDate:list];
+  if (nextFireDate && list.endDate) {
+    if ([self date:nextFireDate reachEndDate:list.endDate]) {
+      for (UILocalNotification *notification in
+           [[UIApplication sharedApplication] scheduledLocalNotifications]) {
+        if ([notification.userInfo[@"UUID"] isEqualToString:list.itemKey]) {
+          [[UIApplication sharedApplication]
+              cancelLocalNotification:notification];
+          break;
+        }
+      }
     }
   }
+}
+
+- (YYList *)relatedListWithNotification:(NSNotification *)notification {
+  NSDictionary *dic = notification.userInfo;
+  NSString *UUID = dic[@"UUID"];
+  YYList *list = [YYList MR_findFirstByAttribute:@"itemKey" withValue:UUID];
+  return list;
+}
+
+- (BOOL)date:(NSDate *)date reachEndDate:(NSDate *)endDate {
+  NSDateComponents *comps = [calendar
+      components:(NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay)
+        fromDate:date];
+  NSDate *newDate = [calendar dateFromComponents:comps];
+  if ([newDate compare:endDate] == NSOrderedDescending) {
+    return YES;
+  }
+  return NO;
+}
+
+- (NSDate *)nextFireDate:(YYList *)list {
+  NSDate *nextFireDate;
+  if ([list.repeatType isEqualToString:@"Daily"]) {
+    nextFireDate = [calendar dateByAddingUnit:NSCalendarUnitDay
+                                        value:1
+                                       toDate:list.remindTime
+                                      options:0];
+  } else if ([list.repeatType isEqualToString:@"Weekly"]) {
+    nextFireDate = [calendar dateByAddingUnit:NSCalendarUnitWeekOfYear
+                                        value:1
+                                       toDate:list.remindTime
+                                      options:0];
+  } else if ([list.repeatType isEqualToString:@"Monthly"]) {
+    nextFireDate = [calendar dateByAddingUnit:NSCalendarUnitMonth
+                                        value:1
+                                       toDate:list.remindTime
+                                      options:0];
+  } else if ([list.repeatType isEqualToString:@"Yearly"]) {
+    nextFireDate = [calendar dateByAddingUnit:NSCalendarUnitYear
+                                        value:1
+                                       toDate:list.remindTime
+                                      options:0];
+  }
+  return nextFireDate;
+}
+
+- (void)reloadTableViewAndSection {
+  [self.tableView reloadData];
+  NSIndexSet *indexSet = [[NSIndexSet alloc] initWithIndex:1];
+  [self.tableView reloadSections:indexSet
+                withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 #pragma mark - Table view data source
@@ -311,6 +409,13 @@ NSString *const APPVERSION = @"1.0";
     YYList *list = _listsWithDate[indexPath.row];
     cell.textLabel.text = list.content;
     NSString *remindTimeStr = [self formatDetailLabel:list];
+
+    if ([list.remindTime compare:[NSDate date]] != NSOrderedDescending) {
+      cell.detailTextLabel.textColor = [UIColor redColor];
+    } else {
+      cell.detailTextLabel.textColor = [UIColor darkGrayColor];
+    }
+
     if (list.repeatType && ![list.repeatType isEqualToString:@"Never"]) {
       cell.detailTextLabel.text =
           [NSString stringWithFormat:@"%@ %@", remindTimeStr,
@@ -351,11 +456,18 @@ NSString *const APPVERSION = @"1.0";
   if (editingStyle == UITableViewCellEditingStyleDelete) {
     if (indexPath.section == 0) {
       YYList *list = _listsWithDate[indexPath.row];
-      [self cancelNotification:list];
+
+      for (UILocalNotification *notification in
+           [[UIApplication sharedApplication] scheduledLocalNotifications]) {
+        if ([notification.userInfo[@"UUID"] isEqualToString:list.itemKey]) {
+          [[UIApplication sharedApplication]
+              cancelLocalNotification:notification];
+          break;
+        }
+      }
       [list MR_deleteEntity];
     } else {
       YYList *list = _listsWithoutDate[indexPath.row];
-      //      [self cancelNotification:list];
       [list MR_deleteEntity];
     }
     [[NSManagedObjectContext MR_defaultContext]
@@ -383,13 +495,10 @@ NSString *const APPVERSION = @"1.0";
 
 #pragma mark - YYListViewControllerDelegate
 - (void)DismissYYListViewController:(YYListViewController *)controller {
-  [self dismissViewControllerAnimated:
-            YES completion:^{
-    [self.tableView reloadData];
-    NSIndexSet *indexSet = [[NSIndexSet alloc] initWithIndex:1];
-    [self.tableView reloadSections:indexSet
-                  withRowAnimation:UITableViewRowAnimationAutomatic];
-  }];
+  [self dismissViewControllerAnimated:YES
+                           completion:^{
+                             [self reloadTableViewAndSection];
+                           }];
 }
 
 @end

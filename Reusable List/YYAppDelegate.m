@@ -27,38 +27,47 @@
 - (BOOL)application:(UIApplication *)application
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   //  [MagicalRecord setupCoreDataStackWithStoreNamed:@"Reusable List"];
-    
-    //clear old notification before first launch
-    if (![[NSUserDefaults standardUserDefaults]boolForKey:@"firstLaunch"]) {
-        [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"firstLaunch"];
-        [[UIApplication sharedApplication]cancelAllLocalNotifications];
-    }
 
-    if ([[UIApplication sharedApplication]currentUserNotificationSettings].types == UIUserNotificationTypeNone) {
-        UIMutableUserNotificationAction *mark =
-        [[UIMutableUserNotificationAction alloc] init];
-        mark.identifier = @"mark";
-        mark.title = NSLocalizedString(@"Complete", nil);
-        mark.activationMode = UIUserNotificationActivationModeBackground;
-        mark.destructive = NO;
-        mark.authenticationRequired = NO;
-        
-        UIMutableUserNotificationCategory *category =
-        [[UIMutableUserNotificationCategory alloc] init];
-        category.identifier = @"listCategory";
-        [category setActions:@[ mark ]
-                  forContext:UIUserNotificationActionContextDefault];
-        [category setActions:@[ mark ]
-                  forContext:UIUserNotificationActionContextMinimal];
-        
-        [[UIApplication sharedApplication]
-         registerUserNotificationSettings:
-         [UIUserNotificationSettings
-          settingsForTypes:UIUserNotificationTypeAlert |
-          UIUserNotificationTypeBadge |
-          UIUserNotificationTypeSound
-          categories:[NSSet setWithArray:@[ category ]]]];
-    }
+  // clear old notification before first launch
+  if (![[NSUserDefaults standardUserDefaults] boolForKey:@"firstLaunch"]) {
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstLaunch"];
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];
+  }
+
+  if ([[UIApplication sharedApplication] currentUserNotificationSettings]
+          .types == UIUserNotificationTypeNone) {
+//    UIMutableUserNotificationAction *mark =
+//        [[UIMutableUserNotificationAction alloc] init];
+//    mark.identifier = @"mark";
+//    mark.title = NSLocalizedString(@"Complete", nil);
+//    mark.activationMode = UIUserNotificationActivationModeBackground;
+//    mark.destructive = NO;
+//    mark.authenticationRequired = NO;
+//
+//    UIMutableUserNotificationCategory *category =
+//        [[UIMutableUserNotificationCategory alloc] init];
+//    category.identifier = @"listCategory";
+//    [category setActions:@[ mark ]
+//              forContext:UIUserNotificationActionContextDefault];
+//    [category setActions:@[ mark ]
+//              forContext:UIUserNotificationActionContextMinimal];
+
+//    [[UIApplication sharedApplication]
+//        registerUserNotificationSettings:
+//            [UIUserNotificationSettings
+//                settingsForTypes:UIUserNotificationTypeAlert |
+//                                 UIUserNotificationTypeBadge |
+//                                 UIUserNotificationTypeSound
+//                      categories:[NSSet setWithArray:@[ category ]]]];
+      
+      [[UIApplication sharedApplication]
+       registerUserNotificationSettings:
+       [UIUserNotificationSettings
+        settingsForTypes:UIUserNotificationTypeAlert |
+        UIUserNotificationTypeBadge |
+        UIUserNotificationTypeSound
+        categories:nil]];
+  }
   return YES;
 }
 
@@ -69,10 +78,9 @@
   // and it begins the transition to the background state.
   // Use this method to pause ongoing tasks, disable timers, and throttle down
   // OpenGL ES frame rates. Games should use this method to pause the game.
-    
-    [[NSNotificationCenter defaultCenter]
-     postNotificationName:@"CalculateBadge"
-     object:nil];
+
+  [[NSNotificationCenter defaultCenter] postNotificationName:@"CalculateBadge"
+                                                      object:nil];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
@@ -81,7 +89,7 @@
   // application to its current state in case it is terminated later.
   // If your application supports background execution, this method is called
   // instead of applicationWillTerminate: when the user quits.
-    
+
   [[NSManagedObjectContext MR_defaultContext]
       MR_saveToPersistentStoreWithCompletion:nil];
 }
@@ -95,6 +103,11 @@
   // Restart any tasks that were paused (or not yet started) while the
   // application was inactive. If the application was previously in the
   // background, optionally refresh the user interface.
+    
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName:@"RefreshApp"
+     object:nil];
+    
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
@@ -106,21 +119,29 @@
 - (void)application:(UIApplication *)application
     didReceiveLocalNotification:(UILocalNotification *)notification {
   [[NSNotificationCenter defaultCenter]
-      postNotificationName:@"ListShouldRefresh"
-                    object:nil];
+      postNotificationName:@"UpdateTimeLabel"
+                    object:nil
+                  userInfo:@{
+                    @"UUID" : notification.userInfo[@"UUID"]
+                  }];
 }
 
-- (void)application:(UIApplication *)application
-    handleActionWithIdentifier:(NSString *)identifier
-          forLocalNotification:(UILocalNotification *)notification
-             completionHandler:(void (^)())completionHandler {
-  if ([identifier isEqualToString:@"mark"]) {
-      [[NSNotificationCenter defaultCenter]postNotificationName:@"MarkAsCompleted" object:nil userInfo:@{@"UUID":notification.userInfo[@"UUID"]}];
-  }
-  if (completionHandler) {
-    completionHandler();
-  }
-}
+//- (void)application:(UIApplication *)application
+//    handleActionWithIdentifier:(NSString *)identifier
+//          forLocalNotification:(UILocalNotification *)notification
+//             completionHandler:(void (^)())completionHandler {
+//  if ([identifier isEqualToString:@"mark"]) {
+//    [[NSNotificationCenter defaultCenter]
+//        postNotificationName:@"MarkAsCompleted"
+//                      object:nil
+//                    userInfo:@{
+//                      @"UUID" : notification.userInfo[@"UUID"]
+//                    }];
+//  }
+//  if (completionHandler) {
+//    completionHandler();
+//  }
+//}
 
 - (BOOL)application:(UIApplication *)application
     shouldSaveApplicationState:(nonnull NSCoder *)coder {

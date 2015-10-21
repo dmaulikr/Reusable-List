@@ -30,19 +30,29 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
 
+  // appearance
+  UIColor *backgroundColor = [UIColor colorWithHexString:@"#346888"];
+  NSArray *colors = @[ backgroundColor, [UIColor flatMintColorDark] ];
+  self.tableView.backgroundColor = [UIColor
+      colorWithGradientStyle:UIGradientStyleTopToBottom
+                   withFrame:CGRectMake(0, 0, self.tableView.bounds.size.width,
+                                        self.tableView.bounds.size.height)
+                   andColors:colors];
+  [self.navigationController.navigationBar setBarTintColor:backgroundColor];
+  [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+  self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
+  self.navigationController.navigationBar.translucent = NO;
+  self.textView.backgroundColor = [UIColor clearColor];
+  [self changeDatePickerTextColor:self.dateTimePicker];
+  [self changeDatePickerTextColor:self.datePicker];
+
   // make textview autoresizing according to it's content
   self.tableView.estimatedRowHeight = 44;
   self.tableView.rowHeight = UITableViewAutomaticDimension;
   self.textView.textContainerInset = UIEdgeInsetsMake(12, 12, 0, 12);
 
   // init private variables
-  _repeatTypeArray = @[
-    @"Never",
-    @"Daily",
-    @"Weekly",
-    @"Monthly",
-    @"Yearly"
-  ];
+  _repeatTypeArray = @[ @"Never", @"Daily", @"Weekly", @"Monthly", @"Yearly" ];
   _pickerArray = @[ @100, @200, @300 ];
   datePickerIsShowing = NO;
   dateTimePickerIsShowing = NO;
@@ -66,13 +76,13 @@
     self.textView.text = self.itemToEdit.content;
     self.alertSwitch.on = [self.itemToEdit.hasAlert boolValue];
     if (self.alertSwitch.on) {
-      self.alertTimeLabel.textColor = [UIColor blackColor];
+      self.alertTimeLabel.textColor = [UIColor whiteColor];
     }
     if (self.itemToEdit.remindTime) {
       [self configDateFormatterForDateTimeLabel];
       self.alertTimeLabel.text =
           [formatter stringFromDate:self.itemToEdit.remindTime];
-      self.repeatLabel.textColor = [UIColor blackColor];
+      self.repeatLabel.textColor = [UIColor whiteColor];
     } else {
       self.alertTimeLabel.text = NSLocalizedString(@"None", nil);
     }
@@ -87,7 +97,7 @@
     }
     self.endAlertSwitch.on = [self.itemToEdit.hasEndDate boolValue];
     if (self.endAlertSwitch.on) {
-      self.endTimeLabel.textColor = [UIColor blackColor];
+      self.endTimeLabel.textColor = [UIColor whiteColor];
     }
     if (self.itemToEdit.endDate) {
       [self configDateFormatterForDateLabel];
@@ -195,7 +205,7 @@
 - (IBAction)setAlert:(id)sender {
   [self.textView resignFirstResponder];
   if (self.alertSwitch.on) {
-    self.alertTimeLabel.textColor = [UIColor blackColor];
+    self.alertTimeLabel.textColor = [UIColor whiteColor];
     if (self.itemToEdit.day || self.itemToEdit.hour || self.itemToEdit.minute) {
       NSDateComponents *comps = [[NSDateComponents alloc] init];
       comps.day = self.itemToEdit.day;
@@ -214,16 +224,18 @@
       NSDate *suggestDateTime = [calendar dateFromComponents:comps1];
 
       [self configDateFormatterForDateTimeLabel];
-        if ([suggestDateTime compare:[NSDate date]] == NSOrderedAscending) {
-             self.alertTimeLabel.text = [formatter stringFromDate:[suggestDateTime dateByAddingTimeInterval:24*60*60]];
-        }else {
-            self.alertTimeLabel.text = [formatter stringFromDate:suggestDateTime];
-        }
+      if ([suggestDateTime compare:[NSDate date]] == NSOrderedAscending) {
+        self.alertTimeLabel.text = [formatter
+            stringFromDate:[suggestDateTime
+                               dateByAddingTimeInterval:24 * 60 * 60]];
+      } else {
+        self.alertTimeLabel.text = [formatter stringFromDate:suggestDateTime];
+      }
     } else {
       [self configDateFormatterForDateTimeLabel];
       self.alertTimeLabel.text = [formatter stringFromDate:[NSDate date]];
     }
-    self.repeatLabel.textColor = [UIColor blackColor];
+    self.repeatLabel.textColor = [UIColor whiteColor];
   } else {
     self.alertTimeLabel.textColor = [UIColor lightGrayColor];
     self.alertTimeLabel.text = NSLocalizedString(@"None", nil);
@@ -242,7 +254,7 @@
 - (IBAction)setEndDate:(id)sender {
   [self.textView resignFirstResponder];
   if (self.endAlertSwitch.on) {
-    self.endTimeLabel.textColor = [UIColor blackColor];
+    self.endTimeLabel.textColor = [UIColor whiteColor];
   } else {
     self.endTimeLabel.textColor = [UIColor lightGrayColor];
     self.endTimeLabel.text = NSLocalizedString(@"None", nil);
@@ -251,6 +263,18 @@
 }
 
 #pragma mark - help methods
+
+- (void)changeDatePickerTextColor:(UIDatePicker *)picker {
+  [picker setValue:[UIColor whiteColor] forKeyPath:@"textColor"];
+  SEL selector = NSSelectorFromString(@"setHighlightsToday:");
+  NSInvocation *invocation = [NSInvocation
+      invocationWithMethodSignature:
+          [UIDatePicker instanceMethodSignatureForSelector:selector]];
+  BOOL no = NO;
+  [invocation setSelector:selector];
+  [invocation setArgument:&no atIndex:2];
+  [invocation invokeWithTarget:picker];
+}
 
 - (void)keyboardWillShow {
   [self hidePicker:100];
@@ -287,17 +311,17 @@
 }
 
 - (void)scheduleNotificaiton:(YYList *)list {
-    UILocalNotification *notification = [self configureNotification:list];
+  UILocalNotification *notification = [self configureNotification:list];
   if ([list.repeatType isEqualToString:@"Daily"]) {
     notification.repeatInterval = NSCalendarUnitDay;
   } else if ([list.repeatType isEqualToString:@"Weekly"]) {
-      notification.repeatInterval = NSCalendarUnitWeekOfYear;
+    notification.repeatInterval = NSCalendarUnitWeekOfYear;
   } else if ([list.repeatType isEqualToString:@"Monthly"]) {
     notification.repeatInterval = NSCalendarUnitMonth;
   } else if ([list.repeatType isEqualToString:@"Yearly"]) {
     notification.repeatInterval = NSCalendarUnitYear;
-  } 
-    [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+  }
+  [[UIApplication sharedApplication] scheduleLocalNotification:notification];
 }
 
 - (UILocalNotification *)configureNotification:(YYList *)list {
@@ -307,7 +331,7 @@
   notification.timeZone = [NSTimeZone defaultTimeZone];
   notification.soundName = UILocalNotificationDefaultSoundName;
   notification.userInfo = @{ @"UUID" : list.itemKey };
-//  notification.category = @"listCategory";
+  //  notification.category = @"listCategory";
   return notification;
 }
 
@@ -337,6 +361,12 @@
     }
   }
   return height;
+}
+
+- (void)tableView:(UITableView *)tableView
+  willDisplayCell:(nonnull UITableViewCell *)cell
+forRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
+  cell.backgroundColor = [UIColor clearColor];
 }
 
 - (void)tableView:(UITableView *)tableView
@@ -378,6 +408,7 @@
 {
   [self.tableView beginUpdates];
   [self.tableView endUpdates];
+  self.doneButton.enabled = (textView.text.length > 0);
   if (self.itemToEdit) {
     self.itemToEdit.content = textView.text;
   } else {
@@ -388,7 +419,6 @@
 - (BOOL)textView:(UITextView *)textView
     shouldChangeTextInRange:(NSRange)range
             replacementText:(NSString *)text {
-  self.doneButton.enabled = (text.length > 0);
   if ([text isEqualToString:@"\n"]) {
     [textView resignFirstResponder];
     return NO;
@@ -396,20 +426,12 @@
   return YES;
 }
 
-//- (void)textViewDidEndEditing:(UITextView *)textView {
-//  if (self.itemToEdit) {
-//    self.itemToEdit.content = textView.text;
-//  } else {
-//    unsavedList.content = textView.text;
-//  }
-//}
-
 #pragma mark - UIPickerViewDelegate
 
 - (IBAction)alertTimeChanged:(UIDatePicker *)sender {
   [self configDateFormatterForDateTimeLabel];
   self.alertTimeLabel.text = [formatter stringFromDate:sender.date];
-  self.repeatLabel.textColor = [UIColor blackColor];
+  self.repeatLabel.textColor = [UIColor whiteColor];
 }
 
 - (IBAction)endDateChanged:(UIDatePicker *)sender {
@@ -474,6 +496,24 @@ numberOfRowsInComponent:(NSInteger)component {
   return NSLocalizedString([_repeatTypeArray objectAtIndex:row], nil);
 }
 
+- (UIView *)pickerView:(UIPickerView *)pickerView
+            viewForRow:(NSInteger)row
+          forComponent:(NSInteger)component
+           reusingView:(UIView *)view {
+  UILabel *pickerLabel = (UILabel *)view;
+  if (!pickerLabel) {
+    pickerLabel = [[UILabel alloc] init];
+    pickerLabel.textColor = [UIColor whiteColor];
+    pickerLabel.textAlignment = NSTextAlignmentCenter;
+    pickerLabel.backgroundColor = [UIColor clearColor];
+    pickerLabel.adjustsFontSizeToFitWidth = YES;
+    pickerLabel.font = [UIFont systemFontOfSize:22];
+  }
+  pickerLabel.text =
+      [self pickerView:pickerView titleForRow:row forComponent:component];
+  return pickerLabel;
+}
+
 - (void)pickerView:(UIPickerView *)pickerView
       didSelectRow:(NSInteger)row
        inComponent:(NSInteger)component {
@@ -487,7 +527,7 @@ numberOfRowsInComponent:(NSInteger)component {
     self.endTimeLabel.text = NSLocalizedString(@"None", nil);
   } else {
     self.endAlertSwitch.enabled = YES;
-    self.repeatLabel.textColor = [UIColor blackColor];
+    self.repeatLabel.textColor = [UIColor whiteColor];
   }
 }
 

@@ -22,16 +22,32 @@ NSString *const APPVERSION = @"1.0";
   NSMutableArray *_listsWithDate;
   NSMutableArray *_listsWithoutDate;
   NSCalendar *calendar;
+  UIColor *backgroundColor;
 }
 
 - (void)viewDidLoad {
   [super viewDidLoad];
+
+  backgroundColor = [UIColor colorWithHexString:@"#346888"];
+  NSArray *colors = @[ backgroundColor, [UIColor flatMintColorDark] ];
+  self.tableView.backgroundColor = [UIColor
+      colorWithGradientStyle:UIGradientStyleTopToBottom
+                   withFrame:CGRectMake(0, 0, self.tableView.bounds.size.width,
+                                        self.tableView.bounds.size.height)
+                   andColors:colors];
+  [self.navigationController.navigationBar setBarTintColor:backgroundColor];
+  [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+  self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
+  self.navigationController.navigationBar.translucent = NO;
   calendar = [NSCalendar autoupdatingCurrentCalendar];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+  return UIStatusBarStyleLightContent;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
-  [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
   NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
   [defaultCenter addObserver:self
                     selector:@selector(updateTimeLabel:)
@@ -224,6 +240,9 @@ NSString *const APPVERSION = @"1.0";
 //}
 
 - (void)manuallyMarkAsCompleted:(UIButton *)sender {
+  [UIApplication sharedApplication].applicationIconBadgeNumber = 1;
+  [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+
   NSString *itemKey = sender.titleLabel.text;
   YYList *list = [YYList MR_findFirstByAttribute:@"itemKey" withValue:itemKey];
   [self resetList:list];
@@ -244,18 +263,24 @@ NSString *const APPVERSION = @"1.0";
   if (nextFireDate) {
     if (![self date:nextFireDate reachEndDate:list.endDate]) {
       list.remindTime = nextFireDate;
+    } else {
+      [self removeListInfomation:list];
     }
   } else {
-    list.remindTime = nil;
-    list.dateCreated = [NSDate date];
-    list.endDate = nil;
-    list.repeatType = @"Never";
-    list.hasAlert = [NSNumber numberWithBool:NO];
-    list.hasEndDate = [NSNumber numberWithBool:NO];
-    [[NSManagedObjectContext MR_defaultContext]
-        MR_saveToPersistentStoreWithCompletion:nil];
+    [self removeListInfomation:list];
   }
   [self reloadTableViewAndSection];
+}
+
+- (void)removeListInfomation:(YYList *)list {
+  list.remindTime = nil;
+  list.dateCreated = [NSDate date];
+  list.endDate = nil;
+  list.repeatType = @"Never";
+  list.hasAlert = [NSNumber numberWithBool:NO];
+  list.hasEndDate = [NSNumber numberWithBool:NO];
+  [[NSManagedObjectContext MR_defaultContext]
+      MR_saveToPersistentStoreWithCompletion:nil];
 }
 
 - (void)cancelNotification:(YYList *)list {
@@ -347,19 +372,20 @@ NSString *const APPVERSION = @"1.0";
     return nil;
   }
   UIView *headerView = [[UIView alloc]
-      initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 22)];
-  headerView.backgroundColor = [UIColor colorWithHexString:@"#F7F7F7"];
+      initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 33)];
+  headerView.backgroundColor = [UIColor clearColor];
 
   UILabel *headerLabel =
       [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 100, 22)];
   headerLabel.text = NSLocalizedString(@"Spare Lists", nil);
+  headerLabel.textColor = [UIColor whiteColor];
   headerLabel.font = [UIFont systemFontOfSize:14];
   [headerView addSubview:headerLabel];
 
   UIButton *headerButton = [UIButton buttonWithType:UIButtonTypeCustom];
   [headerButton setTitle:NSLocalizedString(@"Delete All", nil)
                 forState:UIControlStateNormal];
-  [headerButton setTitleColor:[UIColor colorWithHexString:@"#0C7EFB"]
+  [headerButton setTitleColor:[UIColor whiteColor]
                      forState:UIControlStateNormal];
   headerButton.titleLabel.font = [UIFont systemFontOfSize:14];
   headerButton.contentHorizontalAlignment =
@@ -391,39 +417,68 @@ NSString *const APPVERSION = @"1.0";
   }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView
-    heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-  if (indexPath.section == 0) {
-    return 66;
-  } else {
-    return 44;
-  }
-}
+//- (UITableViewCell *)tableView:(UITableView *)tableView
+//         cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+//  UITableViewCell *cell =
+//      [tableView dequeueReusableCellWithIdentifier:@"listCell"
+//                                      forIndexPath:indexPath];
+//  cell.backgroundColor = [UIColor clearColor];
+//  cell.textLabel.textColor = [UIColor whiteColor];
+//  cell.detailTextLabel.textColor = [UIColor colorWithWhite:1.0 alpha:0.7];
+//
+//  if (indexPath.section == 0) {
+//    YYList *list = _listsWithDate[indexPath.row];
+//    cell.textLabel.text = list.content;
+//    NSString *remindTimeStr = [self formatDetailLabel:list];
+//
+//    if ([list.remindTime compare:[NSDate date]] != NSOrderedDescending) {
+//      cell.detailTextLabel.textColor =
+//          [[UIColor colorWithHexString:@"#F5675D"] lightenByPercentage:0.2];
+//    } else {
+//      cell.detailTextLabel.textColor = [UIColor colorWithWhite:1.0 alpha:0.7];
+//    }
+//
+//    if (list.repeatType && ![list.repeatType isEqualToString:@"Never"]) {
+//      cell.detailTextLabel.text =
+//          [NSString stringWithFormat:@"%@ %@", remindTimeStr,
+//                                     NSLocalizedString(list.repeatType, nil)];
+//    } else {
+//      cell.detailTextLabel.text = [NSString stringWithString:remindTimeStr];
+//    }
+//    cell.imageView.image = [UIImage imageNamed:@"MarkBtn"];
+//    cell.imageView.userInteractionEnabled = YES;
+//    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+//    button.backgroundColor = [UIColor clearColor];
+//    [button addTarget:self
+//                  action:@selector(manuallyMarkAsCompleted:)
+//        forControlEvents:UIControlEventTouchUpInside];
+//    button.frame = CGRectMake(0, 0, 40, 40);
+//    button.titleLabel.text = list.itemKey;
+//    button.titleLabel.hidden = YES;
+//    [cell.imageView addSubview:button];
+//  } else {
+//    YYList *list = _listsWithoutDate[indexPath.row];
+//    cell.textLabel.text = list.content;
+//    cell.detailTextLabel.text = @" ";
+//    cell.imageView.image = [UIImage imageNamed:@"transparent"];
+//    cell.imageView.userInteractionEnabled = NO;
+//  }
+//
+//  return cell;
+//}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-  UITableViewCell *cell =
-      [tableView dequeueReusableCellWithIdentifier:@"listCell"
-                                      forIndexPath:indexPath];
   if (indexPath.section == 0) {
+    UITableViewCell *cell =
+        [tableView dequeueReusableCellWithIdentifier:@"firstSectionCell"
+                                        forIndexPath:indexPath];
     YYList *list = _listsWithDate[indexPath.row];
+
+    cell.backgroundColor = [UIColor clearColor];
+    cell.textLabel.textColor = [UIColor whiteColor];
     cell.textLabel.text = list.content;
-    NSString *remindTimeStr = [self formatDetailLabel:list];
-
-    if ([list.remindTime compare:[NSDate date]] != NSOrderedDescending) {
-      cell.detailTextLabel.textColor = [UIColor redColor];
-    } else {
-      cell.detailTextLabel.textColor = [UIColor darkGrayColor];
-    }
-
-    if (list.repeatType && ![list.repeatType isEqualToString:@"Never"]) {
-      cell.detailTextLabel.text =
-          [NSString stringWithFormat:@"%@ %@", remindTimeStr,
-                                     NSLocalizedString(list.repeatType, nil)];
-    } else {
-      cell.detailTextLabel.text = [NSString stringWithString:remindTimeStr];
-    }
-    cell.imageView.image = [UIImage imageNamed:@"placeholder"];
+    cell.detailTextLabel.textColor = [UIColor colorWithWhite:1.0 alpha:0.7];
     cell.imageView.userInteractionEnabled = YES;
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.backgroundColor = [UIColor clearColor];
@@ -434,15 +489,35 @@ NSString *const APPVERSION = @"1.0";
     button.titleLabel.text = list.itemKey;
     button.titleLabel.hidden = YES;
     [cell.imageView addSubview:button];
-  } else {
-    YYList *list = _listsWithoutDate[indexPath.row];
-    cell.textLabel.text = list.content;
-    cell.detailTextLabel.text = @" ";
-    cell.imageView.image = [UIImage imageNamed:@"transparent"];
-    cell.imageView.userInteractionEnabled = NO;
-  }
 
-  return cell;
+    NSString *remindTimeStr = [self formatDetailLabel:list];
+    if ([list.remindTime compare:[NSDate date]] != NSOrderedDescending) {
+      cell.detailTextLabel.textColor =
+          [[UIColor colorWithHexString:@"#F5675D"] lightenByPercentage:0.2];
+    } else {
+      cell.detailTextLabel.textColor = [UIColor colorWithWhite:1.0 alpha:0.7];
+    }
+
+    if (list.repeatType && ![list.repeatType isEqualToString:@"Never"]) {
+      cell.detailTextLabel.text =
+          [NSString stringWithFormat:@"%@ %@", remindTimeStr,
+                                     NSLocalizedString(list.repeatType, nil)];
+    } else {
+      cell.detailTextLabel.text = [NSString stringWithString:remindTimeStr];
+    }
+    return cell;
+
+  } else {
+    UITableViewCell *cell =
+        [tableView dequeueReusableCellWithIdentifier:@"secondSectionCell"
+                                        forIndexPath:indexPath];
+    YYList *list = _listsWithoutDate[indexPath.row];
+    cell.backgroundColor = [UIColor clearColor];
+    cell.textLabel.textColor = [UIColor whiteColor];
+    cell.textLabel.text = list.content;
+    cell.imageView.userInteractionEnabled = NO;
+    return cell;
+  }
 }
 
 - (BOOL)tableView:(UITableView *)tableView
@@ -466,18 +541,34 @@ NSString *const APPVERSION = @"1.0";
         }
       }
       [list MR_deleteEntity];
+      [[NSManagedObjectContext MR_defaultContext]
+          MR_saveToPersistentStoreWithCompletion:nil];
+      [tableView deleteRowsAtIndexPaths:@[ indexPath ]
+                       withRowAnimation:UITableViewRowAnimationFade];
     } else {
       YYList *list = _listsWithoutDate[indexPath.row];
       [list MR_deleteEntity];
+      [[NSManagedObjectContext MR_defaultContext]
+          MR_saveToPersistentStoreWithCompletion:nil];
+      [tableView deleteRowsAtIndexPaths:@[ indexPath ]
+                       withRowAnimation:UITableViewRowAnimationFade];
+      NSIndexSet *indexSet = [[NSIndexSet alloc] initWithIndex:1];
+      [self.tableView reloadSections:indexSet
+                    withRowAnimation:UITableViewRowAnimationAutomatic];
     }
-    [[NSManagedObjectContext MR_defaultContext]
-        MR_saveToPersistentStoreWithCompletion:nil];
-    [tableView deleteRowsAtIndexPaths:@[ indexPath ]
-                     withRowAnimation:UITableViewRowAnimationFade];
   }
 }
 
 #pragma mark - Navigation
+- (void)tableView:(UITableView *)tableView
+    didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+  if (indexPath.section == 0) {
+    [self performSegueWithIdentifier:@"EditList" sender:self];
+  } else {
+    [self performSegueWithIdentifier:@"EditSpareList" sender:self];
+  }
+}
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
   UINavigationController *navController = segue.destinationViewController;
   YYListViewController *controller =
@@ -485,11 +576,10 @@ NSString *const APPVERSION = @"1.0";
   controller.delegate = self;
   if ([segue.identifier isEqualToString:@"EditList"]) {
     NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
-    if (indexPath.section == 0) {
-      controller.itemToEdit = _listsWithDate[indexPath.row];
-    } else {
-      controller.itemToEdit = _listsWithoutDate[indexPath.row];
-    }
+    controller.itemToEdit = _listsWithDate[indexPath.row];
+  } else if ([segue.identifier isEqualToString:@"EditSpareList"]) {
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
+    controller.itemToEdit = _listsWithoutDate[indexPath.row];
   }
 }
 

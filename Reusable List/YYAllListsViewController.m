@@ -15,7 +15,8 @@
 
 NSString *const APPVERSION = @"1.0";
 
-@interface YYAllListsViewController () <DZNEmptyDataSetSource, DZNEmptyDataSetDelegate>
+@interface YYAllListsViewController () <DZNEmptyDataSetSource,
+                                        DZNEmptyDataSetDelegate>
 
 @end
 
@@ -44,13 +45,13 @@ NSString *const APPVERSION = @"1.0";
   self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
   self.navigationController.navigationBar.translucent = NO;
   calendar = [NSCalendar autoupdatingCurrentCalendar];
-    
-    //Empty State delegate
-    self.tableView.emptyDataSetSource = self;
-    self.tableView.emptyDataSetDelegate = self;
-    
-    // A little trick for removing the cell separators
-//    self.tableView.tableFooterView = [UIView new];
+
+  // Empty State delegate
+  self.tableView.emptyDataSetSource = self;
+  self.tableView.emptyDataSetDelegate = self;
+
+  // A little trick for removing the cell separators
+  //    self.tableView.tableFooterView = [UIView new];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
@@ -209,17 +210,17 @@ NSString *const APPVERSION = @"1.0";
       [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil)
                                style:UIAlertActionStyleCancel
                              handler:nil];
-  UIAlertAction *delete = [UIAlertAction
-      actionWithTitle:NSLocalizedString(@"Delete", nil)
-                style:UIAlertActionStyleDestructive
-              handler:^(UIAlertAction *_Nonnull action) {
-                for (YYList *list in _listsWithoutDate) {
-                  [list MR_deleteEntity];
-                }
-                [[NSManagedObjectContext MR_defaultContext]
-                    MR_saveToPersistentStoreWithCompletion:nil];
-                  [self reloadTableViewAndSection];
-              }];
+  UIAlertAction *delete =
+      [UIAlertAction actionWithTitle:NSLocalizedString(@"Delete", nil)
+                               style:UIAlertActionStyleDestructive
+                             handler:^(UIAlertAction *_Nonnull action) {
+                               for (YYList *list in _listsWithoutDate) {
+                                 [list MR_deleteEntity];
+                               }
+                               [[NSManagedObjectContext MR_defaultContext]
+                                   MR_saveToPersistentStoreWithCompletion:nil];
+                               [self reloadTableViewAndSection];
+                             }];
   [alertController addAction:cancel];
   [alertController addAction:delete];
   [self presentViewController:alertController animated:YES completion:nil];
@@ -425,11 +426,12 @@ NSString *const APPVERSION = @"1.0";
   }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 0) {
-        return 66;
-    }
-    return 44;
+- (CGFloat)tableView:(UITableView *)tableView
+    heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+  if (indexPath.section == 0) {
+    return 66;
+  }
+  return 44;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
@@ -514,11 +516,13 @@ NSString *const APPVERSION = @"1.0";
       YYList *list = _listsWithoutDate[indexPath.row];
       [list MR_deleteEntity];
     }
-      [[NSManagedObjectContext MR_defaultContext]
-       MR_saveToPersistentStoreWithCompletion:nil];
-      [tableView deleteRowsAtIndexPaths:@[ indexPath ]
-                       withRowAnimation:UITableViewRowAnimationFade];
-//      [self reloadTableViewAndSection];
+    [[NSManagedObjectContext MR_defaultContext]
+        MR_saveToPersistentStoreWithCompletion:nil];
+    [tableView deleteRowsAtIndexPaths:@[ indexPath ]
+                     withRowAnimation:UITableViewRowAnimationFade];
+    [self performSelector:@selector(reloadTableViewAndSection)
+               withObject:self
+               afterDelay:0.25];
   }
 }
 
@@ -556,66 +560,63 @@ NSString *const APPVERSION = @"1.0";
 
 #pragma mark - Empty State
 
-//data source
-- (UIImage *)imageForEmptyDataSet:(UIScrollView *)scrollView
-{
-    return [UIImage imageNamed:@"Astronaut"];
+// data source
+- (UIImage *)imageForEmptyDataSet:(UIScrollView *)scrollView {
+  return [UIImage imageNamed:@"Astronaut"];
 }
 
-- (CAAnimation *)imageAnimationForEmptyDataSet:(UIScrollView *)scrollView
-{
-    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform"];
-    animation.fromValue = [NSValue valueWithCATransform3D:CATransform3DIdentity];
-    animation.toValue = [NSValue valueWithCATransform3D: CATransform3DMakeRotation(M_PI_2, 0.0, 0.0, 1.0) ];
-    animation.duration = 0.25;
-    animation.cumulative = YES;
-    animation.repeatCount = MAXFLOAT;
-    
-    return animation;
+- (CAAnimation *)imageAnimationForEmptyDataSet:(UIScrollView *)scrollView {
+  CABasicAnimation *animation =
+      [CABasicAnimation animationWithKeyPath:@"transform"];
+  animation.fromValue = [NSValue valueWithCATransform3D:CATransform3DIdentity];
+  animation.toValue = [NSValue
+      valueWithCATransform3D:CATransform3DMakeRotation(M_PI_2, 0.0, 0.0, 1.0)];
+  animation.duration = 0.25;
+  animation.cumulative = YES;
+  animation.repeatCount = MAXFLOAT;
+
+  return animation;
 }
 
-- (NSAttributedString *)titleForEmptyDataSet:(UIScrollView *)scrollView
-{
-    NSString *text = NSLocalizedString(@"Start Add Your List", nil);
-    
-    NSDictionary *attributes = @{NSFontAttributeName: [UIFont boldSystemFontOfSize:24.0f],
-                                 NSForegroundColorAttributeName: [UIColor whiteColor]};
-    
-    return [[NSAttributedString alloc] initWithString:text attributes:attributes];
+- (NSAttributedString *)titleForEmptyDataSet:(UIScrollView *)scrollView {
+  NSString *text = NSLocalizedString(@"Start Add Your List", nil);
+
+  NSDictionary *attributes = @{
+    NSFontAttributeName : [UIFont boldSystemFontOfSize:24.0f],
+    NSForegroundColorAttributeName : [UIColor whiteColor]
+  };
+
+  return [[NSAttributedString alloc] initWithString:text attributes:attributes];
 }
 
-- (UIColor *)backgroundColorForEmptyDataSet:(UIScrollView *)scrollView
-{
-    NSArray *colors = @[ backgroundColor, [UIColor flatMintColorDark] ];
-    return [UIColor colorWithGradientStyle:UIGradientStyleTopToBottom
-                                 withFrame:CGRectMake(0, 0, self.tableView.bounds.size.width,self.tableView.bounds.size.height)
-                                 andColors:colors];
+- (UIColor *)backgroundColorForEmptyDataSet:(UIScrollView *)scrollView {
+  NSArray *colors = @[ backgroundColor, [UIColor flatMintColorDark] ];
+  return [UIColor
+      colorWithGradientStyle:UIGradientStyleTopToBottom
+                   withFrame:CGRectMake(0, 0, self.tableView.bounds.size.width,
+                                        self.tableView.bounds.size.height)
+                   andColors:colors];
 }
 
-- (CGFloat)verticalOffsetForEmptyDataSet:(UIScrollView *)scrollView
-{
-    return -66;
+- (CGFloat)verticalOffsetForEmptyDataSet:(UIScrollView *)scrollView {
+  return -66;
 }
 
-//delegate
-- (BOOL)emptyDataSetShouldShow:(UIScrollView *)scrollView
-{
-    return YES;
+// delegate
+- (BOOL)emptyDataSetShouldShow:(UIScrollView *)scrollView {
+  return YES;
 }
 
-- (BOOL)emptyDataSetShouldAllowTouch:(UIScrollView *)scrollView
-{
-    return NO;
+- (BOOL)emptyDataSetShouldAllowTouch:(UIScrollView *)scrollView {
+  return NO;
 }
 
-- (BOOL)emptyDataSetShouldAllowScroll:(UIScrollView *)scrollView
-{
-    return NO;
+- (BOOL)emptyDataSetShouldAllowScroll:(UIScrollView *)scrollView {
+  return NO;
 }
 
-- (BOOL)emptyDataSetShouldAnimateImageView:(UIScrollView *)scrollView
-{
-    return YES;
+- (BOOL)emptyDataSetShouldAnimateImageView:(UIScrollView *)scrollView {
+  return YES;
 }
 
 @end

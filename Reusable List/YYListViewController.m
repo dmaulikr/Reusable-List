@@ -23,7 +23,7 @@
   BOOL pickerViewIsShowing;
   NSDateFormatter *formatter;
   NSCalendar *calendar;
-    UIColor *backgroundColor;
+  UIColor *backgroundColor;
   NSString *repeat;    // store choosed picker value
   YYList *unsavedList; // used for saving when app be terminated
 }
@@ -32,16 +32,16 @@
   [super viewDidLoad];
 
   // appearance
-    backgroundColor = [UIColor colorWithHexString:@"#346888"];
-    NSArray *colors = @[ backgroundColor, [UIColor flatMintColorDark] ];
-    UIView *view = [[UIView alloc] initWithFrame:self.tableView.frame];
-    view.backgroundColor =
-    [UIColor colorWithGradientStyle:UIGradientStyleTopToBottom
-                          withFrame:CGRectMake(0, 0, view.bounds.size.width,
-                                               view.bounds.size.height)
-                          andColors:colors];
-    self.tableView.backgroundColor = [UIColor clearColor];
-    self.tableView.backgroundView = view;
+  backgroundColor = [UIColor colorWithHexString:@"#346888"];
+  NSArray *colors = @[ backgroundColor, [UIColor flatMintColorDark] ];
+  UIView *view = [[UIView alloc] initWithFrame:self.tableView.frame];
+  view.backgroundColor =
+      [UIColor colorWithGradientStyle:UIGradientStyleTopToBottom
+                            withFrame:CGRectMake(0, 0, view.bounds.size.width,
+                                                 view.bounds.size.height)
+                            andColors:colors];
+  self.tableView.backgroundColor = [UIColor clearColor];
+  self.tableView.backgroundView = view;
   [self.navigationController.navigationBar setBarTintColor:backgroundColor];
   [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
   self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
@@ -49,6 +49,12 @@
   self.textView.backgroundColor = [UIColor clearColor];
   [self changeDatePickerTextColor:self.dateTimePicker];
   [self changeDatePickerTextColor:self.datePicker];
+
+  // fix the picker appearance issue in 5s
+  self.dateTimePicker.datePickerMode = UIDatePickerModeTime;
+  self.dateTimePicker.datePickerMode = UIDatePickerModeDateAndTime;
+  self.datePicker.datePickerMode = UIDatePickerModeDateAndTime;
+  self.datePicker.datePickerMode = UIDatePickerModeDate;
 
   // make textview autoresizing according to it's content
   self.tableView.estimatedRowHeight = 44;
@@ -268,25 +274,26 @@
 
 #pragma mark - help methods
 - (BOOL)isIphone5s {
-    CGRect screenBounds = [[UIScreen mainScreen] bounds];
-    CGFloat screenScale = [[UIScreen mainScreen] scale];
-    CGSize screenSize = CGSizeMake(screenBounds.size.width * screenScale, screenBounds.size.height * screenScale);
-    if (screenSize.width > 640) {
-        return NO;
-    }
-    return YES;
+  CGRect screenBounds = [[UIScreen mainScreen] bounds];
+  CGFloat screenScale = [[UIScreen mainScreen] scale];
+  CGSize screenSize = CGSizeMake(screenBounds.size.width * screenScale,
+                                 screenBounds.size.height * screenScale);
+  if (screenSize.width > 640) {
+    return NO;
+  }
+  return YES;
 }
 
 - (void)changeDatePickerTextColor:(UIDatePicker *)picker {
-        [picker setValue:[UIColor whiteColor] forKeyPath:@"textColor"];
-        SEL selector = NSSelectorFromString(@"setHighlightsToday:");
-        NSInvocation *invocation = [NSInvocation
-                                    invocationWithMethodSignature:
-                                    [UIDatePicker instanceMethodSignatureForSelector:selector]];
-        BOOL no = NO;
-        [invocation setSelector:selector];
-        [invocation setArgument:&no atIndex:2];
-        [invocation invokeWithTarget:picker];
+  [picker setValue:[UIColor whiteColor] forKeyPath:@"textColor"];
+  SEL selector = NSSelectorFromString(@"setHighlightsToday:");
+  NSInvocation *invocation = [NSInvocation
+      invocationWithMethodSignature:
+          [UIDatePicker instanceMethodSignatureForSelector:selector]];
+  BOOL no = NO;
+  [invocation setSelector:selector];
+  [invocation setArgument:&no atIndex:2];
+  [invocation invokeWithTarget:picker];
 }
 
 - (void)keyboardWillShow {
@@ -379,7 +386,7 @@
 - (void)tableView:(UITableView *)tableView
   willDisplayCell:(nonnull UITableViewCell *)cell
 forRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
-    cell.backgroundColor = [UIColor clearColor];
+  cell.backgroundColor = [UIColor clearColor];
 }
 
 - (void)tableView:(UITableView *)tableView

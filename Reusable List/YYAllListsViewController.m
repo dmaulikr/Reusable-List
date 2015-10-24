@@ -11,10 +11,11 @@
 #import <MagicalRecord/MagicalRecord.h>
 #import <ChameleonFramework/Chameleon.h>
 #import "Masonry.h"
+#import "UIScrollView+EmptyDataSet.h"
 
 NSString *const APPVERSION = @"1.0";
 
-@interface YYAllListsViewController ()
+@interface YYAllListsViewController () <DZNEmptyDataSetSource, DZNEmptyDataSetDelegate>
 
 @end
 
@@ -30,16 +31,26 @@ NSString *const APPVERSION = @"1.0";
 
   backgroundColor = [UIColor colorWithHexString:@"#346888"];
   NSArray *colors = @[ backgroundColor, [UIColor flatMintColorDark] ];
-  self.tableView.backgroundColor = [UIColor
-      colorWithGradientStyle:UIGradientStyleTopToBottom
-                   withFrame:CGRectMake(0, 0, self.tableView.bounds.size.width,
-                                        self.tableView.bounds.size.height)
-                   andColors:colors];
+  UIView *view = [[UIView alloc] initWithFrame:self.tableView.frame];
+  view.backgroundColor =
+      [UIColor colorWithGradientStyle:UIGradientStyleTopToBottom
+                            withFrame:CGRectMake(0, 0, view.bounds.size.width,
+                                                 view.bounds.size.height)
+                            andColors:colors];
+  self.tableView.backgroundColor = [UIColor clearColor];
+  self.tableView.backgroundView = view;
   [self.navigationController.navigationBar setBarTintColor:backgroundColor];
   [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
   self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
   self.navigationController.navigationBar.translucent = NO;
   calendar = [NSCalendar autoupdatingCurrentCalendar];
+    
+    //Empty State delegate
+    self.tableView.emptyDataSetSource = self;
+    self.tableView.emptyDataSetDelegate = self;
+    
+    // A little trick for removing the cell separators
+//    self.tableView.tableFooterView = [UIView new];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
@@ -207,10 +218,7 @@ NSString *const APPVERSION = @"1.0";
                 }
                 [[NSManagedObjectContext MR_defaultContext]
                     MR_saveToPersistentStoreWithCompletion:nil];
-                NSIndexSet *indexSet = [[NSIndexSet alloc] initWithIndex:1];
-                [self.tableView
-                      reloadSections:indexSet
-                    withRowAnimation:UITableViewRowAnimationAutomatic];
+                  [self reloadTableViewAndSection];
               }];
   [alertController addAction:cancel];
   [alertController addAction:delete];
@@ -376,7 +384,7 @@ NSString *const APPVERSION = @"1.0";
   headerView.backgroundColor = [UIColor clearColor];
 
   UILabel *headerLabel =
-      [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 100, 22)];
+      [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 100, 33)];
   headerLabel.text = NSLocalizedString(@"Spare Lists", nil);
   headerLabel.textColor = [UIColor whiteColor];
   headerLabel.font = [UIFont systemFontOfSize:14];
@@ -413,59 +421,16 @@ NSString *const APPVERSION = @"1.0";
     if ([_listsWithoutDate count] == 0) {
       return 0;
     }
-    return 22;
+    return 33;
   }
 }
 
-//- (UITableViewCell *)tableView:(UITableView *)tableView
-//         cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-//  UITableViewCell *cell =
-//      [tableView dequeueReusableCellWithIdentifier:@"listCell"
-//                                      forIndexPath:indexPath];
-//  cell.backgroundColor = [UIColor clearColor];
-//  cell.textLabel.textColor = [UIColor whiteColor];
-//  cell.detailTextLabel.textColor = [UIColor colorWithWhite:1.0 alpha:0.7];
-//
-//  if (indexPath.section == 0) {
-//    YYList *list = _listsWithDate[indexPath.row];
-//    cell.textLabel.text = list.content;
-//    NSString *remindTimeStr = [self formatDetailLabel:list];
-//
-//    if ([list.remindTime compare:[NSDate date]] != NSOrderedDescending) {
-//      cell.detailTextLabel.textColor =
-//          [[UIColor colorWithHexString:@"#F5675D"] lightenByPercentage:0.2];
-//    } else {
-//      cell.detailTextLabel.textColor = [UIColor colorWithWhite:1.0 alpha:0.7];
-//    }
-//
-//    if (list.repeatType && ![list.repeatType isEqualToString:@"Never"]) {
-//      cell.detailTextLabel.text =
-//          [NSString stringWithFormat:@"%@ %@", remindTimeStr,
-//                                     NSLocalizedString(list.repeatType, nil)];
-//    } else {
-//      cell.detailTextLabel.text = [NSString stringWithString:remindTimeStr];
-//    }
-//    cell.imageView.image = [UIImage imageNamed:@"MarkBtn"];
-//    cell.imageView.userInteractionEnabled = YES;
-//    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-//    button.backgroundColor = [UIColor clearColor];
-//    [button addTarget:self
-//                  action:@selector(manuallyMarkAsCompleted:)
-//        forControlEvents:UIControlEventTouchUpInside];
-//    button.frame = CGRectMake(0, 0, 40, 40);
-//    button.titleLabel.text = list.itemKey;
-//    button.titleLabel.hidden = YES;
-//    [cell.imageView addSubview:button];
-//  } else {
-//    YYList *list = _listsWithoutDate[indexPath.row];
-//    cell.textLabel.text = list.content;
-//    cell.detailTextLabel.text = @" ";
-//    cell.imageView.image = [UIImage imageNamed:@"transparent"];
-//    cell.imageView.userInteractionEnabled = NO;
-//  }
-//
-//  return cell;
-//}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 0) {
+        return 66;
+    }
+    return 44;
+}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -481,7 +446,10 @@ NSString *const APPVERSION = @"1.0";
     cell.detailTextLabel.textColor = [UIColor colorWithWhite:1.0 alpha:0.7];
     cell.imageView.userInteractionEnabled = YES;
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.backgroundColor = [UIColor clearColor];
+    [button setBackgroundImage:[UIImage imageNamed:@"MarkBtn"]
+                      forState:UIControlStateNormal];
+    [button setBackgroundImage:[UIImage imageNamed:@"Stars"]
+                      forState:UIControlStateHighlighted];
     [button addTarget:self
                   action:@selector(manuallyMarkAsCompleted:)
         forControlEvents:UIControlEventTouchUpInside];
@@ -541,21 +509,16 @@ NSString *const APPVERSION = @"1.0";
         }
       }
       [list MR_deleteEntity];
-      [[NSManagedObjectContext MR_defaultContext]
-          MR_saveToPersistentStoreWithCompletion:nil];
-      [tableView deleteRowsAtIndexPaths:@[ indexPath ]
-                       withRowAnimation:UITableViewRowAnimationFade];
+
     } else {
       YYList *list = _listsWithoutDate[indexPath.row];
       [list MR_deleteEntity];
+    }
       [[NSManagedObjectContext MR_defaultContext]
-          MR_saveToPersistentStoreWithCompletion:nil];
+       MR_saveToPersistentStoreWithCompletion:nil];
       [tableView deleteRowsAtIndexPaths:@[ indexPath ]
                        withRowAnimation:UITableViewRowAnimationFade];
-      NSIndexSet *indexSet = [[NSIndexSet alloc] initWithIndex:1];
-      [self.tableView reloadSections:indexSet
-                    withRowAnimation:UITableViewRowAnimationAutomatic];
-    }
+//      [self reloadTableViewAndSection];
   }
 }
 
@@ -589,6 +552,70 @@ NSString *const APPVERSION = @"1.0";
                            completion:^{
                              [self reloadTableViewAndSection];
                            }];
+}
+
+#pragma mark - Empty State
+
+//data source
+- (UIImage *)imageForEmptyDataSet:(UIScrollView *)scrollView
+{
+    return [UIImage imageNamed:@"Astronaut"];
+}
+
+- (CAAnimation *)imageAnimationForEmptyDataSet:(UIScrollView *)scrollView
+{
+    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform"];
+    animation.fromValue = [NSValue valueWithCATransform3D:CATransform3DIdentity];
+    animation.toValue = [NSValue valueWithCATransform3D: CATransform3DMakeRotation(M_PI_2, 0.0, 0.0, 1.0) ];
+    animation.duration = 0.25;
+    animation.cumulative = YES;
+    animation.repeatCount = MAXFLOAT;
+    
+    return animation;
+}
+
+- (NSAttributedString *)titleForEmptyDataSet:(UIScrollView *)scrollView
+{
+    NSString *text = NSLocalizedString(@"Start Add Your List", nil);
+    
+    NSDictionary *attributes = @{NSFontAttributeName: [UIFont boldSystemFontOfSize:24.0f],
+                                 NSForegroundColorAttributeName: [UIColor whiteColor]};
+    
+    return [[NSAttributedString alloc] initWithString:text attributes:attributes];
+}
+
+- (UIColor *)backgroundColorForEmptyDataSet:(UIScrollView *)scrollView
+{
+    NSArray *colors = @[ backgroundColor, [UIColor flatMintColorDark] ];
+    return [UIColor colorWithGradientStyle:UIGradientStyleTopToBottom
+                                 withFrame:CGRectMake(0, 0, self.tableView.bounds.size.width,self.tableView.bounds.size.height)
+                                 andColors:colors];
+}
+
+- (CGFloat)verticalOffsetForEmptyDataSet:(UIScrollView *)scrollView
+{
+    return -66;
+}
+
+//delegate
+- (BOOL)emptyDataSetShouldShow:(UIScrollView *)scrollView
+{
+    return YES;
+}
+
+- (BOOL)emptyDataSetShouldAllowTouch:(UIScrollView *)scrollView
+{
+    return NO;
+}
+
+- (BOOL)emptyDataSetShouldAllowScroll:(UIScrollView *)scrollView
+{
+    return NO;
+}
+
+- (BOOL)emptyDataSetShouldAnimateImageView:(UIScrollView *)scrollView
+{
+    return YES;
 }
 
 @end

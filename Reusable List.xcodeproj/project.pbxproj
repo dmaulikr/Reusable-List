@@ -18,7 +18,7 @@
 		603003451B9E849900DB2C4C /* Reusable List.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 603003431B9E849900DB2C4C /* Reusable List.xcdatamodeld */; };
 		603003481B9EA58B00DB2C4C /* YYList.m in Sources */ = {isa = PBXBuildFile; fileRef = 603003471B9EA58B00DB2C4C /* YYList.m */; };
 		6059CCCC1BC41505005CA839 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6059CCCE1BC41505005CA839 /* Localizable.strings */; };
-		60EF5A271BBBBE7700EEFCB0 /* YYAllListsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60EF5A261BBBBE7700EEFCB0 /* YYAllListsViewController.m */; settings = {ASSET_TAGS = (); }; };
+		60EF5A271BBBBE7700EEFCB0 /* YYAllListsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60EF5A261BBBBE7700EEFCB0 /* YYAllListsViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -460,7 +460,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -497,7 +497,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -572,7 +572,7 @@
 				603003061B992C9400DB2C4C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		603003071B992C9400DB2C4C /* Build configuration list for PBXNativeTarget "Reusable List" */ = {
 			isa = XCConfigurationList;
@@ -581,7 +581,7 @@
 				603003091B992C9400DB2C4C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		6030030A1B992C9400DB2C4C /* Build configuration list for PBXNativeTarget "Reusable ListTests" */ = {
 			isa = XCConfigurationList;
@@ -590,7 +590,7 @@
 				6030030C1B992C9400DB2C4C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 

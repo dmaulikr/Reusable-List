@@ -9,21 +9,18 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-
 @interface YYList : NSManagedObject
 
-@property (nullable, nonatomic, retain) NSString *content;
-@property (nullable, nonatomic, retain) NSDate *dateCreated;
-@property (nullable, nonatomic, retain) NSDate *endDate;
-@property (nullable, nonatomic, retain) NSString *itemKey;
-@property (nullable, nonatomic, retain) NSDate *remindTime;
-@property (nullable, nonatomic, retain) NSString *repeatType;
-@property (nullable, nonatomic, retain) NSNumber *hasAlert;
-@property (nullable, nonatomic, retain) NSNumber *hasEndDate;
-@property (nonatomic) NSInteger day;
-@property (nonatomic) NSInteger hour;
-@property (nonatomic) NSInteger minute;
+@property(nullable, nonatomic, retain) NSString *content;
+@property(nullable, nonatomic, retain) NSDate *dateCreated;
+@property(nullable, nonatomic, retain) NSDate *endDate;
+@property(nullable, nonatomic, retain) NSString *itemKey;
+@property(nullable, nonatomic, retain) NSDate *remindTime;
+@property(nullable, nonatomic, retain) NSString *repeatType;
+@property(nullable, nonatomic, retain) NSNumber *hasAlert;
+@property(nullable, nonatomic, retain) NSNumber *hasEndDate;
+@property(nonatomic) NSInteger day;
+@property(nonatomic) NSInteger hour;
+@property(nonatomic) NSInteger minute;
 
 @end
-
-

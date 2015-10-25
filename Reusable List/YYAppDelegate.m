@@ -34,37 +34,37 @@
 
   if ([[UIApplication sharedApplication] currentUserNotificationSettings]
           .types == UIUserNotificationTypeNone) {
-//    UIMutableUserNotificationAction *mark =
-//        [[UIMutableUserNotificationAction alloc] init];
-//    mark.identifier = @"mark";
-//    mark.title = NSLocalizedString(@"Complete", nil);
-//    mark.activationMode = UIUserNotificationActivationModeBackground;
-//    mark.destructive = NO;
-//    mark.authenticationRequired = NO;
-//
-//    UIMutableUserNotificationCategory *category =
-//        [[UIMutableUserNotificationCategory alloc] init];
-//    category.identifier = @"listCategory";
-//    [category setActions:@[ mark ]
-//              forContext:UIUserNotificationActionContextDefault];
-//    [category setActions:@[ mark ]
-//              forContext:UIUserNotificationActionContextMinimal];
+    //    UIMutableUserNotificationAction *mark =
+    //        [[UIMutableUserNotificationAction alloc] init];
+    //    mark.identifier = @"mark";
+    //    mark.title = NSLocalizedString(@"Complete", nil);
+    //    mark.activationMode = UIUserNotificationActivationModeBackground;
+    //    mark.destructive = NO;
+    //    mark.authenticationRequired = NO;
+    //
+    //    UIMutableUserNotificationCategory *category =
+    //        [[UIMutableUserNotificationCategory alloc] init];
+    //    category.identifier = @"listCategory";
+    //    [category setActions:@[ mark ]
+    //              forContext:UIUserNotificationActionContextDefault];
+    //    [category setActions:@[ mark ]
+    //              forContext:UIUserNotificationActionContextMinimal];
 
-//    [[UIApplication sharedApplication]
-//        registerUserNotificationSettings:
-//            [UIUserNotificationSettings
-//                settingsForTypes:UIUserNotificationTypeAlert |
-//                                 UIUserNotificationTypeBadge |
-//                                 UIUserNotificationTypeSound
-//                      categories:[NSSet setWithArray:@[ category ]]]];
-      
-      [[UIApplication sharedApplication]
-       registerUserNotificationSettings:
-       [UIUserNotificationSettings
-        settingsForTypes:UIUserNotificationTypeAlert |
-        UIUserNotificationTypeBadge |
-        UIUserNotificationTypeSound
-        categories:nil]];
+    //    [[UIApplication sharedApplication]
+    //        registerUserNotificationSettings:
+    //            [UIUserNotificationSettings
+    //                settingsForTypes:UIUserNotificationTypeAlert |
+    //                                 UIUserNotificationTypeBadge |
+    //                                 UIUserNotificationTypeSound
+    //                      categories:[NSSet setWithArray:@[ category ]]]];
+
+    [[UIApplication sharedApplication]
+        registerUserNotificationSettings:
+            [UIUserNotificationSettings
+                settingsForTypes:UIUserNotificationTypeAlert |
+                                 UIUserNotificationTypeBadge |
+                                 UIUserNotificationTypeSound
+                      categories:nil]];
   }
   return YES;
 }
@@ -101,11 +101,9 @@
   // Restart any tasks that were paused (or not yet started) while the
   // application was inactive. If the application was previously in the
   // background, optionally refresh the user interface.
-    
-    [[NSNotificationCenter defaultCenter]
-     postNotificationName:@"RefreshApp"
-     object:nil];
-    
+
+  [[NSNotificationCenter defaultCenter] postNotificationName:@"RefreshApp"
+                                                      object:nil];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {

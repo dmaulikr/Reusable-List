@@ -14,7 +14,9 @@
 
 extern NSString *const APPVERSION;
 
-@interface YYAllListsViewController : UITableViewController <YYListViewControllerDelegate,MFMailComposeViewControllerDelegate>
+@interface YYAllListsViewController
+    : UITableViewController <YYListViewControllerDelegate,
+                             MFMailComposeViewControllerDelegate>
 
 - (IBAction)sendFeedback:(id)sender;
 

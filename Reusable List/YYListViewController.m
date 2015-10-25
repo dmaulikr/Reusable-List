@@ -25,13 +25,13 @@
   NSCalendar *calendar;
   UIColor *backgroundColor;
   NSString *repeat;    // store choosed picker value
-  YYList *unsavedList; // used for saving when app be terminated
+  YYList *unsavedList; // used for saving when app will be terminated
 }
 
 - (void)viewDidLoad {
   [super viewDidLoad];
 
-  // appearance
+  // configurate appearance
   backgroundColor = [UIColor colorWithHexString:@"#346888"];
   NSArray *colors = @[ backgroundColor, [UIColor flatMintColorDark] ];
   UIView *view = [[UIView alloc] initWithFrame:self.tableView.frame];
@@ -132,6 +132,7 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+  [super viewWillDisappear:animated];
   [[NSNotificationCenter defaultCenter]
       removeObserver:self
                 name:UIKeyboardWillShowNotification
@@ -273,16 +274,6 @@
 }
 
 #pragma mark - help methods
-- (BOOL)isIphone5s {
-  CGRect screenBounds = [[UIScreen mainScreen] bounds];
-  CGFloat screenScale = [[UIScreen mainScreen] scale];
-  CGSize screenSize = CGSizeMake(screenBounds.size.width * screenScale,
-                                 screenBounds.size.height * screenScale);
-  if (screenSize.width > 640) {
-    return NO;
-  }
-  return YES;
-}
 
 - (void)changeDatePickerTextColor:(UIDatePicker *)picker {
   [picker setValue:[UIColor whiteColor] forKeyPath:@"textColor"];

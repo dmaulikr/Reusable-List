@@ -30,6 +30,7 @@ NSString *const APPVERSION = @"1.0";
 - (void)viewDidLoad {
   [super viewDidLoad];
 
+    //set tableview backgroundview and navigationbar / status bar style
   backgroundColor = [UIColor colorWithHexString:@"#346888"];
   NSArray *colors = @[ backgroundColor, [UIColor flatMintColorDark] ];
   UIView *view = [[UIView alloc] initWithFrame:self.tableView.frame];
@@ -40,10 +41,13 @@ NSString *const APPVERSION = @"1.0";
                             andColors:colors];
   self.tableView.backgroundColor = [UIColor clearColor];
   self.tableView.backgroundView = view;
+    
   [self.navigationController.navigationBar setBarTintColor:backgroundColor];
   [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
   self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
   self.navigationController.navigationBar.translucent = NO;
+    
+    //init varibale
   calendar = [NSCalendar autoupdatingCurrentCalendar];
 
   // Empty State delegate
@@ -80,6 +84,7 @@ NSString *const APPVERSION = @"1.0";
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
   [[NSNotificationCenter defaultCenter] removeObserver:self
                                                   name:@"UpdateTimeLabel"
                                                 object:nil];
@@ -136,7 +141,7 @@ NSString *const APPVERSION = @"1.0";
 }
 
 #pragma mark - help methods
-// init the mutablearray, add list and sort
+// init the mutablearray, add listitems and sort
 - (void)classifyLists {
   NSArray *lists = [YYList MR_findAll];
   for (YYList *list in lists) {
@@ -249,6 +254,7 @@ NSString *const APPVERSION = @"1.0";
 //}
 
 - (void)manuallyMarkAsCompleted:(UIButton *)sender {
+    //clear notificaitonbar message
   [UIApplication sharedApplication].applicationIconBadgeNumber = 1;
   [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
 
@@ -526,7 +532,6 @@ NSString *const APPVERSION = @"1.0";
   }
 }
 
-#pragma mark - Navigation
 - (void)tableView:(UITableView *)tableView
     didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   if (indexPath.section == 0) {

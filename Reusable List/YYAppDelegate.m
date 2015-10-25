@@ -26,8 +26,6 @@
 
 - (BOOL)application:(UIApplication *)application
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-  //  [MagicalRecord setupCoreDataStackWithStoreNamed:@"Reusable List"];
-
   // clear old notification before first launch
   if (![[NSUserDefaults standardUserDefaults] boolForKey:@"firstLaunch"]) {
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstLaunch"];

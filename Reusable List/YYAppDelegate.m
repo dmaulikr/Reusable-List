@@ -8,7 +8,6 @@
 
 #import "YYAppDelegate.h"
 #import <MagicalRecord/MagicalRecord.h>
-//#import "YYList.h"
 
 @import CoreData;
 

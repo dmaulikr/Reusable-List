@@ -110,8 +110,7 @@ NSString *const APPVERSION = @"1.0";
         [[MFMailComposeViewController alloc] init];
     picker.mailComposeDelegate = self;
     [picker setSubject:@"Reusable List Feedback"];
-    [picker
-        setToRecipients:[NSArray arrayWithObject:@"reusablelist@gmail.com"]];
+    [picker setToRecipients:[NSArray arrayWithObject:@"molayyu@gmail.com"]];
     NSString *body =
         [NSString stringWithFormat:
                       @"App version: %@\niOS version: %@\nDevice modal: %@\n",
@@ -454,10 +453,8 @@ NSString *const APPVERSION = @"1.0";
     cell.detailTextLabel.textColor = [UIColor colorWithWhite:1.0 alpha:0.7];
     cell.imageView.userInteractionEnabled = YES;
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setBackgroundImage:[UIImage imageNamed:@"MarkBtn"]
-                      forState:UIControlStateNormal];
     [button setBackgroundImage:[UIImage imageNamed:@"Stars"]
-                      forState:UIControlStateHighlighted];
+                      forState:UIControlStateNormal];
     [button addTarget:self
                   action:@selector(manuallyMarkAsCompleted:)
         forControlEvents:UIControlEventTouchUpInside];

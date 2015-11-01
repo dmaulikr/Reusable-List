@@ -239,10 +239,36 @@ NSString *const APPVERSION = @"1.0";
   [self reloadTableViewAndSection];
 }
 
+//- (void)updateTimeLabel:(NSNotification *)notification {
+//  YYList *list = [self relatedListWithNotification:notification];
+//  [self cancelNotification:list];
+//  [self reloadTableViewAndSection];
+//}
+
 - (void)updateTimeLabel:(NSNotification *)notification {
-  YYList *list = [self relatedListWithNotification:notification];
-  [self cancelNotification:list];
-  [self reloadTableViewAndSection];
+    YYList *list = [self relatedListWithNotification:notification];
+    [self cancelNotification:list];
+    UIAlertController *alertController = [UIAlertController
+                                          alertControllerWithTitle:@""
+                                          message:list.content
+                                          preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancel =
+    [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil)
+                             style:UIAlertActionStyleCancel
+                           handler:^(UIAlertAction *action){
+                               [self reloadTableViewAndSection];
+                           }];
+    UIAlertAction *complete =
+    [UIAlertAction actionWithTitle:NSLocalizedString(@"Complete", nil)
+                             style:UIAlertActionStyleDefault
+                           handler:^(UIAlertAction *action) {
+                               [UIApplication sharedApplication].applicationIconBadgeNumber = 1;
+                               [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+                               [self resetList:list];
+                           }];
+    [alertController addAction:cancel];
+    [alertController addAction:complete];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 //- (void)markAsCompleted:(NSNotification *)notification {

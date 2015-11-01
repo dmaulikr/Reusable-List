@@ -362,13 +362,14 @@
 - (CGFloat)tableView:(UITableView *)tableView
     heightForRowAtIndexPath:(NSIndexPath *)indexPath {
   CGFloat height = self.tableView.rowHeight;
+    CGFloat pickerRowHeight = 217;
   if (indexPath.section == 1) {
     if (indexPath.row == 2) {
-      height = dateTimePickerIsShowing ? 217 : 0;
+      height = dateTimePickerIsShowing ? pickerRowHeight : 0;
     } else if (indexPath.row == 4) {
-      height = pickerViewIsShowing ? 217 : 0;
+      height = pickerViewIsShowing ? pickerRowHeight : 0;
     } else if (indexPath.row == 7) {
-      height = datePickerIsShowing ? 217 : 0;
+      height = datePickerIsShowing ? pickerRowHeight : 0;
     }
   }
   return height;
@@ -470,8 +471,8 @@ forRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
   default:
     break;
   }
-  [self.tableView beginUpdates];
-  [self.tableView endUpdates];
+    [self.tableView beginUpdates];
+    [self.tableView endUpdates];
 }
 
 - (void)hidePicker:(NSInteger)tag {
@@ -488,8 +489,8 @@ forRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
   default:
     break;
   }
-  [self.tableView beginUpdates];
-  [self.tableView endUpdates];
+    [self.tableView beginUpdates];
+    [self.tableView endUpdates];
 }
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {

@@ -219,7 +219,7 @@
     self.alertTimeLabel.textColor = [UIColor whiteColor];
     if (self.itemToEdit.day || self.itemToEdit.hour || self.itemToEdit.minute) {
       NSDateComponents *comps = [[NSDateComponents alloc] init];
-      comps.day = self.itemToEdit.day;
+        comps.day = [self.itemToEdit.day integerValue];
       NSDate *suggestDate = [calendar dateByAddingComponents:comps
                                                       toDate:[NSDate date]
                                                      options:0];
@@ -229,8 +229,8 @@
                          NSCalendarUnitMinute;
       NSDateComponents *comps1 =
           [calendar components:units fromDate:suggestDate];
-      comps1.hour = self.itemToEdit.hour;
-      comps1.minute = self.itemToEdit.minute;
+      comps1.hour = [self.itemToEdit.hour integerValue];
+      comps1.minute = [self.itemToEdit.minute integerValue];
 
       NSDate *suggestDateTime = [calendar dateFromComponents:comps1];
 
@@ -313,12 +313,12 @@
 }
 
 - (void)calculateTimeInterval:(YYList *)list {
-  list.day = [self daysWithinEraFromDate:[NSDate date] toDate:list.remindTime];
+  list.day =[NSNumber numberWithInteger:[self daysWithinEraFromDate:[NSDate date] toDate:list.remindTime]];
   NSDateComponents *comps =
       [calendar components:NSCalendarUnitHour | NSCalendarUnitMinute
                   fromDate:list.remindTime];
-  list.hour = [comps hour];
-  list.minute = [comps minute];
+  list.hour = [NSNumber numberWithInteger:[comps hour]];
+  list.minute = [NSNumber numberWithInteger:[comps minute]];
 }
 
 - (void)scheduleNotificaiton:(YYList *)list {

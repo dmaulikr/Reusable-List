@@ -122,7 +122,7 @@ NSString *const APPVERSION = @"1.0";
     UIAlertController *alert = [UIAlertController
         alertControllerWithTitle:NSLocalizedString(@"Cannot sent email", nil)
                          message:NSLocalizedString(
-                                     @"Please check the email setting", nil)
+                                     @"Please check the system email setting", nil)
                   preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *ok =
         [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)

@@ -16,7 +16,7 @@
 "Cancel" = "取消";
 "Delete" = "删除";
 "Cannot sent email" = "无法发送邮件";
-"Please check the email setting" = "请检查系统邮件的设置";
+"Please check the system email setting" = "请检查系统邮件的设置";
 "OK" = "好的";
 "Spare Lists" = "可用事项";
 "Delete All" = "清空所有";

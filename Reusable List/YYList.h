@@ -19,8 +19,8 @@
 @property(nullable, nonatomic, retain) NSString *repeatType;
 @property(nullable, nonatomic, retain) NSNumber *hasAlert;
 @property(nullable, nonatomic, retain) NSNumber *hasEndDate;
-@property(nonatomic) NSInteger day;
-@property(nonatomic) NSInteger hour;
-@property(nonatomic) NSInteger minute;
+@property(nullable,nonatomic, retain) NSNumber *day;
+@property(nullable,nonatomic, retain) NSNumber *hour;
+@property(nullable,nonatomic, retain) NSNumber *minute;
 
 @end

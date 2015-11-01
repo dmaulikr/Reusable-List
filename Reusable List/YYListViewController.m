@@ -10,6 +10,7 @@
 #import "YYList.h"
 #import <MagicalRecord/MagicalRecord.h>
 #import <ChameleonFramework/Chameleon.h>
+#import "YYPopReminderClass.h"
 
 @interface YYListViewController ()
 
@@ -129,6 +130,10 @@
          selector:@selector(keyboardWillShow)
              name:UIKeyboardWillShowNotification
            object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(popReminder:)
+                                               name:@"PopReminder"
+                                             object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -137,6 +142,9 @@
       removeObserver:self
                 name:UIKeyboardWillShowNotification
               object:nil];
+  [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                  name:@"PopReminder"
+                                                object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -219,7 +227,7 @@
     self.alertTimeLabel.textColor = [UIColor whiteColor];
     if (self.itemToEdit.day || self.itemToEdit.hour || self.itemToEdit.minute) {
       NSDateComponents *comps = [[NSDateComponents alloc] init];
-        comps.day = [self.itemToEdit.day integerValue];
+      comps.day = [self.itemToEdit.day integerValue];
       NSDate *suggestDate = [calendar dateByAddingComponents:comps
                                                       toDate:[NSDate date]
                                                      options:0];
@@ -273,8 +281,156 @@
   }
 }
 
-#pragma mark - help methods
+//#pragma mark - PopReminder notification
+//- (void)popReminder:(NSNotification *)notification {
+//  YYList *list = [self relatedListWithNotification:notification];
+//  [self cancelNotification:list];
+//  UIAlertController *alertController =
+//      [UIAlertController alertControllerWithTitle:@""
+//                                          message:list.content
+//                                   preferredStyle:UIAlertControllerStyleAlert];
+//  UIAlertAction *cancel =
+//      [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil)
+//                               style:UIAlertActionStyleCancel
+//                             handler:nil];
+//  UIAlertAction *complete = [UIAlertAction
+//      actionWithTitle:NSLocalizedString(@"Complete", nil)
+//                style:UIAlertActionStyleDefault
+//              handler:^(UIAlertAction *action) {
+//                [UIApplication sharedApplication].applicationIconBadgeNumber =
+//                    1;
+//                [UIApplication sharedApplication].applicationIconBadgeNumber =
+//                    0;
+//                [self resetList:list];
+//                if (self.itemToEdit) {
+//                  if (self.itemToEdit.itemKey == list.itemKey) {
+//                    [self dismissViewControllerAnimated:YES completion:nil];
+//                  }
+//                }
+//              }];
+//  [alertController addAction:cancel];
+//  [alertController addAction:complete];
+//  [self presentViewController:alertController animated:YES completion:nil];
+//}
+//
+//- (YYList *)relatedListWithNotification:(NSNotification *)notification {
+//  NSDictionary *dic = notification.userInfo;
+//  NSString *UUID = dic[@"UUID"];
+//  YYList *list = [YYList MR_findFirstByAttribute:@"itemKey" withValue:UUID];
+//  return list;
+//}
+//
+//- (void)cancelNotification:(YYList *)list {
+//  NSDate *nextFireDate = [self nextFireDate:list];
+//  if (nextFireDate && list.endDate) {
+//    if ([self date:nextFireDate reachEndDate:list.endDate]) {
+//      for (UILocalNotification *notification in
+//           [[UIApplication sharedApplication] scheduledLocalNotifications]) {
+//        if ([notification.userInfo[@"UUID"] isEqualToString:list.itemKey]) {
+//          [[UIApplication sharedApplication]
+//              cancelLocalNotification:notification];
+//          break;
+//        }
+//      }
+//    }
+//  }
+//}
+//
+//- (void)removeListInfomation:(YYList *)list {
+//  list.remindTime = nil;
+//  list.dateCreated = [NSDate date];
+//  list.endDate = nil;
+//  list.repeatType = @"Never";
+//  list.hasAlert = [NSNumber numberWithBool:NO];
+//  list.hasEndDate = [NSNumber numberWithBool:NO];
+//  [[NSManagedObjectContext MR_defaultContext]
+//      MR_saveToPersistentStoreWithCompletion:nil];
+//}
+//
+//- (void)resetList:(YYList *)list {
+//  NSDate *nextFireDate = [self nextFireDate:list];
+//  if (nextFireDate) {
+//    if (![self date:nextFireDate reachEndDate:list.endDate]) {
+//      list.remindTime = nextFireDate;
+//    } else {
+//      [self removeListInfomation:list];
+//    }
+//  } else {
+//    [self removeListInfomation:list];
+//  }
+//}
+//
+//- (BOOL)date:(NSDate *)date reachEndDate:(NSDate *)endDate {
+//  NSDateComponents *comps = [calendar
+//      components:(NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay)
+//        fromDate:date];
+//  NSDate *newDate = [calendar dateFromComponents:comps];
+//  if ([newDate compare:endDate] == NSOrderedDescending) {
+//    return YES;
+//  }
+//  return NO;
+//}
+//
+//- (NSDate *)nextFireDate:(YYList *)list {
+//  NSDate *nextFireDate;
+//  if ([list.repeatType isEqualToString:@"Daily"]) {
+//    nextFireDate = [calendar dateByAddingUnit:NSCalendarUnitDay
+//                                        value:1
+//                                       toDate:list.remindTime
+//                                      options:0];
+//  } else if ([list.repeatType isEqualToString:@"Weekly"]) {
+//    nextFireDate = [calendar dateByAddingUnit:NSCalendarUnitWeekOfYear
+//                                        value:1
+//                                       toDate:list.remindTime
+//                                      options:0];
+//  } else if ([list.repeatType isEqualToString:@"Monthly"]) {
+//    nextFireDate = [calendar dateByAddingUnit:NSCalendarUnitMonth
+//                                        value:1
+//                                       toDate:list.remindTime
+//                                      options:0];
+//  } else if ([list.repeatType isEqualToString:@"Yearly"]) {
+//    nextFireDate = [calendar dateByAddingUnit:NSCalendarUnitYear
+//                                        value:1
+//                                       toDate:list.remindTime
+//                                      options:0];
+//  }
+//  return nextFireDate;
+//}
 
+#pragma mark - PopReminder notification
+- (void)popReminder:(NSNotification *)notification {
+    YYPopReminderClass *reminder = [[YYPopReminderClass alloc]init];
+    YYList *list = [reminder relatedListWithNotification:notification];
+    [reminder cancelNotification:list];
+    UIAlertController *alertController =
+    [UIAlertController alertControllerWithTitle:@""
+                                        message:list.content
+                                 preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancel =
+    [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil)
+                             style:UIAlertActionStyleCancel
+                           handler:nil];
+    UIAlertAction *complete = [UIAlertAction
+                               actionWithTitle:NSLocalizedString(@"Complete", nil)
+                               style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction *action) {
+                                   [UIApplication sharedApplication].applicationIconBadgeNumber =
+                                   1;
+                                   [UIApplication sharedApplication].applicationIconBadgeNumber =
+                                   0;
+                                   [reminder resetList:list];
+                                   if (self.itemToEdit) {
+                                       if (self.itemToEdit.itemKey == list.itemKey) {
+                                           [self dismissViewControllerAnimated:YES completion:nil];
+                                       }
+                                   }
+                               }];
+    [alertController addAction:cancel];
+    [alertController addAction:complete];
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
+#pragma mark - help methods
 - (void)changeDatePickerTextColor:(UIDatePicker *)picker {
   [picker setValue:[UIColor whiteColor] forKeyPath:@"textColor"];
   SEL selector = NSSelectorFromString(@"setHighlightsToday:");
@@ -313,7 +469,9 @@
 }
 
 - (void)calculateTimeInterval:(YYList *)list {
-  list.day =[NSNumber numberWithInteger:[self daysWithinEraFromDate:[NSDate date] toDate:list.remindTime]];
+  list.day =
+      [NSNumber numberWithInteger:[self daysWithinEraFromDate:[NSDate date]
+                                                       toDate:list.remindTime]];
   NSDateComponents *comps =
       [calendar components:NSCalendarUnitHour | NSCalendarUnitMinute
                   fromDate:list.remindTime];
@@ -362,7 +520,7 @@
 - (CGFloat)tableView:(UITableView *)tableView
     heightForRowAtIndexPath:(NSIndexPath *)indexPath {
   CGFloat height = self.tableView.rowHeight;
-    CGFloat pickerRowHeight = 217;
+  CGFloat pickerRowHeight = 217;
   if (indexPath.section == 1) {
     if (indexPath.row == 2) {
       height = dateTimePickerIsShowing ? pickerRowHeight : 0;
@@ -471,8 +629,8 @@ forRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
   default:
     break;
   }
-    [self.tableView beginUpdates];
-    [self.tableView endUpdates];
+  [self.tableView beginUpdates];
+  [self.tableView endUpdates];
 }
 
 - (void)hidePicker:(NSInteger)tag {
@@ -489,8 +647,8 @@ forRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
   default:
     break;
   }
-    [self.tableView beginUpdates];
-    [self.tableView endUpdates];
+  [self.tableView beginUpdates];
+  [self.tableView endUpdates];
 }
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {

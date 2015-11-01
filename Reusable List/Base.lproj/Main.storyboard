@@ -36,7 +36,7 @@
                                             <rect key="frame" x="74" y="33" width="59" height="21"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <animations/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                             <nil key="highlightedColor"/>
                                             <variation key="heightClass=regular-widthClass=compact">
                                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
@@ -421,7 +421,7 @@
                                             </subviews>
                                             <animations/>
                                             <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="yKu-ht-lcf" secondAttribute="bottom" constant="1" id="gBO-tA-djn"/>
+                                                <constraint firstAttribute="bottom" secondItem="yKu-ht-lcf" secondAttribute="bottom" priority="250" constant="1" id="gBO-tA-djn"/>
                                                 <constraint firstItem="yKu-ht-lcf" firstAttribute="leading" secondItem="cGK-Lu-S55" secondAttribute="leading" id="nDH-rz-qAa"/>
                                                 <constraint firstItem="yKu-ht-lcf" firstAttribute="top" secondItem="cGK-Lu-S55" secondAttribute="top" id="v2Z-wx-Kdj"/>
                                                 <constraint firstAttribute="trailing" secondItem="yKu-ht-lcf" secondAttribute="trailing" id="wf9-qa-p85"/>
@@ -576,7 +576,7 @@
                                                 <constraint firstItem="xXA-TB-lch" firstAttribute="top" secondItem="at0-Do-ADn" secondAttribute="top" id="AZD-zh-HcL"/>
                                                 <constraint firstAttribute="trailing" secondItem="xXA-TB-lch" secondAttribute="trailing" id="ERK-kj-Kx3"/>
                                                 <constraint firstItem="xXA-TB-lch" firstAttribute="leading" secondItem="at0-Do-ADn" secondAttribute="leading" id="W6Y-CU-IvJ"/>
-                                                <constraint firstAttribute="bottom" secondItem="xXA-TB-lch" secondAttribute="bottom" constant="1" id="dBL-Hx-BBx"/>
+                                                <constraint firstAttribute="bottom" secondItem="xXA-TB-lch" secondAttribute="bottom" priority="250" constant="1" id="dBL-Hx-BBx"/>
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="subviews">
@@ -825,7 +825,7 @@
                                             </subviews>
                                             <animations/>
                                             <constraints>
-                                                <constraint firstItem="aJa-Hm-H3k" firstAttribute="top" secondItem="EJZ-R0-BkJ" secondAttribute="top" constant="1" id="40b-gc-1Nb"/>
+                                                <constraint firstItem="aJa-Hm-H3k" firstAttribute="top" secondItem="EJZ-R0-BkJ" secondAttribute="top" priority="250" constant="1" id="40b-gc-1Nb"/>
                                                 <constraint firstAttribute="trailing" secondItem="aJa-Hm-H3k" secondAttribute="trailing" id="OSt-3H-MCS"/>
                                                 <constraint firstAttribute="bottom" secondItem="aJa-Hm-H3k" secondAttribute="bottom" id="fGl-2o-qoe"/>
                                                 <constraint firstItem="aJa-Hm-H3k" firstAttribute="leading" secondItem="EJZ-R0-BkJ" secondAttribute="leading" id="j66-OE-UyI"/>

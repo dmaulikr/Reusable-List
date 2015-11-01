@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4F249366336888F140507378 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4838113A1E2200443BAF3CD1 /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		60072D7B1BE5F8DC005C5FD2 /* YYPopReminderClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 60072D7A1BE5F8DC005C5FD2 /* YYPopReminderClass.m */; };
 		603002EA1B992C9400DB2C4C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 603002E91B992C9400DB2C4C /* main.m */; };
 		603002ED1B992C9400DB2C4C /* YYAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 603002EC1B992C9400DB2C4C /* YYAppDelegate.m */; };
 		603002F51B992C9400DB2C4C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 603002F41B992C9400DB2C4C /* Images.xcassets */; };
@@ -33,6 +34,8 @@
 
 /* Begin PBXFileReference section */
 		4838113A1E2200443BAF3CD1 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		60072D791BE5F8DC005C5FD2 /* YYPopReminderClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYPopReminderClass.h; sourceTree = "<group>"; };
+		60072D7A1BE5F8DC005C5FD2 /* YYPopReminderClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYPopReminderClass.m; sourceTree = "<group>"; };
 		603002E41B992C9400DB2C4C /* Reusable List.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Reusable List.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		603002E81B992C9400DB2C4C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		603002E91B992C9400DB2C4C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -195,6 +198,8 @@
 		603003421B9C820A00DB2C4C /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				60072D791BE5F8DC005C5FD2 /* YYPopReminderClass.h */,
+				60072D7A1BE5F8DC005C5FD2 /* YYPopReminderClass.m */,
 				603002EB1B992C9400DB2C4C /* YYAppDelegate.h */,
 				603002EC1B992C9400DB2C4C /* YYAppDelegate.m */,
 				6059CCCE1BC41505005CA839 /* Localizable.strings */,
@@ -367,6 +372,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				603002ED1B992C9400DB2C4C /* YYAppDelegate.m in Sources */,
+				60072D7B1BE5F8DC005C5FD2 /* YYPopReminderClass.m in Sources */,
 				603003451B9E849900DB2C4C /* Reusable List.xcdatamodeld in Sources */,
 				603002EA1B992C9400DB2C4C /* main.m in Sources */,
 				603003481B9EA58B00DB2C4C /* YYList.m in Sources */,

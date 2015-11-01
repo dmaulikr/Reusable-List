@@ -114,7 +114,7 @@
 - (void)application:(UIApplication *)application
     didReceiveLocalNotification:(UILocalNotification *)notification {
   [[NSNotificationCenter defaultCenter]
-      postNotificationName:@"UpdateTimeLabel"
+      postNotificationName:@"PopReminder"
                     object:nil
                   userInfo:@{
                     @"UUID" : notification.userInfo[@"UUID"]

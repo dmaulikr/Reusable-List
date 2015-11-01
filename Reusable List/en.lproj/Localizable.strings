@@ -11,8 +11,8 @@
 "Today" = "Today";
 "Tomorrow" = "Tomorrow";
 "Day after tomorrow" = "Day after tomorrow";
-"Caution" = "Caution";
-"Do you want to delete all the spare lists? This operation cannot be canceled" = "Do you want to delete all the spare lists? This operation cannot be canceled";
+"Delete all the spare lists" = "Delete all the spare lists";
+"This operation cannot be canceled" = "This operation cannot be canceled";
 "Cancel" = "Cancel";
 "Delete" = "Delete";
 "Cannot sent email" = "Cannot sent email";

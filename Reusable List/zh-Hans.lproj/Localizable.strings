@@ -11,8 +11,8 @@
 "Today" = "今天";
 "Tomorrow" = "明天";
 "Day after tomorrow" = "后天";
-"Caution" = "警告";
-"Do you want to delete all the spare lists? This operation cannot be canceled" = "确定要删除所有可用事项吗？该操作不可恢复";
+"Delete all the spare lists" = "删除所有可用事项";
+"This operation cannot be canceled" = "该操作不可撤销";
 "Cancel" = "取消";
 "Delete" = "删除";
 "Cannot sent email" = "无法发送邮件";

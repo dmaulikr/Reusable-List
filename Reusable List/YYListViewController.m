@@ -22,7 +22,8 @@
   BOOL datePickerIsShowing;
   BOOL dateTimePickerIsShowing;
   BOOL pickerViewIsShowing;
-  NSDateFormatter *formatter;
+  NSDateFormatter *dateTimeFormatter;
+  NSDateFormatter *dateFormatter;
   NSCalendar *calendar;
   UIColor *backgroundColor;
   YYList *unsavedList; // used for saving when app will be terminated
@@ -59,8 +60,7 @@
   // make textview autoresizing according to it's content
   self.tableView.estimatedRowHeight = 44;
   self.tableView.rowHeight = UITableViewAutomaticDimension;
-  self.textView.textContainerInset = UIEdgeInsetsMake(12, 12, 0, 12);
-
+//  self.textView.textContainerInset = UIEdgeInsetsMake(12, 12, 0, 12);
   // init private variables
   _repeatTypeArray = @[ @"Never", @"Daily", @"Weekly", @"Monthly", @"Yearly" ];
   _pickerArray = @[ @100, @200, @300 ];
@@ -68,8 +68,13 @@
   dateTimePickerIsShowing = NO;
   pickerViewIsShowing = NO;
 
-  formatter = [[NSDateFormatter alloc] init];
-  formatter.locale = [NSLocale autoupdatingCurrentLocale];
+  dateTimeFormatter = [[NSDateFormatter alloc] init];
+  dateTimeFormatter.locale = [NSLocale autoupdatingCurrentLocale];
+  [dateTimeFormatter setDateFormat:@"yy/MM/d EEE  aaK:mm"];
+  dateFormatter = [[NSDateFormatter alloc] init];
+  dateFormatter.locale = [NSLocale autoupdatingCurrentLocale];
+  [dateFormatter setDateStyle:NSDateFormatterLongStyle];
+  [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
   calendar = [NSCalendar autoupdatingCurrentCalendar];
 
   //  if (!self.itemToEdit) {
@@ -89,9 +94,8 @@
       self.alertTimeLabel.textColor = [UIColor whiteColor];
     }
     if (self.itemToEdit.remindTime) {
-      [self configDateFormatterForDateTimeLabel];
       self.alertTimeLabel.text =
-          [formatter stringFromDate:self.itemToEdit.remindTime];
+          [dateTimeFormatter stringFromDate:self.itemToEdit.remindTime];
       self.repeatLabel.textColor = [UIColor whiteColor];
     } else {
       self.alertTimeLabel.text = NSLocalizedString(@"None", nil);
@@ -110,9 +114,8 @@
       self.endTimeLabel.textColor = [UIColor whiteColor];
     }
     if (self.itemToEdit.endDate) {
-      [self configDateFormatterForDateLabel];
       self.endTimeLabel.text =
-          [formatter stringFromDate:self.itemToEdit.endDate];
+          [dateFormatter stringFromDate:self.itemToEdit.endDate];
     } else {
       self.endTimeLabel.text = NSLocalizedString(@"None", nil);
     }
@@ -163,9 +166,8 @@
   if (self.itemToEdit) {
     self.itemToEdit.content = self.textView.text;
     self.itemToEdit.hasAlert = [NSNumber numberWithBool:self.alertSwitch.on];
-    [self configDateFormatterForDateTimeLabel];
     self.itemToEdit.remindTime =
-        [formatter dateFromString:self.alertTimeLabel.text];
+        [dateTimeFormatter dateFromString:self.alertTimeLabel.text];
 
     for (NSString *type in _repeatTypeArray) {
       if ([self.repeatLabel.text
@@ -177,8 +179,8 @@
 
     self.itemToEdit.hasEndDate =
         [NSNumber numberWithBool:self.endAlertSwitch.on];
-    [self configDateFormatterForDateLabel];
-    self.itemToEdit.endDate = [formatter dateFromString:self.endTimeLabel.text];
+    self.itemToEdit.endDate =
+        [dateFormatter dateFromString:self.endTimeLabel.text];
 
     for (UILocalNotification *notification in
          [[UIApplication sharedApplication] scheduledLocalNotifications]) {
@@ -200,8 +202,8 @@
     YYList *list = [YYList MR_createEntity];
     list.content = self.textView.text;
     list.hasAlert = [NSNumber numberWithBool:self.alertSwitch.on];
-    [self configDateFormatterForDateTimeLabel];
-    list.remindTime = [formatter dateFromString:self.alertTimeLabel.text];
+    list.remindTime =
+        [dateTimeFormatter dateFromString:self.alertTimeLabel.text];
 
     for (NSString *type in _repeatTypeArray) {
       if ([self.repeatLabel.text
@@ -212,8 +214,7 @@
     }
 
     list.hasEndDate = [NSNumber numberWithBool:self.endAlertSwitch.on];
-    [self configDateFormatterForDateLabel];
-    list.endDate = [formatter dateFromString:self.endTimeLabel.text];
+    list.endDate = [dateFormatter dateFromString:self.endTimeLabel.text];
     if (list.remindTime) {
       [self scheduleNotificaiton:list];
       [self calculateTimeInterval:list];
@@ -237,11 +238,11 @@
         [self.itemToEdit.hour integerValue] != 0 ||
         [self.itemToEdit.minute integerValue] != 0) {
       NSDate *suggestDateTime = [self suggestReminderDate:self.itemToEdit];
-      [self configDateFormatterForDateTimeLabel];
-      self.alertTimeLabel.text = [formatter stringFromDate:suggestDateTime];
+      self.alertTimeLabel.text =
+          [dateTimeFormatter stringFromDate:suggestDateTime];
     } else {
-      [self configDateFormatterForDateTimeLabel];
-      self.alertTimeLabel.text = [formatter stringFromDate:[NSDate date]];
+      self.alertTimeLabel.text =
+          [dateTimeFormatter stringFromDate:[NSDate date]];
     }
     self.repeatLabel.textColor = [UIColor whiteColor];
   } else {
@@ -469,15 +470,6 @@
   }
 }
 
-- (void)configDateFormatterForDateTimeLabel {
-  [formatter setDateFormat:@"yy/MM/d EEE  aaK:mm"];
-}
-
-- (void)configDateFormatterForDateLabel {
-  [formatter setDateStyle:NSDateFormatterLongStyle];
-  [formatter setTimeStyle:NSDateFormatterNoStyle];
-}
-
 - (void)calculateTimeInterval:(YYList *)list {
   list.day =
       [NSNumber numberWithInteger:[self daysWithinEraFromDate:[NSDate date]
@@ -609,14 +601,12 @@ forRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
 #pragma mark - UIPickerViewDelegate
 
 - (IBAction)alertTimeChanged:(UIDatePicker *)sender {
-  [self configDateFormatterForDateTimeLabel];
-  self.alertTimeLabel.text = [formatter stringFromDate:sender.date];
+  self.alertTimeLabel.text = [dateTimeFormatter stringFromDate:sender.date];
   self.repeatLabel.textColor = [UIColor whiteColor];
 }
 
 - (IBAction)endDateChanged:(UIDatePicker *)sender {
-  [self configDateFormatterForDateLabel];
-  self.endTimeLabel.text = [formatter stringFromDate:sender.date];
+  self.endTimeLabel.text = [dateFormatter stringFromDate:sender.date];
 }
 
 - (void)showPicker:(NSInteger)tag {
@@ -627,9 +617,8 @@ forRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     self.dateTimePicker.minimumDate = currentDate;
     if (![self.alertTimeLabel.text
             isEqualToString:NSLocalizedString(@"None", nil)]) {
-      [self configDateFormatterForDateTimeLabel];
       [self.dateTimePicker
-          setDate:[formatter dateFromString:self.alertTimeLabel.text]];
+          setDate:[dateTimeFormatter dateFromString:self.alertTimeLabel.text]];
     }
     break;
   }
@@ -638,15 +627,13 @@ forRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     break;
   case 300: {
     datePickerIsShowing = YES;
-    [self configDateFormatterForDateTimeLabel];
     self.datePicker.minimumDate =
-        [[formatter dateFromString:self.alertTimeLabel.text]
+        [[dateTimeFormatter dateFromString:self.alertTimeLabel.text]
             dateByAddingTimeInterval:24 * 60 * 60];
     if (![self.endTimeLabel.text
             isEqualToString:NSLocalizedString(@"None", nil)]) {
-      [self configDateFormatterForDateLabel];
       [self.datePicker
-          setDate:[formatter dateFromString:self.endTimeLabel.text]];
+          setDate:[dateFormatter dateFromString:self.endTimeLabel.text]];
     }
     break;
   }

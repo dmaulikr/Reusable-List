@@ -25,7 +25,6 @@
   NSDateFormatter *formatter;
   NSCalendar *calendar;
   UIColor *backgroundColor;
-  NSString *repeat;    // store choosed picker value
   YYList *unsavedList; // used for saving when app will be terminated
 }
 
@@ -73,9 +72,9 @@
   formatter.locale = [NSLocale autoupdatingCurrentLocale];
   calendar = [NSCalendar autoupdatingCurrentCalendar];
 
-  if (!self.itemToEdit) {
-    unsavedList = [YYList MR_createEntity];
-  }
+  //  if (!self.itemToEdit) {
+  //    unsavedList = [YYList MR_createEntity];
+  //  }
 
   // init pickerView
   self.pickerView.delegate = self;
@@ -120,6 +119,7 @@
   } else {
     [self.textView becomeFirstResponder];
     self.endAlertSwitch.enabled = NO;
+    unsavedList = [YYList MR_createEntity];
   }
 }
 
@@ -166,11 +166,15 @@
     [self configDateFormatterForDateTimeLabel];
     self.itemToEdit.remindTime =
         [formatter dateFromString:self.alertTimeLabel.text];
-    if (repeat) {
-      self.itemToEdit.repeatType = repeat;
-    } else if (!self.itemToEdit.repeatType) {
-      self.itemToEdit.repeatType = @"Never";
+
+    for (NSString *type in _repeatTypeArray) {
+      if ([self.repeatLabel.text
+              isEqualToString:NSLocalizedString(type, nil)]) {
+        self.itemToEdit.repeatType = type;
+        break;
+      }
     }
+
     self.itemToEdit.hasEndDate =
         [NSNumber numberWithBool:self.endAlertSwitch.on];
     [self configDateFormatterForDateLabel];
@@ -198,11 +202,15 @@
     list.hasAlert = [NSNumber numberWithBool:self.alertSwitch.on];
     [self configDateFormatterForDateTimeLabel];
     list.remindTime = [formatter dateFromString:self.alertTimeLabel.text];
-    if (repeat) {
-      list.repeatType = repeat;
-    } else {
-      list.repeatType = @"Never";
+
+    for (NSString *type in _repeatTypeArray) {
+      if ([self.repeatLabel.text
+              isEqualToString:NSLocalizedString(type, nil)]) {
+        self.itemToEdit.repeatType = type;
+        break;
+      }
     }
+
     list.hasEndDate = [NSNumber numberWithBool:self.endAlertSwitch.on];
     [self configDateFormatterForDateLabel];
     list.endDate = [formatter dateFromString:self.endTimeLabel.text];
@@ -225,31 +233,12 @@
   [self.textView resignFirstResponder];
   if (self.alertSwitch.on) {
     self.alertTimeLabel.textColor = [UIColor whiteColor];
-    if (self.itemToEdit.day || self.itemToEdit.hour || self.itemToEdit.minute) {
-      NSDateComponents *comps = [[NSDateComponents alloc] init];
-      comps.day = [self.itemToEdit.day integerValue];
-      NSDate *suggestDate = [calendar dateByAddingComponents:comps
-                                                      toDate:[NSDate date]
-                                                     options:0];
-
-      NSUInteger units = NSCalendarUnitYear | NSCalendarUnitMonth |
-                         NSCalendarUnitDay | NSCalendarUnitHour |
-                         NSCalendarUnitMinute;
-      NSDateComponents *comps1 =
-          [calendar components:units fromDate:suggestDate];
-      comps1.hour = [self.itemToEdit.hour integerValue];
-      comps1.minute = [self.itemToEdit.minute integerValue];
-
-      NSDate *suggestDateTime = [calendar dateFromComponents:comps1];
-
+    if ([self.itemToEdit.day integerValue] != 0 ||
+        [self.itemToEdit.hour integerValue] != 0 ||
+        [self.itemToEdit.minute integerValue] != 0) {
+      NSDate *suggestDateTime = [self suggestReminderDate:self.itemToEdit];
       [self configDateFormatterForDateTimeLabel];
-      if ([suggestDateTime compare:[NSDate date]] == NSOrderedAscending) {
-        self.alertTimeLabel.text = [formatter
-            stringFromDate:[suggestDateTime
-                               dateByAddingTimeInterval:24 * 60 * 60]];
-      } else {
-        self.alertTimeLabel.text = [formatter stringFromDate:suggestDateTime];
-      }
+      self.alertTimeLabel.text = [formatter stringFromDate:suggestDateTime];
     } else {
       [self configDateFormatterForDateTimeLabel];
       self.alertTimeLabel.text = [formatter stringFromDate:[NSDate date]];
@@ -362,7 +351,8 @@
 //
 //- (BOOL)date:(NSDate *)date reachEndDate:(NSDate *)endDate {
 //  NSDateComponents *comps = [calendar
-//      components:(NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay)
+//      components:(NSCalendarUnitYear | NSCalendarUnitMonth |
+//      NSCalendarUnitDay)
 //        fromDate:date];
 //  NSDate *newDate = [calendar dateFromComponents:comps];
 //  if ([newDate compare:endDate] == NSOrderedDescending) {
@@ -399,38 +389,58 @@
 
 #pragma mark - PopReminder notification
 - (void)popReminder:(NSNotification *)notification {
-    YYPopReminderClass *reminder = [[YYPopReminderClass alloc]init];
-    YYList *list = [reminder relatedListWithNotification:notification];
-    [reminder cancelNotification:list];
-    UIAlertController *alertController =
-    [UIAlertController alertControllerWithTitle:@""
-                                        message:list.content
-                                 preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *cancel =
-    [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil)
-                             style:UIAlertActionStyleCancel
-                           handler:nil];
-    UIAlertAction *complete = [UIAlertAction
-                               actionWithTitle:NSLocalizedString(@"Complete", nil)
-                               style:UIAlertActionStyleDefault
-                               handler:^(UIAlertAction *action) {
-                                   [UIApplication sharedApplication].applicationIconBadgeNumber =
-                                   1;
-                                   [UIApplication sharedApplication].applicationIconBadgeNumber =
-                                   0;
-                                   [reminder resetList:list];
-                                   if (self.itemToEdit) {
-                                       if (self.itemToEdit.itemKey == list.itemKey) {
-                                           [self dismissViewControllerAnimated:YES completion:nil];
-                                       }
-                                   }
-                               }];
-    [alertController addAction:cancel];
-    [alertController addAction:complete];
-    [self presentViewController:alertController animated:YES completion:nil];
+  YYPopReminderClass *reminder = [[YYPopReminderClass alloc] init];
+  YYList *list = [reminder relatedListWithNotification:notification];
+  [reminder cancelNotification:list];
+  UIAlertController *alertController =
+      [UIAlertController alertControllerWithTitle:@""
+                                          message:list.content
+                                   preferredStyle:UIAlertControllerStyleAlert];
+  UIAlertAction *cancel =
+      [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil)
+                               style:UIAlertActionStyleCancel
+                             handler:nil];
+  UIAlertAction *complete = [UIAlertAction
+      actionWithTitle:NSLocalizedString(@"Complete", nil)
+                style:UIAlertActionStyleDefault
+              handler:^(UIAlertAction *action) {
+                [UIApplication sharedApplication].applicationIconBadgeNumber =
+                    1;
+                [UIApplication sharedApplication].applicationIconBadgeNumber =
+                    0;
+                [reminder resetList:list];
+                if (self.itemToEdit) {
+                  if (self.itemToEdit.itemKey == list.itemKey) {
+                    [self dismissViewControllerAnimated:YES completion:nil];
+                  }
+                }
+              }];
+  [alertController addAction:cancel];
+  [alertController addAction:complete];
+  [self presentViewController:alertController animated:YES completion:nil];
 }
 
 #pragma mark - help methods
+- (NSDate *)suggestReminderDate:(YYList *)list {
+  NSDateComponents *comps = [[NSDateComponents alloc] init];
+  comps.day = [list.day integerValue];
+  NSDate *suggestDate =
+      [calendar dateByAddingComponents:comps toDate:[NSDate date] options:0];
+
+  NSUInteger units = NSCalendarUnitYear | NSCalendarUnitMonth |
+                     NSCalendarUnitDay | NSCalendarUnitHour |
+                     NSCalendarUnitMinute;
+  NSDateComponents *comps1 = [calendar components:units fromDate:suggestDate];
+  comps1.hour = [list.hour integerValue];
+  comps1.minute = [list.minute integerValue];
+
+  NSDate *suggestDateTime = [calendar dateFromComponents:comps1];
+  if ([suggestDateTime compare:[NSDate date]] == NSOrderedAscending) {
+    suggestDateTime = [suggestDateTime dateByAddingTimeInterval:24 * 60 * 60];
+  }
+  return suggestDateTime;
+}
+
 - (void)changeDatePickerTextColor:(UIDatePicker *)picker {
   [picker setValue:[UIColor whiteColor] forKeyPath:@"textColor"];
   SEL selector = NSSelectorFromString(@"setHighlightsToday:");
@@ -479,6 +489,17 @@
   list.minute = [NSNumber numberWithInteger:[comps minute]];
 }
 
+- (NSInteger)daysWithinEraFromDate:(NSDate *)startDate
+                            toDate:(NSDate *)endDate {
+  NSInteger startDay = [calendar ordinalityOfUnit:NSCalendarUnitDay
+                                           inUnit:NSCalendarUnitEra
+                                          forDate:startDate];
+  NSInteger endDay = [calendar ordinalityOfUnit:NSCalendarUnitDay
+                                         inUnit:NSCalendarUnitEra
+                                        forDate:endDate];
+  return endDay - startDay;
+}
+
 - (void)scheduleNotificaiton:(YYList *)list {
   UILocalNotification *notification = [self configureNotification:list];
   if ([list.repeatType isEqualToString:@"Daily"]) {
@@ -502,17 +523,6 @@
   notification.userInfo = @{ @"UUID" : list.itemKey };
   //  notification.category = @"listCategory";
   return notification;
-}
-
-- (NSInteger)daysWithinEraFromDate:(NSDate *)startDate
-                            toDate:(NSDate *)endDate {
-  NSInteger startDay = [calendar ordinalityOfUnit:NSCalendarUnitDay
-                                           inUnit:NSCalendarUnitEra
-                                          forDate:startDate];
-  NSInteger endDay = [calendar ordinalityOfUnit:NSCalendarUnitDay
-                                         inUnit:NSCalendarUnitEra
-                                        forDate:endDate];
-  return endDay - startDay;
 }
 
 #pragma mark - Table view data source
@@ -612,20 +622,34 @@ forRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
 - (void)showPicker:(NSInteger)tag {
   NSDate *currentDate = [NSDate date];
   switch (tag) {
-  case 100:
+  case 100: {
     dateTimePickerIsShowing = YES;
     self.dateTimePicker.minimumDate = currentDate;
+    if (![self.alertTimeLabel.text
+            isEqualToString:NSLocalizedString(@"None", nil)]) {
+      [self configDateFormatterForDateTimeLabel];
+      [self.dateTimePicker
+          setDate:[formatter dateFromString:self.alertTimeLabel.text]];
+    }
     break;
+  }
   case 200:
     pickerViewIsShowing = YES;
     break;
-  case 300:
+  case 300: {
     datePickerIsShowing = YES;
     [self configDateFormatterForDateTimeLabel];
     self.datePicker.minimumDate =
         [[formatter dateFromString:self.alertTimeLabel.text]
             dateByAddingTimeInterval:24 * 60 * 60];
+    if (![self.endTimeLabel.text
+            isEqualToString:NSLocalizedString(@"None", nil)]) {
+      [self configDateFormatterForDateLabel];
+      [self.datePicker
+          setDate:[formatter dateFromString:self.endTimeLabel.text]];
+    }
     break;
+  }
   default:
     break;
   }
@@ -687,8 +711,8 @@ numberOfRowsInComponent:(NSInteger)component {
 - (void)pickerView:(UIPickerView *)pickerView
       didSelectRow:(NSInteger)row
        inComponent:(NSInteger)component {
-  repeat = [_repeatTypeArray objectAtIndex:row];
-  self.repeatLabel.text = NSLocalizedString(repeat, nil);
+  self.repeatLabel.text =
+      NSLocalizedString([_repeatTypeArray objectAtIndex:row], nil);
   if ([self.repeatLabel.text
           isEqualToString:NSLocalizedString(@"Never", nil)]) {
     self.endAlertSwitch.enabled = NO;

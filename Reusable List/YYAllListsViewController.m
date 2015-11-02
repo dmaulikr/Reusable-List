@@ -252,6 +252,7 @@ NSString *const APPVERSION = @"1.0";
   //  [self cancelNotification:list];
   [reminder resetList:list];
   [reminder cancelNotification:list];
+  [self reloadTableViewAndSection];
 }
 
 - (void)calculateBadge {
@@ -596,9 +597,9 @@ NSString *const APPVERSION = @"1.0";
 - (void)tableView:(UITableView *)tableView
     didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   if (indexPath.section == 0) {
-    [self performSegueWithIdentifier:@"EditList" sender:self];
+    [self performSegueWithIdentifier:@"EditList" sender:indexPath];
   } else {
-    [self performSegueWithIdentifier:@"EditSpareList" sender:self];
+    [self performSegueWithIdentifier:@"EditSpareList" sender:indexPath];
   }
 }
 
@@ -607,11 +608,10 @@ NSString *const APPVERSION = @"1.0";
   YYListViewController *controller =
       (YYListViewController *)navController.topViewController;
   controller.delegate = self;
+  NSIndexPath *indexPath = sender;
   if ([segue.identifier isEqualToString:@"EditList"]) {
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
     controller.itemToEdit = _listsWithDate[indexPath.row];
   } else if ([segue.identifier isEqualToString:@"EditSpareList"]) {
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
     controller.itemToEdit = _listsWithoutDate[indexPath.row];
   }
 }

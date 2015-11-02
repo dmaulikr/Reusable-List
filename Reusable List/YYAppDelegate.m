@@ -113,12 +113,14 @@
 
 - (void)application:(UIApplication *)application
     didReceiveLocalNotification:(UILocalNotification *)notification {
-  [[NSNotificationCenter defaultCenter]
-      postNotificationName:@"PopReminder"
-                    object:nil
-                  userInfo:@{
+    if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
+        [[NSNotificationCenter defaultCenter]
+         postNotificationName:@"PopReminder"
+         object:nil
+         userInfo:@{
                     @"UUID" : notification.userInfo[@"UUID"]
-                  }];
+                    }];
+    }
 }
 
 //- (void)application:(UIApplication *)application

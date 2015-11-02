@@ -52,7 +52,7 @@
                                 </tableViewCellContentView>
                                 <animations/>
                                 <connections>
-                                    <segue destination="NO6-wf-tcc" kind="presentation" identifier="EditList" trigger="accessoryAction" id="Kn5-IK-xlR"/>
+                                    <segue destination="NO6-wf-tcc" kind="presentation" identifier="EditList" trigger="accessoryAction" id="IjY-0J-vXL"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="secondSectionCell" textLabel="76s-tT-vnP" imageView="FlB-8K-kyv" style="IBUITableViewCellStyleDefault" id="mHz-nG-WMj">
@@ -83,7 +83,7 @@
                                 </tableViewCellContentView>
                                 <animations/>
                                 <connections>
-                                    <segue destination="NO6-wf-tcc" kind="presentation" identifier="EditSpareList" trigger="accessoryAction" id="yYm-xk-wyp"/>
+                                    <segue destination="NO6-wf-tcc" kind="presentation" identifier="EditSpareList" trigger="accessoryAction" id="Hwo-sh-6LM"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -942,6 +942,6 @@
         <image name="transparent" width="44" height="44"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Kn5-IK-xlR"/>
+        <segue reference="Hwo-sh-6LM"/>
     </inferredMetricsTieBreakers>
 </document>

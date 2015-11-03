@@ -35,6 +35,7 @@
 @property(weak, nonatomic) IBOutlet UILabel *repeatTitle;
 @property(weak, nonatomic) IBOutlet UILabel *endRepeatTitle;
 @property(weak, nonatomic) IBOutlet UILabel *endTimeTitle;
+@property (weak, nonatomic) IBOutlet UILabel *placeholderLabel;
 
 - (IBAction)setAlert:(id)sender;
 - (IBAction)setEndDate:(id)sender;

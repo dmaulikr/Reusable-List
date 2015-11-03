@@ -113,7 +113,7 @@ NSString *const APPVERSION = @"1.0";
     MFMailComposeViewController *picker =
         [[MFMailComposeViewController alloc] init];
     picker.mailComposeDelegate = self;
-    [picker setSubject:@"Reusable List Feedback"];
+    [picker setSubject:@"【反馈】Reusable List Feedback"];
     [picker setToRecipients:[NSArray arrayWithObject:@"molayyu@gmail.com"]];
     NSString *body =
         [NSString stringWithFormat:
@@ -644,15 +644,28 @@ NSString *const APPVERSION = @"1.0";
   return animation;
 }
 
-- (NSAttributedString *)titleForEmptyDataSet:(UIScrollView *)scrollView {
-  NSString *text = NSLocalizedString(@"Start Add Your List", nil);
+//- (NSAttributedString *)titleForEmptyDataSet:(UIScrollView *)scrollView {
+//  NSString *text = NSLocalizedString(@"Start Adding Your List", nil);
+//
+//  NSDictionary *attributes = @{
+//    NSFontAttributeName : [UIFont boldSystemFontOfSize:24.0f],
+//    NSForegroundColorAttributeName : [UIColor whiteColor]
+//  };
+//
+//  return [[NSAttributedString alloc] initWithString:text
+//  attributes:attributes];
+//}
 
+- (NSAttributedString *)buttonTitleForEmptyDataSet:(UIScrollView *)scrollView
+                                          forState:(UIControlState)state {
   NSDictionary *attributes = @{
     NSFontAttributeName : [UIFont boldSystemFontOfSize:24.0f],
     NSForegroundColorAttributeName : [UIColor whiteColor]
   };
 
-  return [[NSAttributedString alloc] initWithString:text attributes:attributes];
+  return [[NSAttributedString alloc]
+      initWithString:NSLocalizedString(@"Start Adding Your List", nil)
+          attributes:attributes];
 }
 
 - (UIColor *)backgroundColorForEmptyDataSet:(UIScrollView *)scrollView {
@@ -674,7 +687,7 @@ NSString *const APPVERSION = @"1.0";
 }
 
 - (BOOL)emptyDataSetShouldAllowTouch:(UIScrollView *)scrollView {
-  return NO;
+  return YES;
 }
 
 - (BOOL)emptyDataSetShouldAllowScroll:(UIScrollView *)scrollView {
@@ -683,6 +696,10 @@ NSString *const APPVERSION = @"1.0";
 
 - (BOOL)emptyDataSetShouldAnimateImageView:(UIScrollView *)scrollView {
   return YES;
+}
+
+- (void)emptyDataSetDidTapButton:(UIScrollView *)scrollView {
+  [self performSegueWithIdentifier:@"AddList" sender:nil];
 }
 
 @end

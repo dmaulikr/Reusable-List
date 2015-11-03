@@ -28,7 +28,7 @@
 @property(weak, nonatomic) IBOutlet UIDatePicker *dateTimePicker;
 @property(weak, nonatomic) IBOutlet UIPickerView *pickerView;
 @property(weak, nonatomic) IBOutlet UIDatePicker *datePicker;
-@property(nonatomic, weak) id<YYListViewControllerDelegate> delegate;
+@property(nonatomic, weak) id <YYListViewControllerDelegate> delegate;
 @property(nonatomic, strong) YYList *itemToEdit;
 @property(weak, nonatomic) IBOutlet UILabel *reminderTitle;
 @property(weak, nonatomic) IBOutlet UILabel *alertTimeTitle;

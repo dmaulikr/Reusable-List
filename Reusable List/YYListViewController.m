@@ -60,7 +60,8 @@
   // make textview autoresizing according to it's content
   self.tableView.estimatedRowHeight = 44;
   self.tableView.rowHeight = UITableViewAutomaticDimension;
-//  self.textView.textContainerInset = UIEdgeInsetsMake(12, 12, 0, 12);
+  //  self.textView.textContainerInset = UIEdgeInsetsMake(12, 12, 0, 12);
+    
   // init private variables
   _repeatTypeArray = @[ @"Never", @"Daily", @"Weekly", @"Monthly", @"Yearly" ];
   _pickerArray = @[ @100, @200, @300 ];
@@ -208,7 +209,7 @@
     for (NSString *type in _repeatTypeArray) {
       if ([self.repeatLabel.text
               isEqualToString:NSLocalizedString(type, nil)]) {
-        self.itemToEdit.repeatType = type;
+        list.repeatType = type;
         break;
       }
     }
@@ -622,9 +623,19 @@ forRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     }
     break;
   }
-  case 200:
+  case 200: {
     pickerViewIsShowing = YES;
+    NSInteger row = 0;
+    for (NSString *type in _repeatTypeArray) {
+      if ([self.repeatLabel.text
+              isEqualToString:NSLocalizedString(type, nil)]) {
+        row = [_repeatTypeArray indexOfObject:type];
+        break;
+      }
+    }
+    [self.pickerView selectRow:row inComponent:0 animated:NO];
     break;
+  }
   case 300: {
     datePickerIsShowing = YES;
     self.datePicker.minimumDate =

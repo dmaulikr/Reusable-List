@@ -644,18 +644,6 @@ NSString *const APPVERSION = @"1.0";
   return animation;
 }
 
-//- (NSAttributedString *)titleForEmptyDataSet:(UIScrollView *)scrollView {
-//  NSString *text = NSLocalizedString(@"Start Adding Your List", nil);
-//
-//  NSDictionary *attributes = @{
-//    NSFontAttributeName : [UIFont boldSystemFontOfSize:24.0f],
-//    NSForegroundColorAttributeName : [UIColor whiteColor]
-//  };
-//
-//  return [[NSAttributedString alloc] initWithString:text
-//  attributes:attributes];
-//}
-
 - (NSAttributedString *)buttonTitleForEmptyDataSet:(UIScrollView *)scrollView
                                           forState:(UIControlState)state {
   NSDictionary *attributes = @{

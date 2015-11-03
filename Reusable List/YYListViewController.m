@@ -26,8 +26,8 @@
   NSDateFormatter *dateFormatter;
   NSCalendar *calendar;
   UIColor *backgroundColor;
-  YYList *unsavedList; // used for saving when app will be terminated
-    NSString *itemContent; // used for store itemToEdit original content
+  YYList *unsavedList;   // used for saving when app will be terminated
+  NSString *itemContent; // used for store itemToEdit original content
 }
 
 - (void)viewDidLoad {
@@ -61,7 +61,7 @@
   // make textview autoresizing according to it's content
   self.tableView.estimatedRowHeight = 44;
   self.tableView.rowHeight = UITableViewAutomaticDimension;
-    
+
   // init private variables
   _repeatTypeArray = @[ @"Never", @"Daily", @"Weekly", @"Monthly", @"Yearly" ];
   _pickerArray = @[ @100, @200, @300 ];
@@ -78,10 +78,6 @@
   [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
   calendar = [NSCalendar autoupdatingCurrentCalendar];
 
-  //  if (!self.itemToEdit) {
-  //    unsavedList = [YYList MR_createEntity];
-  //  }
-
   // init pickerView
   self.pickerView.delegate = self;
   self.pickerView.dataSource = self;
@@ -89,7 +85,6 @@
   // configure the view
   if (self.itemToEdit) {
       self.placeholderLabel.text = @"";
-      itemContent = self.itemToEdit.content;
     self.doneButton.enabled = YES;
     self.textView.text = self.itemToEdit.content;
     self.alertSwitch.on = [self.itemToEdit.hasAlert boolValue];
@@ -160,12 +155,12 @@
 }
 
 - (IBAction)cancel:(id)sender {
-    if (self.itemToEdit) {
-        self.itemToEdit.content = itemContent;
-    }else {
-        [unsavedList MR_deleteEntity];
-        unsavedList = nil;
-    }
+  if (self.itemToEdit) {
+    self.itemToEdit.content = itemContent;
+  } else {
+    [unsavedList MR_deleteEntity];
+    unsavedList = nil;
+  }
   [self.textView resignFirstResponder];
   [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -589,7 +584,7 @@ forRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
   [self.tableView beginUpdates];
   [self.tableView endUpdates];
   self.doneButton.enabled = (textView.text.length > 0);
-    
+
     if (textView.text.length == 0) {
         self.placeholderLabel.text = NSLocalizedString(@"Name", nil);
     }else {

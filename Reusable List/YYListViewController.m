@@ -84,8 +84,8 @@
 
   // configure the view
   if (self.itemToEdit) {
-      self.placeholderLabel.text = @"";
-      itemContent = self.itemToEdit.content;
+    self.placeholderLabel.text = @"";
+    itemContent = self.itemToEdit.content;
     self.doneButton.enabled = YES;
     self.textView.text = self.itemToEdit.content;
     self.alertSwitch.on = [self.itemToEdit.hasAlert boolValue];
@@ -119,7 +119,7 @@
       self.endTimeLabel.text = NSLocalizedString(@"None", nil);
     }
   } else {
-      self.placeholderLabel.text = NSLocalizedString(@"Name", nil);
+    self.placeholderLabel.text = NSLocalizedString(@"Name", nil);
     [self.textView becomeFirstResponder];
     self.endAlertSwitch.enabled = NO;
     unsavedList = [YYList MR_createEntity];
@@ -275,123 +275,6 @@
   }
 }
 
-//#pragma mark - PopReminder notification
-//- (void)popReminder:(NSNotification *)notification {
-//  YYList *list = [self relatedListWithNotification:notification];
-//  [self cancelNotification:list];
-//  UIAlertController *alertController =
-//      [UIAlertController alertControllerWithTitle:@""
-//                                          message:list.content
-//                                   preferredStyle:UIAlertControllerStyleAlert];
-//  UIAlertAction *cancel =
-//      [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil)
-//                               style:UIAlertActionStyleCancel
-//                             handler:nil];
-//  UIAlertAction *complete = [UIAlertAction
-//      actionWithTitle:NSLocalizedString(@"Complete", nil)
-//                style:UIAlertActionStyleDefault
-//              handler:^(UIAlertAction *action) {
-//                [UIApplication sharedApplication].applicationIconBadgeNumber =
-//                    1;
-//                [UIApplication sharedApplication].applicationIconBadgeNumber =
-//                    0;
-//                [self resetList:list];
-//                if (self.itemToEdit) {
-//                  if (self.itemToEdit.itemKey == list.itemKey) {
-//                    [self dismissViewControllerAnimated:YES completion:nil];
-//                  }
-//                }
-//              }];
-//  [alertController addAction:cancel];
-//  [alertController addAction:complete];
-//  [self presentViewController:alertController animated:YES completion:nil];
-//}
-//
-//- (YYList *)relatedListWithNotification:(NSNotification *)notification {
-//  NSDictionary *dic = notification.userInfo;
-//  NSString *UUID = dic[@"UUID"];
-//  YYList *list = [YYList MR_findFirstByAttribute:@"itemKey" withValue:UUID];
-//  return list;
-//}
-//
-//- (void)cancelNotification:(YYList *)list {
-//  NSDate *nextFireDate = [self nextFireDate:list];
-//  if (nextFireDate && list.endDate) {
-//    if ([self date:nextFireDate reachEndDate:list.endDate]) {
-//      for (UILocalNotification *notification in
-//           [[UIApplication sharedApplication] scheduledLocalNotifications]) {
-//        if ([notification.userInfo[@"UUID"] isEqualToString:list.itemKey]) {
-//          [[UIApplication sharedApplication]
-//              cancelLocalNotification:notification];
-//          break;
-//        }
-//      }
-//    }
-//  }
-//}
-//
-//- (void)removeListInfomation:(YYList *)list {
-//  list.remindTime = nil;
-//  list.dateCreated = [NSDate date];
-//  list.endDate = nil;
-//  list.repeatType = @"Never";
-//  list.hasAlert = [NSNumber numberWithBool:NO];
-//  list.hasEndDate = [NSNumber numberWithBool:NO];
-//  [[NSManagedObjectContext MR_defaultContext]
-//      MR_saveToPersistentStoreWithCompletion:nil];
-//}
-//
-//- (void)resetList:(YYList *)list {
-//  NSDate *nextFireDate = [self nextFireDate:list];
-//  if (nextFireDate) {
-//    if (![self date:nextFireDate reachEndDate:list.endDate]) {
-//      list.remindTime = nextFireDate;
-//    } else {
-//      [self removeListInfomation:list];
-//    }
-//  } else {
-//    [self removeListInfomation:list];
-//  }
-//}
-//
-//- (BOOL)date:(NSDate *)date reachEndDate:(NSDate *)endDate {
-//  NSDateComponents *comps = [calendar
-//      components:(NSCalendarUnitYear | NSCalendarUnitMonth |
-//      NSCalendarUnitDay)
-//        fromDate:date];
-//  NSDate *newDate = [calendar dateFromComponents:comps];
-//  if ([newDate compare:endDate] == NSOrderedDescending) {
-//    return YES;
-//  }
-//  return NO;
-//}
-//
-//- (NSDate *)nextFireDate:(YYList *)list {
-//  NSDate *nextFireDate;
-//  if ([list.repeatType isEqualToString:@"Daily"]) {
-//    nextFireDate = [calendar dateByAddingUnit:NSCalendarUnitDay
-//                                        value:1
-//                                       toDate:list.remindTime
-//                                      options:0];
-//  } else if ([list.repeatType isEqualToString:@"Weekly"]) {
-//    nextFireDate = [calendar dateByAddingUnit:NSCalendarUnitWeekOfYear
-//                                        value:1
-//                                       toDate:list.remindTime
-//                                      options:0];
-//  } else if ([list.repeatType isEqualToString:@"Monthly"]) {
-//    nextFireDate = [calendar dateByAddingUnit:NSCalendarUnitMonth
-//                                        value:1
-//                                       toDate:list.remindTime
-//                                      options:0];
-//  } else if ([list.repeatType isEqualToString:@"Yearly"]) {
-//    nextFireDate = [calendar dateByAddingUnit:NSCalendarUnitYear
-//                                        value:1
-//                                       toDate:list.remindTime
-//                                      options:0];
-//  }
-//  return nextFireDate;
-//}
-
 #pragma mark - PopReminder notification
 - (void)popReminder:(NSNotification *)notification {
   YYPopReminderClass *reminder = [[YYPopReminderClass alloc] init];
@@ -517,7 +400,6 @@
   notification.timeZone = [NSTimeZone defaultTimeZone];
   notification.soundName = UILocalNotificationDefaultSoundName;
   notification.userInfo = @{ @"UUID" : list.itemKey };
-  //  notification.category = @"listCategory";
   return notification;
 }
 
@@ -586,12 +468,12 @@ forRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
   [self.tableView endUpdates];
   self.doneButton.enabled = (textView.text.length > 0);
 
-    if (textView.text.length == 0) {
-        self.placeholderLabel.text = NSLocalizedString(@"Name", nil);
-    }else {
-        self.placeholderLabel.text = @"";
-    }
-    
+  if (textView.text.length == 0) {
+    self.placeholderLabel.text = NSLocalizedString(@"Name", nil);
+  } else {
+    self.placeholderLabel.text = @"";
+  }
+
   if (self.itemToEdit) {
     self.itemToEdit.content = textView.text;
   } else {

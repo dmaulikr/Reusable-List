@@ -56,9 +56,6 @@ NSString *const APPVERSION = @"1.0";
   // Empty State delegate
   self.tableView.emptyDataSetSource = self;
   self.tableView.emptyDataSetDelegate = self;
-
-  // A little trick for removing the cell separators
-  //    self.tableView.tableFooterView = [UIView new];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
@@ -72,10 +69,6 @@ NSString *const APPVERSION = @"1.0";
                     selector:@selector(popReminder:)
                         name:@"PopReminder"
                       object:nil];
-  //  [defaultCenter addObserver:self
-  //                    selector:@selector(markAsCompleted:)
-  //                        name:@"MarkAsCompleted"
-  //                      object:nil];
   [defaultCenter addObserver:self
                     selector:@selector(calculateBadge)
                         name:@"CalculateBadge"
@@ -92,9 +85,6 @@ NSString *const APPVERSION = @"1.0";
   [[NSNotificationCenter defaultCenter] removeObserver:self
                                                   name:@"PopReminder"
                                                 object:nil];
-  //  [[NSNotificationCenter defaultCenter] removeObserver:self
-  //                                                  name:@"MarkAsCompleted"
-  //                                                object:nil];
   [[NSNotificationCenter defaultCenter] removeObserver:self
                                                   name:@"CalculateBadge"
                                                 object:nil];
@@ -234,13 +224,6 @@ NSString *const APPVERSION = @"1.0";
   [self presentViewController:alertController animated:YES completion:nil];
 }
 
-//- (void)markAsCompleted:(NSNotification *)notification {
-//  YYList *list = [self relatedListWithNotification:notification];
-//  [self resetList:list];
-//  [self cancelNotification:list];
-//  [self calculateBadge];
-//}
-
 - (void)manuallyMarkAsCompleted:(UIButton *)sender {
   // clear notificaitonbar message
   [UIApplication sharedApplication].applicationIconBadgeNumber = 1;
@@ -248,8 +231,6 @@ NSString *const APPVERSION = @"1.0";
 
   NSString *itemKey = sender.titleLabel.text;
   YYList *list = [YYList MR_findFirstByAttribute:@"itemKey" withValue:itemKey];
-  //  [self resetList:list];
-  //  [self cancelNotification:list];
   [reminder resetList:list];
   [reminder cancelNotification:list];
   [self reloadTableViewAndSection];
@@ -310,124 +291,6 @@ NSString *const APPVERSION = @"1.0";
   [self.tableView reloadSections:indexSet
                 withRowAnimation:UITableViewRowAnimationAutomatic];
 }
-
-//- (void)popReminder:(NSNotification *)notification {
-//    YYList *list = [self relatedListWithNotification:notification];
-//    [self cancelNotification:list];
-//    UIAlertController *alertController = [UIAlertController
-//                                          alertControllerWithTitle:@""
-//                                          message:list.content
-//                                          preferredStyle:UIAlertControllerStyleAlert];
-//    UIAlertAction *cancel =
-//    [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil)
-//                             style:UIAlertActionStyleCancel
-//                           handler:^(UIAlertAction *action){
-//                               [self reloadTableViewAndSection];
-//                           }];
-//    UIAlertAction *complete =
-//    [UIAlertAction actionWithTitle:NSLocalizedString(@"Complete", nil)
-//                             style:UIAlertActionStyleDefault
-//                           handler:^(UIAlertAction *action) {
-//                               [UIApplication
-//                               sharedApplication].applicationIconBadgeNumber =
-//                               1;
-//                               [UIApplication
-//                               sharedApplication].applicationIconBadgeNumber =
-//                               0;
-//                               [self resetList:list];
-//                           }];
-//    [alertController addAction:cancel];
-//    [alertController addAction:complete];
-//    [self presentViewController:alertController animated:YES completion:nil];
-//}
-
-//- (void)resetList:(YYList *)list {
-//    NSDate *nextFireDate = [self nextFireDate:list];
-//    if (nextFireDate) {
-//        if (![self date:nextFireDate reachEndDate:list.endDate]) {
-//            list.remindTime = nextFireDate;
-//        } else {
-//            [self removeListInfomation:list];
-//        }
-//    } else {
-//        [self removeListInfomation:list];
-//    }
-//    [self reloadTableViewAndSection];
-//}
-
-//- (void)removeListInfomation:(YYList *)list {
-//    list.remindTime = nil;
-//    list.dateCreated = [NSDate date];
-//    list.endDate = nil;
-//    list.repeatType = @"Never";
-//    list.hasAlert = [NSNumber numberWithBool:NO];
-//    list.hasEndDate = [NSNumber numberWithBool:NO];
-//    [[NSManagedObjectContext MR_defaultContext]
-//     MR_saveToPersistentStoreWithCompletion:nil];
-//}
-
-//- (void)cancelNotification:(YYList *)list {
-//    NSDate *nextFireDate = [self nextFireDate:list];
-//    if (nextFireDate && list.endDate) {
-//        if ([self date:nextFireDate reachEndDate:list.endDate]) {
-//            for (UILocalNotification *notification in
-//                 [[UIApplication sharedApplication]
-//                 scheduledLocalNotifications]) {
-//                if ([notification.userInfo[@"UUID"]
-//                isEqualToString:list.itemKey]) {
-//                    [[UIApplication sharedApplication]
-//                     cancelLocalNotification:notification];
-//                    break;
-//                }
-//            }
-//        }
-//    }
-//}
-
-//- (YYList *)relatedListWithNotification:(NSNotification *)notification {
-//    NSDictionary *dic = notification.userInfo;
-//    NSString *UUID = dic[@"UUID"];
-//    YYList *list = [YYList MR_findFirstByAttribute:@"itemKey" withValue:UUID];
-//    return list;
-//}
-
-//- (BOOL)date:(NSDate *)date reachEndDate:(NSDate *)endDate {
-//    NSDateComponents *comps = [calendar
-//                               components:(NSCalendarUnitYear |
-//                               NSCalendarUnitMonth | NSCalendarUnitDay)
-//                               fromDate:date];
-//    NSDate *newDate = [calendar dateFromComponents:comps];
-//    if ([newDate compare:endDate] == NSOrderedDescending) {
-//        return YES;
-//    }
-//    return NO;
-//}
-
-//- (NSDate *)nextFireDate:(YYList *)list {
-//    NSDate *nextFireDate;
-//    if ([list.repeatType isEqualToString:@"Daily"]) {
-//        nextFireDate = [calendar dateByAddingUnit:NSCalendarUnitDay
-//                                            value:1
-//                                           toDate:list.remindTime
-//                                          options:0];
-//    } else if ([list.repeatType isEqualToString:@"Weekly"]) {
-//        nextFireDate = [calendar dateByAddingUnit:NSCalendarUnitWeekOfYear
-//                                            value:1
-//                                           toDate:list.remindTime
-//                                          options:0];
-//    } else if ([list.repeatType isEqualToString:@"Monthly"]) {
-//        nextFireDate = [calendar dateByAddingUnit:NSCalendarUnitMonth
-//                                            value:1
-//                                           toDate:list.remindTime
-//                                          options:0];
-//    } else if ([list.repeatType isEqualToString:@"Yearly"]) {
-//        nextFireDate = [calendar dateByAddingUnit:NSCalendarUnitYear
-//                                            value:1
-//                                           toDate:list.remindTime
-//                                          options:0];
-//    }
-//    return nextFireDate;
-//}
 
 #pragma mark - Table view data source
 

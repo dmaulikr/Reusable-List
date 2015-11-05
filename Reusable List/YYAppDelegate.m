@@ -8,6 +8,7 @@
 
 #import "YYAppDelegate.h"
 #import <MagicalRecord/MagicalRecord.h>
+#import "YYList.h"
 
 @import CoreData;
 
@@ -113,14 +114,21 @@
 
 - (void)application:(UIApplication *)application
     didReceiveLocalNotification:(UILocalNotification *)notification {
-    if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
-        [[NSNotificationCenter defaultCenter]
-         postNotificationName:@"PopReminder"
-         object:nil
-         userInfo:@{
-                    @"UUID" : notification.userInfo[@"UUID"]
-                    }];
+  NSString *uuid;
+  NSArray *lists = [YYList MR_findAll];
+  for (YYList *list in lists) {
+    if ([list.itemKey isEqualToString:notification.userInfo[@"UUID"]]) {
+      uuid = [list.itemKey copy];
     }
+  }
+  if ([UIApplication sharedApplication].applicationState ==
+      UIApplicationStateActive) {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"PopReminder"
+                                                        object:nil
+                                                      userInfo:@{
+                                                        @"UUID" : uuid
+                                                      }];
+  }
 }
 
 //- (void)application:(UIApplication *)application

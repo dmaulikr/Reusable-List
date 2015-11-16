@@ -10,6 +10,7 @@
 		4F249366336888F140507378 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4838113A1E2200443BAF3CD1 /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		60072D7B1BE5F8DC005C5FD2 /* YYPopReminderClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 60072D7A1BE5F8DC005C5FD2 /* YYPopReminderClass.m */; };
 		60296A291BF9925600ED4485 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 60296A2B1BF9925600ED4485 /* InfoPlist.strings */; };
+		60296A301BF99E5D00ED4485 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 60296A321BF99E5D00ED4485 /* InfoPlist.strings */; };
 		603002EA1B992C9400DB2C4C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 603002E91B992C9400DB2C4C /* main.m */; };
 		603002ED1B992C9400DB2C4C /* YYAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 603002EC1B992C9400DB2C4C /* YYAppDelegate.m */; };
 		603002F51B992C9400DB2C4C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 603002F41B992C9400DB2C4C /* Images.xcassets */; };
@@ -66,6 +67,8 @@
 		60296A251BF98D0E00ED4485 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		60296A2A1BF9925600ED4485 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		60296A2D1BF9926700ED4485 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		60296A311BF99E5D00ED4485 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		60296A331BF99E6300ED4485 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		603002E41B992C9400DB2C4C /* Reusable List.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Reusable List.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		603002E91B992C9400DB2C4C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		603002EB1B992C9400DB2C4C /* YYAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYAppDelegate.h; sourceTree = "<group>"; };
@@ -174,6 +177,7 @@
 			children = (
 				60296A251BF98D0E00ED4485 /* Info.plist */,
 				60296A2B1BF9925600ED4485 /* InfoPlist.strings */,
+				6059CCCE1BC41505005CA839 /* Localizable.strings */,
 				603002E91B992C9400DB2C4C /* main.m */,
 			);
 			name = "Supporting Files";
@@ -251,7 +255,6 @@
 				60072D7A1BE5F8DC005C5FD2 /* YYPopReminderClass.m */,
 				603002EB1B992C9400DB2C4C /* YYAppDelegate.h */,
 				603002EC1B992C9400DB2C4C /* YYAppDelegate.m */,
-				6059CCCE1BC41505005CA839 /* Localizable.strings */,
 			);
 			name = Other;
 			sourceTree = "<group>";
@@ -264,6 +267,7 @@
 				60D5323B1BF8C5D0002A0657 /* TodayViewController.m */,
 				60D5323D1BF8C5D0002A0657 /* MainInterface.storyboard */,
 				60D532401BF8C5D0002A0657 /* Info.plist */,
+				60296A321BF99E5D00ED4485 /* InfoPlist.strings */,
 			);
 			path = ReusableListTodayWidget;
 			sourceTree = "<group>";
@@ -418,6 +422,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				60D5323F1BF8C5D0002A0657 /* MainInterface.storyboard in Resources */,
+				60296A301BF99E5D00ED4485 /* InfoPlist.strings in Resources */,
 				60D532A41BF980E9002A0657 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -527,6 +532,15 @@
 			);
 			name = InfoPlist.strings;
 			path = ..;
+			sourceTree = "<group>";
+		};
+		60296A321BF99E5D00ED4485 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				60296A311BF99E5D00ED4485 /* zh-Hans */,
+				60296A331BF99E6300ED4485 /* en */,
+			);
+			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 		603002F61B992C9400DB2C4C /* LaunchScreen.xib */ = {

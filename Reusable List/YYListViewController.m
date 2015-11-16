@@ -84,8 +84,8 @@
 
   // configure the view
   if (self.itemToEdit) {
-      self.placeholderLabel.text = @"";
-      itemContent = self.itemToEdit.content;
+    self.placeholderLabel.text = @"";
+    itemContent = self.itemToEdit.content;
     self.doneButton.enabled = YES;
     self.textView.text = self.itemToEdit.content;
     self.alertSwitch.on = [self.itemToEdit.hasAlert boolValue];
@@ -119,7 +119,7 @@
       self.endTimeLabel.text = NSLocalizedString(@"None", nil);
     }
   } else {
-      self.placeholderLabel.text = NSLocalizedString(@"Name", nil);
+    self.placeholderLabel.text = NSLocalizedString(@"Name", nil);
     [self.textView becomeFirstResponder];
     self.endAlertSwitch.enabled = NO;
     unsavedList = [YYList MR_createEntity];
@@ -400,7 +400,6 @@
   notification.timeZone = [NSTimeZone defaultTimeZone];
   notification.soundName = UILocalNotificationDefaultSoundName;
   notification.userInfo = @{ @"UUID" : list.itemKey };
-  //  notification.category = @"listCategory";
   return notification;
 }
 
@@ -469,12 +468,12 @@ forRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
   [self.tableView endUpdates];
   self.doneButton.enabled = (textView.text.length > 0);
 
-    if (textView.text.length == 0) {
-        self.placeholderLabel.text = NSLocalizedString(@"Name", nil);
-    }else {
-        self.placeholderLabel.text = @"";
-    }
-    
+  if (textView.text.length == 0) {
+    self.placeholderLabel.text = NSLocalizedString(@"Name", nil);
+  } else {
+    self.placeholderLabel.text = @"";
+  }
+
   if (self.itemToEdit) {
     self.itemToEdit.content = textView.text;
   } else {

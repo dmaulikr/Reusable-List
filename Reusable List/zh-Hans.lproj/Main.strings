@@ -3,13 +3,13 @@
 "2RJ-Xf-j68.text" = "Subtitle";
 
 /* Class = "UILabel"; text = "时间"; ObjectID = "67z-x7-Scv"; */
-"67z-x7-Scv.text" = "时间";
+"67z-x7-Scv.text" = "提醒时间";
 
 /* Class = "UILabel"; text = "Title"; ObjectID = "8iR-lo-8m4"; */
 "8iR-lo-8m4.text" = "Title";
 
 /* Class = "UINavigationItem"; title = "Reusable List"; ObjectID = "ccK-Mi-y2P"; */
-"ccK-Mi-y2P.title" = "Reusable List";
+"ccK-Mi-y2P.title" = "可重用清单";
 
 /* Class = "UILabel"; text = "提醒"; ObjectID = "dSv-3w-1Nz"; */
 "dSv-3w-1Nz.text" = "提醒";
@@ -30,7 +30,7 @@
 "msO-db-eU9.text" = "无";
 
 /* Class = "UILabel"; text = "时间"; ObjectID = "nAi-n2-Pim"; */
-"nAi-n2-Pim.text" = "时间";
+"nAi-n2-Pim.text" = "结束日期";
 
 /* Class = "UILabel"; text = "结束重复"; ObjectID = "wuw-d8-By0"; */
 "wuw-d8-By0.text" = "结束重复";

@@ -9,6 +9,11 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>ReusableListTodayWidget.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>6</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
@@ -18,6 +23,11 @@
 			<true/>
 		</dict>
 		<key>603002FC1B992C9400DB2C4C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>60D532351BF8C5D0002A0657</key>
 		<dict>
 			<key>primary</key>
 			<true/>

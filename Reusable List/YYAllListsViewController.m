@@ -167,6 +167,15 @@ NSString *const APPVERSION = @"1.0";
   _listsWithDate = [[YYList MR_findAllSortedBy:@"remindTime"
                                      ascending:YES
                                  withPredicate:noRemindFilter] mutableCopy];
+    
+    // store the reminder lists into appgroup
+    NSUserDefaults *sharedData = [[NSUserDefaults alloc]initWithSuiteName:@"group.ReusableListSharedData"];
+    NSMutableArray *contents = [[NSMutableArray alloc]init];
+    for (YYList *list in _listsWithDate) {
+        [contents addObject:list.content];
+    }
+    [sharedData setObject:[NSArray arrayWithArray:contents] forKey:@"group.ReusableListSharedData"];
+    [sharedData synchronize];
 }
 
 - (NSString *)formatDetailLabel:(YYList *)list {

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4F249366336888F140507378 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4838113A1E2200443BAF3CD1 /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		60072D7B1BE5F8DC005C5FD2 /* YYPopReminderClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 60072D7A1BE5F8DC005C5FD2 /* YYPopReminderClass.m */; };
+		60296A291BF9925600ED4485 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 60296A2B1BF9925600ED4485 /* InfoPlist.strings */; };
 		603002EA1B992C9400DB2C4C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 603002E91B992C9400DB2C4C /* main.m */; };
 		603002ED1B992C9400DB2C4C /* YYAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 603002EC1B992C9400DB2C4C /* YYAppDelegate.m */; };
 		603002F51B992C9400DB2C4C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 603002F41B992C9400DB2C4C /* Images.xcassets */; };
@@ -19,6 +20,11 @@
 		603003451B9E849900DB2C4C /* Reusable List.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 603003431B9E849900DB2C4C /* Reusable List.xcdatamodeld */; };
 		603003481B9EA58B00DB2C4C /* YYList.m in Sources */ = {isa = PBXBuildFile; fileRef = 603003471B9EA58B00DB2C4C /* YYList.m */; };
 		6059CCCC1BC41505005CA839 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6059CCCE1BC41505005CA839 /* Localizable.strings */; };
+		60D532381BF8C5D0002A0657 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60D532371BF8C5D0002A0657 /* NotificationCenter.framework */; };
+		60D5323C1BF8C5D0002A0657 /* TodayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D5323B1BF8C5D0002A0657 /* TodayViewController.m */; };
+		60D5323F1BF8C5D0002A0657 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 60D5323D1BF8C5D0002A0657 /* MainInterface.storyboard */; };
+		60D532431BF8C5D0002A0657 /* ReusableListTodayWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 60D532361BF8C5D0002A0657 /* ReusableListTodayWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		60D532A41BF980E9002A0657 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6059CCCE1BC41505005CA839 /* Localizable.strings */; };
 		60EF5A271BBBBE7700EEFCB0 /* YYAllListsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60EF5A261BBBBE7700EEFCB0 /* YYAllListsViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -30,14 +36,37 @@
 			remoteGlobalIDString = 603002E31B992C9400DB2C4C;
 			remoteInfo = "Reusable List";
 		};
+		60D532411BF8C5D0002A0657 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 603002DC1B992C9400DB2C4C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 60D532351BF8C5D0002A0657;
+			remoteInfo = ReusableListTodayWidget;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		60D532471BF8C5D0002A0657 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				60D532431BF8C5D0002A0657 /* ReusableListTodayWidget.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		4838113A1E2200443BAF3CD1 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		60072D791BE5F8DC005C5FD2 /* YYPopReminderClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYPopReminderClass.h; sourceTree = "<group>"; };
 		60072D7A1BE5F8DC005C5FD2 /* YYPopReminderClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYPopReminderClass.m; sourceTree = "<group>"; };
+		60296A251BF98D0E00ED4485 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		60296A2A1BF9925600ED4485 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		60296A2D1BF9926700ED4485 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		603002E41B992C9400DB2C4C /* Reusable List.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Reusable List.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		603002E81B992C9400DB2C4C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		603002E91B992C9400DB2C4C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		603002EB1B992C9400DB2C4C /* YYAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYAppDelegate.h; sourceTree = "<group>"; };
 		603002EC1B992C9400DB2C4C /* YYAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYAppDelegate.m; sourceTree = "<group>"; };
@@ -56,6 +85,14 @@
 		6059CCCB1BC414DD005CA839 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		6059CCCD1BC41505005CA839 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		6059CCCF1BC41537005CA839 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		60D532361BF8C5D0002A0657 /* ReusableListTodayWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ReusableListTodayWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		60D532371BF8C5D0002A0657 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
+		60D5323A1BF8C5D0002A0657 /* TodayViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TodayViewController.h; sourceTree = "<group>"; };
+		60D5323B1BF8C5D0002A0657 /* TodayViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TodayViewController.m; sourceTree = "<group>"; };
+		60D5323E1BF8C5D0002A0657 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		60D532401BF8C5D0002A0657 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		60D532481BF8C5F1002A0657 /* Reusable List.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Reusable List.entitlements"; sourceTree = "<group>"; };
+		60D532491BF8CF0F002A0657 /* ReusableListTodayWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = ReusableListTodayWidget.entitlements; sourceTree = "<group>"; };
 		60EF5A251BBBBE6D00EEFCB0 /* YYAllListsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYAllListsViewController.h; sourceTree = "<group>"; };
 		60EF5A261BBBBE7700EEFCB0 /* YYAllListsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYAllListsViewController.m; sourceTree = "<group>"; };
 		E140AD5B272A51982BB6BD19 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -78,6 +115,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		60D532331BF8C5D0002A0657 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				60D532381BF8C5D0002A0657 /* NotificationCenter.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -95,6 +140,7 @@
 			children = (
 				603002E61B992C9400DB2C4C /* Reusable List */,
 				603003001B992C9400DB2C4C /* Reusable ListTests */,
+				60D532391BF8C5D0002A0657 /* ReusableListTodayWidget */,
 				603002E51B992C9400DB2C4C /* Products */,
 				380FF38070BF201FF9DB6A7A /* Pods */,
 				6CCEC677C72CA8E7867BC478 /* Frameworks */,
@@ -106,6 +152,7 @@
 			children = (
 				603002E41B992C9400DB2C4C /* Reusable List.app */,
 				603002FD1B992C9400DB2C4C /* Reusable ListTests.xctest */,
+				60D532361BF8C5D0002A0657 /* ReusableListTodayWidget.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -125,7 +172,8 @@
 		603002E71B992C9400DB2C4C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				603002E81B992C9400DB2C4C /* Info.plist */,
+				60296A251BF98D0E00ED4485 /* Info.plist */,
+				60296A2B1BF9925600ED4485 /* InfoPlist.strings */,
 				603002E91B992C9400DB2C4C /* main.m */,
 			);
 			name = "Supporting Files";
@@ -169,6 +217,7 @@
 		6030033F1B9C801800DB2C4C /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				60D532481BF8C5F1002A0657 /* Reusable List.entitlements */,
 				603003431B9E849900DB2C4C /* Reusable List.xcdatamodeld */,
 				603003461B9EA58B00DB2C4C /* YYList.h */,
 				603003471B9EA58B00DB2C4C /* YYList.m */,
@@ -207,10 +256,23 @@
 			name = Other;
 			sourceTree = "<group>";
 		};
+		60D532391BF8C5D0002A0657 /* ReusableListTodayWidget */ = {
+			isa = PBXGroup;
+			children = (
+				60D532491BF8CF0F002A0657 /* ReusableListTodayWidget.entitlements */,
+				60D5323A1BF8C5D0002A0657 /* TodayViewController.h */,
+				60D5323B1BF8C5D0002A0657 /* TodayViewController.m */,
+				60D5323D1BF8C5D0002A0657 /* MainInterface.storyboard */,
+				60D532401BF8C5D0002A0657 /* Info.plist */,
+			);
+			path = ReusableListTodayWidget;
+			sourceTree = "<group>";
+		};
 		6CCEC677C72CA8E7867BC478 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				4838113A1E2200443BAF3CD1 /* Pods.framework */,
+				60D532371BF8C5D0002A0657 /* NotificationCenter.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -228,10 +290,12 @@
 				603002E21B992C9400DB2C4C /* Resources */,
 				693DBE47501725D9F362F812 /* Copy Pods Resources */,
 				1983CE0602D03F96F61DA675 /* Embed Pods Frameworks */,
+				60D532471BF8C5D0002A0657 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				60D532421BF8C5D0002A0657 /* PBXTargetDependency */,
 			);
 			name = "Reusable List";
 			productName = "Reusable List";
@@ -256,6 +320,23 @@
 			productReference = 603002FD1B992C9400DB2C4C /* Reusable ListTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		60D532351BF8C5D0002A0657 /* ReusableListTodayWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 60D532461BF8C5D0002A0657 /* Build configuration list for PBXNativeTarget "ReusableListTodayWidget" */;
+			buildPhases = (
+				60D532321BF8C5D0002A0657 /* Sources */,
+				60D532331BF8C5D0002A0657 /* Frameworks */,
+				60D532341BF8C5D0002A0657 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ReusableListTodayWidget;
+			productName = ReusableListTodayWidget;
+			productReference = 60D532361BF8C5D0002A0657 /* ReusableListTodayWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -269,11 +350,25 @@
 					603002E31B992C9400DB2C4C = {
 						CreatedOnToolsVersion = 6.3.2;
 						DevelopmentTeam = 7L2TFWHDMC;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 					603002FC1B992C9400DB2C4C = {
 						CreatedOnToolsVersion = 6.3.2;
 						DevelopmentTeam = BPBP7M953A;
 						TestTargetID = 603002E31B992C9400DB2C4C;
+					};
+					60D532351BF8C5D0002A0657 = {
+						CreatedOnToolsVersion = 7.1.1;
+						DevelopmentTeam = 7L2TFWHDMC;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -293,6 +388,7 @@
 			targets = (
 				603002E31B992C9400DB2C4C /* Reusable List */,
 				603002FC1B992C9400DB2C4C /* Reusable ListTests */,
+				60D532351BF8C5D0002A0657 /* ReusableListTodayWidget */,
 			);
 		};
 /* End PBXProject section */
@@ -306,6 +402,7 @@
 				6059CCCC1BC41505005CA839 /* Localizable.strings in Resources */,
 				603002F81B992C9400DB2C4C /* LaunchScreen.xib in Resources */,
 				603002F51B992C9400DB2C4C /* Images.xcassets in Resources */,
+				60296A291BF9925600ED4485 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -313,6 +410,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		60D532341BF8C5D0002A0657 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				60D5323F1BF8C5D0002A0657 /* MainInterface.storyboard in Resources */,
+				60D532A41BF980E9002A0657 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -389,6 +495,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		60D532321BF8C5D0002A0657 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				60D5323C1BF8C5D0002A0657 /* TodayViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -397,9 +511,24 @@
 			target = 603002E31B992C9400DB2C4C /* Reusable List */;
 			targetProxy = 603002FE1B992C9400DB2C4C /* PBXContainerItemProxy */;
 		};
+		60D532421BF8C5D0002A0657 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 60D532351BF8C5D0002A0657 /* ReusableListTodayWidget */;
+			targetProxy = 60D532411BF8C5D0002A0657 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		60296A2B1BF9925600ED4485 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				60296A2A1BF9925600ED4485 /* zh-Hans */,
+				60296A2D1BF9926700ED4485 /* en */,
+			);
+			name = InfoPlist.strings;
+			path = ..;
+			sourceTree = "<group>";
+		};
 		603002F61B992C9400DB2C4C /* LaunchScreen.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -426,6 +555,14 @@
 				6059CCCF1BC41537005CA839 /* zh-Hans */,
 			);
 			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		60D5323D1BF8C5D0002A0657 /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				60D5323E1BF8C5D0002A0657 /* Base */,
+			);
+			name = MainInterface.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -525,6 +662,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = "Reusable List/Reusable List.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "Reusable List/Info.plist";
@@ -544,6 +682,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = "Reusable List/Reusable List.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "Reusable List/Info.plist";
@@ -599,6 +738,39 @@
 			};
 			name = Release;
 		};
+		60D532441BF8C5D0002A0657 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = ReusableListTodayWidget/ReusableListTodayWidget.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				INFOPLIST_FILE = ReusableListTodayWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = realDeviceTest.ReusableListTodayWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		60D532451BF8C5D0002A0657 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = ReusableListTodayWidget/ReusableListTodayWidget.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				INFOPLIST_FILE = ReusableListTodayWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = realDeviceTest.ReusableListTodayWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -625,6 +797,15 @@
 			buildConfigurations = (
 				6030030B1B992C9400DB2C4C /* Debug */,
 				6030030C1B992C9400DB2C4C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		60D532461BF8C5D0002A0657 /* Build configuration list for PBXNativeTarget "ReusableListTodayWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				60D532441BF8C5D0002A0657 /* Debug */,
+				60D532451BF8C5D0002A0657 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

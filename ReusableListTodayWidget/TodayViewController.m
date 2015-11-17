@@ -21,8 +21,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    sharedData = [[NSUserDefaults alloc]initWithSuiteName:@"group.ReusableListSharedData"];
-    lists = [sharedData arrayForKey:@"group.ReusableListSharedData"];
+    sharedData = [[NSUserDefaults alloc]initWithSuiteName:@"group.com.yuying.reusablelist.sharing"];
+    lists = [sharedData arrayForKey:@"group.com.yuying.reusablelist.sharing"];
     if (lists.count == 0) {
         lists = @[NSLocalizedString(@"Start Adding Your List", nil)];
     }

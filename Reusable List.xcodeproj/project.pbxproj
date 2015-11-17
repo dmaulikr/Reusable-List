@@ -84,6 +84,7 @@
 		603003441B9E849900DB2C4C /* Reusable List.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Reusable List.xcdatamodel"; sourceTree = "<group>"; };
 		603003461B9EA58B00DB2C4C /* YYList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYList.h; sourceTree = "<group>"; };
 		603003471B9EA58B00DB2C4C /* YYList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYList.m; sourceTree = "<group>"; };
+		60411E711BF9A7B4002343E0 /* Reusable List.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Reusable List.entitlements"; sourceTree = "<group>"; };
 		6059CCCA1BC414DD005CA839 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "Reusable List/zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		6059CCCB1BC414DD005CA839 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		6059CCCD1BC41505005CA839 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -94,10 +95,9 @@
 		60D5323B1BF8C5D0002A0657 /* TodayViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TodayViewController.m; sourceTree = "<group>"; };
 		60D5323E1BF8C5D0002A0657 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		60D532401BF8C5D0002A0657 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		60D532481BF8C5F1002A0657 /* Reusable List.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Reusable List.entitlements"; sourceTree = "<group>"; };
-		60D532491BF8CF0F002A0657 /* ReusableListTodayWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = ReusableListTodayWidget.entitlements; sourceTree = "<group>"; };
 		60EF5A251BBBBE6D00EEFCB0 /* YYAllListsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYAllListsViewController.h; sourceTree = "<group>"; };
 		60EF5A261BBBBE7700EEFCB0 /* YYAllListsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYAllListsViewController.m; sourceTree = "<group>"; };
+		60F8D2C71BF9A8D200446ACB /* ReusableListTodayWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = ReusableListTodayWidget.entitlements; sourceTree = "<group>"; };
 		E140AD5B272A51982BB6BD19 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		EE0FF61C1C7EF85C36DFC9F2 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -221,7 +221,7 @@
 		6030033F1B9C801800DB2C4C /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				60D532481BF8C5F1002A0657 /* Reusable List.entitlements */,
+				60411E711BF9A7B4002343E0 /* Reusable List.entitlements */,
 				603003431B9E849900DB2C4C /* Reusable List.xcdatamodeld */,
 				603003461B9EA58B00DB2C4C /* YYList.h */,
 				603003471B9EA58B00DB2C4C /* YYList.m */,
@@ -262,7 +262,7 @@
 		60D532391BF8C5D0002A0657 /* ReusableListTodayWidget */ = {
 			isa = PBXGroup;
 			children = (
-				60D532491BF8CF0F002A0657 /* ReusableListTodayWidget.entitlements */,
+				60F8D2C71BF9A8D200446ACB /* ReusableListTodayWidget.entitlements */,
 				60D5323A1BF8C5D0002A0657 /* TodayViewController.h */,
 				60D5323B1BF8C5D0002A0657 /* TodayViewController.m */,
 				60D5323D1BF8C5D0002A0657 /* MainInterface.storyboard */,
@@ -353,7 +353,7 @@
 				TargetAttributes = {
 					603002E31B992C9400DB2C4C = {
 						CreatedOnToolsVersion = 6.3.2;
-						DevelopmentTeam = 7L2TFWHDMC;
+						DevelopmentTeam = BPBP7M953A;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
@@ -367,7 +367,7 @@
 					};
 					60D532351BF8C5D0002A0657 = {
 						CreatedOnToolsVersion = 7.1.1;
-						DevelopmentTeam = 7L2TFWHDMC;
+						DevelopmentTeam = BPBP7M953A;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
@@ -677,15 +677,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = "Reusable List/Reusable List.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Ying Yu (BPBP7M953A)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Ying Yu (BPBP7M953A)";
 				INFOPLIST_FILE = "Reusable List/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = realDeviceTest;
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = yuying.reusablelist;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "e8518e6f-709a-4160-a426-b53772e72b11";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Debug;
@@ -697,15 +697,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = "Reusable List/Reusable List.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Ying Yu (BPBP7M953A)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Ying Yu (BPBP7M953A)";
 				INFOPLIST_FILE = "Reusable List/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = realDeviceTest;
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = yuying.reusablelist;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "e8518e6f-709a-4160-a426-b53772e72b11";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Release;
@@ -756,15 +756,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = ReusableListTodayWidget/ReusableListTodayWidget.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Ying Yu (BPBP7M953A)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Ying Yu (BPBP7M953A)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				INFOPLIST_FILE = ReusableListTodayWidget/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = realDeviceTest.ReusableListTodayWidget;
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = yuying.reusablelist.todaywidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "d6a6e59d-80b4-4956-97e5-a74210a45fef";
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -773,14 +774,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = ReusableListTodayWidget/ReusableListTodayWidget.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Ying Yu (BPBP7M953A)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Ying Yu (BPBP7M953A)";
 				INFOPLIST_FILE = ReusableListTodayWidget/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = realDeviceTest.ReusableListTodayWidget;
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = yuying.reusablelist.todaywidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "d6a6e59d-80b4-4956-97e5-a74210a45fef";
 				SKIP_INSTALL = YES;
 			};
 			name = Release;

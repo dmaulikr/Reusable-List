@@ -4,8 +4,6 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
-	<key>LSHasLocalizedDisplayName</key>
-	<true/>
 	<key>CFBundleDisplayName</key>
 	<string>Reusable List</string>
 	<key>CFBundleExecutable</key>
@@ -19,11 +17,15 @@
 	<key>CFBundlePackageType</key>
 	<string>XPC!</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>1.1</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>1.1</string>
+	<key>LSHasLocalizedDisplayName</key>
+	<true/>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
 	<key>NSExtension</key>
 	<dict>
 		<key>NSExtensionMainStoryboard</key>

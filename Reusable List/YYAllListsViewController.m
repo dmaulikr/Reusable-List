@@ -159,12 +159,12 @@ NSString *const APPVERSION = @"1.1";
                                  withPredicate:noRemindFilter] mutableCopy];
     
     // store the reminder lists into appgroup
-    NSUserDefaults *sharedData = [[NSUserDefaults alloc]initWithSuiteName:@"group.ReusableListSharedData"];
+    NSUserDefaults *sharedData = [[NSUserDefaults alloc]initWithSuiteName:@"group.com.yuying.reusablelist.sharing"];
     NSMutableArray *contents = [[NSMutableArray alloc]init];
     for (YYList *list in _listsWithDate) {
         [contents addObject:list.content];
     }
-    [sharedData setObject:[NSArray arrayWithArray:contents] forKey:@"group.ReusableListSharedData"];
+    [sharedData setObject:[NSArray arrayWithArray:contents] forKey:@"group.com.yuying.reusablelist.sharing"];
     [sharedData synchronize];
 }
 
